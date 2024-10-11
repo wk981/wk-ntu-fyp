@@ -1,0 +1,3 @@
+cd wgtpivotlo-frontend
+prettier . --write
+npm run lint

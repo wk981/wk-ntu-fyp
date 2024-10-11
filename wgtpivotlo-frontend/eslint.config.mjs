@@ -7,7 +7,8 @@ import tseslint from 'typescript-eslint'
 export default tseslint.config(
   { ignores: ['dist'] },
   {
-    extends: [js.configs.recommended,
+    extends: [
+      js.configs.recommended,
       ...tseslint.configs.recommended,
       ...tseslint.configs.recommendedTypeChecked,
       {
@@ -17,7 +18,8 @@ export default tseslint.config(
             tsconfigRootDir: import.meta.dirname,
           },
         },
-      },],
+      },
+    ],
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
       ecmaVersion: 2020,
@@ -34,5 +36,5 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
     },
-  },
+  }
 )

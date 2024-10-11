@@ -1,3 +1,8 @@
 cd wgtpivotlo-frontend
 prettier . --write
 npm run lint
+
+#TODO: set up precommit for mvn
+# https://stackoverflow.com/questions/67063993/sh-husky-command-not-found
+# cd ../wgtpivotlo-backend
+# mvn clean verify

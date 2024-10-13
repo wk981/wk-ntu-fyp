@@ -1,14 +1,17 @@
 package com.wgtpivotlo.wgtpivotlo.model;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity
+@Table(name="_user")
 @Getter
 @Setter
-@RequiredArgsConstructor
+@Builder
 public class User extends SuperClass{
 
     @Id
@@ -32,5 +35,8 @@ public class User extends SuperClass{
     @ManyToOne
     @JoinColumn(name="career_id", referencedColumnName = "career_id")
     private Career career;
+
+    @OneToMany(mappedBy = "user")
+    private Set<UserSkills> userSkills;
 
 }

@@ -1,6 +1,5 @@
 cd wgtpivotlo-frontend
 prettier . --write
 npm run lint
-
 cd ../wgtpivotlo-backend
 prettier . --write

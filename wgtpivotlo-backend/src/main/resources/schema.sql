@@ -45,9 +45,9 @@ CREATE TABLE IF NOT EXISTS user_history (
     FOREIGN KEY (course_id) REFERENCES courses(course_id)
 );
 
-CREATE TABLE IF NOT EXISTS skills (
+CREATE TABLE IF NOT EXISTS skill (
     skill_id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL UNIQUE,
     description TEXT,
     type VARCHAR(50),
     pic VARCHAR(255),
@@ -55,33 +55,33 @@ CREATE TABLE IF NOT EXISTS skills (
     updated_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS course_skills (
-    skill_id INT,
+CREATE TABLE IF NOT EXISTS course_skill (
+    id SERIAL PRIMARY KEY,
     course_id INT,
-    skill_exam_level INT,
-    skill_recommended_level INT,
-    PRIMARY KEY (skill_id, course_id),
-    FOREIGN KEY (skill_id) REFERENCES skills(skill_id),
-    FOREIGN KEY (course_id) REFERENCES courses(course_id)
+    skill_id INT,
+    skill_earn_level VARCHAR(255),
+    skill_recommended_level VARCHAR(255),
+    FOREIGN KEY (course_id) REFERENCES courses(course_id),
+    FOREIGN KEY (skill_id) REFERENCES skill(skill_id)
 );
 
-CREATE TABLE IF NOT EXISTS user_skills (
+CREATE TABLE IF NOT EXISTS user_skill (
+    id SERIAL PRIMARY KEY,
     user_id INT,
     skill_id INT,
     skill_level INT,
-    PRIMARY KEY (user_id, skill_id),
     FOREIGN KEY (user_id) REFERENCES _user(user_id),
-    FOREIGN KEY (skill_id) REFERENCES skills(skill_id)
+    FOREIGN KEY (skill_id) REFERENCES skill(skill_id)
 );
 
 
 
-CREATE TABLE IF NOT EXISTS career_skills (
+CREATE TABLE IF NOT EXISTS career_skill (
+    id SERIAL PRIMARY KEY,
     skill_id INT,
     career_id INT,
-    skill_level INT,
-    PRIMARY KEY (skill_id, career_id),
-    FOREIGN KEY (skill_id) REFERENCES skills(skill_id),
+    skill_level VARCHAR(255),
+    FOREIGN KEY (skill_id) REFERENCES skill(skill_id),
     FOREIGN KEY (career_id) REFERENCES career(career_id)
 );
 

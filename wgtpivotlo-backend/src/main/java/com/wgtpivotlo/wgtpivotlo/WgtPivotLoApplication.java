@@ -11,5 +11,4 @@ public class WgtPivotLoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(WgtPivotLoApplication.class, args);
 	}
-
 }

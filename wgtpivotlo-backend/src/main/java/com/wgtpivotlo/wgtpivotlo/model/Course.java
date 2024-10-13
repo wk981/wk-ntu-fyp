@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Entity
 @Getter
 @Setter
@@ -27,5 +29,8 @@ public class Course extends SuperClass{
     @ManyToOne
     @JoinColumn(name="career_id", referencedColumnName = "career_id")
     private Career career;
+
+    @OneToMany(mappedBy = "course")
+    private Set<CourseSkills> courseSkills;
 
 }

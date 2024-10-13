@@ -8,31 +8,28 @@ import lombok.Setter;
 import java.util.Set;
 
 @Entity
-@Table(name="career")
+@Table(name="skill")
 @Builder
 @Setter
 @Getter
-public class Career extends SuperClass{
+public class Skill extends SuperClass{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="career_id")
-    private long career_id;
+    @Column(name="skill_id")
+    private long skill_id;
 
-    @Column(nullable = false)
     private String name;
 
     @Column(columnDefinition = "TEXT")
     private String description;
-    private String sector;
-    private String career_level;
-
-    @Column(columnDefinition = "TEXT")
-    private String work_environment;
-
-    @Column(columnDefinition = "TEXT")
-    private String goal;
     private String pic;
 
-    @OneToMany(mappedBy = "career")
+    @OneToMany(mappedBy = "skill")
+    private Set<UserSkills> userSkills;
+
+    @OneToMany(mappedBy = "skill")
     private Set<CareerSkills> careerSkills;
+
+    @OneToMany(mappedBy = "skill")
+    private Set<CourseSkills> courseSkills;
 }

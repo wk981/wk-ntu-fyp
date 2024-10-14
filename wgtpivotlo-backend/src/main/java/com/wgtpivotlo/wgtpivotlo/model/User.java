@@ -1,5 +1,6 @@
 package com.wgtpivotlo.wgtpivotlo.model;
 
+import com.wgtpivotlo.wgtpivotlo.enums.Role;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,7 +29,10 @@ public class User extends SuperClass{
     @Column(nullable = false)
     private String password;
 
-    private String role;
+    @Enumerated(EnumType.STRING)
+    @Column(name="role")
+    private Role role;
+
     private String pic;
 
     // Why many to one cus many users can have the same career

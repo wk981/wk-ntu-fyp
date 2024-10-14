@@ -30,14 +30,14 @@ public class DataLoader implements CommandLineRunner {
                 .name("admin")
                 .password(passwordEncoder.encode("admin_password")) // Encoding the password
                 .email("admin@example.com")
-                .role(Role.ADMIN.toString())
+                .role(Role.ADMIN)
                 .build();
 
         User normalUser = User.builder()
                 .name("user1")
                 .password(passwordEncoder.encode("password1")) // Encoding the password
                 .email("user1@example.com")
-                .role(Role.USER.toString())
+                .role(Role.USER)
                 .build();
 
         // Save the users to the database

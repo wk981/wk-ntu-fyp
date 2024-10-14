@@ -1,9 +1,7 @@
 package com.wgtpivotlo.wgtpivotlo.model;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 
@@ -12,6 +10,7 @@ import java.util.Set;
 @Builder
 @Setter
 @Getter
+@AllArgsConstructor
 public class Skill extends SuperClass{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

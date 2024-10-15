@@ -1,5 +1,7 @@
 package com.wgtpivotlo.wgtpivotlo.model;
 
+import com.wgtpivotlo.wgtpivotlo.enums.CareerLevel;
+import com.wgtpivotlo.wgtpivotlo.enums.WorkEnvironment;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,14 +26,20 @@ public class Career extends SuperClass{
     @Column(columnDefinition = "TEXT")
     private String description;
     private String sector;
-    private String career_level;
 
-    @Column(columnDefinition = "TEXT")
-    private String work_environment;
+    @Enumerated(EnumType.STRING)
+    @Column(name="career_level")
+    private CareerLevel careerLevel;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="work_environment",columnDefinition = "TEXT")
+    private WorkEnvironment workEnvironment;
 
     @Column(columnDefinition = "TEXT")
     private String goal;
+
     private String pic;
+    private String branch;
 
     @OneToMany(mappedBy = "career")
     private Set<CareerSkills> careerSkills;

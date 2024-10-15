@@ -1,6 +1,9 @@
 package com.wgtpivotlo.wgtpivotlo.model;
 
+import com.wgtpivotlo.wgtpivotlo.enums.SkillLevel;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,5 +25,12 @@ public class CareerSkills {
     @JoinColumn(name="career_id")
     private Career career;
 
-    private String skill_level;
+    @Enumerated(EnumType.STRING)
+    @Column(name="skill_level")
+    private SkillLevel skillLevel;
+
+    @Min(1)
+    @Max(5)
+    @Column(name="skill_weight")
+    private int skillWeight;
 }

@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS career (
     description TEXT,
     sector VARCHAR(255),
     career_level VARCHAR(50),
+    branch VARCHAR(50),
     work_environment TEXT,
     goal TEXT,
     pic VARCHAR(255),
@@ -81,6 +82,7 @@ CREATE TABLE IF NOT EXISTS career_skill (
     skill_id INT,
     career_id INT,
     skill_level VARCHAR(255),
+    skill_weight INT CHECK (skill_weight BETWEEN 1 AND 5),
     FOREIGN KEY (skill_id) REFERENCES skill(skill_id),
     FOREIGN KEY (career_id) REFERENCES career(career_id)
 );

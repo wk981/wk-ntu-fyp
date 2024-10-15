@@ -15,7 +15,7 @@ public class Skill extends SuperClass{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="skill_id")
-    private long skill_id;
+    private long skillId;
 
     private String name;
 

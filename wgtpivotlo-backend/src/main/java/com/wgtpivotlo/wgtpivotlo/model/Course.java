@@ -1,5 +1,6 @@
 package com.wgtpivotlo.wgtpivotlo.model;
 
+import com.wgtpivotlo.wgtpivotlo.enums.CourseSource;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +24,12 @@ public class Course extends SuperClass{
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    private String course_original_link;
-    private String course_source;
+    @Column(name="course_original_link")
+    private String courseOriginalLink;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="course_source")
+    private CourseSource courseSource;
 
     @ManyToOne
     @JoinColumn(name="career_id", referencedColumnName = "career_id")

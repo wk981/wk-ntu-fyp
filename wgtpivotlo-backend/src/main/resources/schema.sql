@@ -2,11 +2,12 @@ CREATE TABLE IF NOT EXISTS career (
     career_id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT,
+    responsibility VARCHAR(255),
     sector VARCHAR(255),
     career_level VARCHAR(50),
     branch VARCHAR(50),
     work_environment TEXT,
-    goal TEXT,
+    career_goal VARCHAR(255),
     pic VARCHAR(255),
     created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP

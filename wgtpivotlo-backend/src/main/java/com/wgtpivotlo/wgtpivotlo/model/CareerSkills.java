@@ -1,26 +1,30 @@
 package com.wgtpivotlo.wgtpivotlo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wgtpivotlo.wgtpivotlo.enums.SkillLevel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "career_skill")
 @Builder
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class CareerSkills {
     @Id
     private Long id;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name="skill_id")
     private Skill skill;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name="career_id")
     private Career career;
@@ -31,6 +35,6 @@ public class CareerSkills {
 
     @Min(1)
     @Max(5)
-    @Column(name="skill_weight")
-    private int skillWeight;
+    @Column(name="skill_weight",nullable = true)
+    private Integer skillWeight;
 }

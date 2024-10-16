@@ -15,21 +15,41 @@ WITH skill_insert AS (
 )
 
 , career_insert AS (
-    INSERT INTO career (name, description, sector, career_level, work_environment, goal)
-    VALUES
-    ('Frontend Engineer', 'A Frontend Engineer specializes in building the visual and interactive components of websites and applications, focusing on user interfaces and user experience.', 'Technology', 'Mid-Level', 'Office-based or Remote', 'To develop responsive and accessible user interfaces.')
-    RETURNING career_id
+      INSERT INTO career (
+          name,
+          description,
+          sector,
+          responsibility,
+          career_level,
+          work_environment,
+          career_goal,
+          branch,
+          pic
+      )
+      VALUES
+      (
+          'Frontend Engineer',
+          'A Frontend Engineer specializes in building the visual and interactive components of websites and applications, focusing on user interfaces and user experience.',
+          'Technology',
+          'Develop and maintain user-facing features, collaborate with designers and backend engineers.',  -- responsibility field
+          'MIDLEVEL',
+          'HYBRID',
+          'To develop responsive and accessible user interfaces.',  -- career_goal field
+          'Frontend',  -- branch field
+          'pic_url'   -- pic field
+      )
+      RETURNING career_id
 )
 
 INSERT INTO career_skill (skill_id, career_id, skill_level)
 VALUES
-((SELECT skill_id FROM skill_insert WHERE name = 'HTML'), (SELECT career_id FROM career_insert), 'Expert'),
-((SELECT skill_id FROM skill_insert WHERE name = 'CSS'), (SELECT career_id FROM career_insert), 'Expert'),
-((SELECT skill_id FROM skill_insert WHERE name = 'JavaScript'), (SELECT career_id FROM career_insert), 'Advanced'),
-((SELECT skill_id FROM skill_insert WHERE name = 'React'), (SELECT career_id FROM career_insert), 'Advanced'),
-((SELECT skill_id FROM skill_insert WHERE name = 'Version Control (Git)'), (SELECT career_id FROM career_insert), 'Intermediate'),
-((SELECT skill_id FROM skill_insert WHERE name = 'Responsive Design'), (SELECT career_id FROM career_insert), 'Advanced'),
-((SELECT skill_id FROM skill_insert WHERE name = 'Cross-browser Compatibility'), (SELECT career_id FROM career_insert), 'Intermediate'),
-((SELECT skill_id FROM skill_insert WHERE name = 'Web Performance Optimization'), (SELECT career_id FROM career_insert), 'Advanced'),
-((SELECT skill_id FROM skill_insert WHERE name = 'UI/UX Design Principles'), (SELECT career_id FROM career_insert), 'Intermediate'),
-((SELECT skill_id FROM skill_insert WHERE name = 'Debugging'), (SELECT career_id FROM career_insert), 'Advanced');
+((SELECT skill_id FROM skill_insert WHERE name = 'HTML'), (SELECT career_id FROM career_insert), 'EXPERT'),
+((SELECT skill_id FROM skill_insert WHERE name = 'CSS'), (SELECT career_id FROM career_insert), 'EXPERT'),
+((SELECT skill_id FROM skill_insert WHERE name = 'JavaScript'), (SELECT career_id FROM career_insert), 'ADVANCED'),
+((SELECT skill_id FROM skill_insert WHERE name = 'React'), (SELECT career_id FROM career_insert), 'ADVANCED'),
+((SELECT skill_id FROM skill_insert WHERE name = 'Version Control (Git)'), (SELECT career_id FROM career_insert), 'INTERMEDIATE'),
+((SELECT skill_id FROM skill_insert WHERE name = 'Responsive Design'), (SELECT career_id FROM career_insert), 'ADVANCED'),
+((SELECT skill_id FROM skill_insert WHERE name = 'Cross-browser Compatibility'), (SELECT career_id FROM career_insert), 'INTERMEDIATE'),
+((SELECT skill_id FROM skill_insert WHERE name = 'Web Performance Optimization'), (SELECT career_id FROM career_insert), 'ADVANCED'),
+((SELECT skill_id FROM skill_insert WHERE name = 'UI/UX Design Principles'), (SELECT career_id FROM career_insert), 'INTERMEDIATE'),
+((SELECT skill_id FROM skill_insert WHERE name = 'Debugging'), (SELECT career_id FROM career_insert), 'ADVANCED');

@@ -11,6 +11,7 @@ import java.util.Set;
 @Setter
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class Skill extends SuperClass{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +23,7 @@ public class Skill extends SuperClass{
     @Column(columnDefinition = "TEXT")
     private String description;
     private String pic;
+    private String type;
 
     @OneToMany(mappedBy = "skill")
     private Set<UserSkills> userSkills;

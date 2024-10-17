@@ -2,16 +2,18 @@ package com.wgtpivotlo.wgtpivotlo.controller;
 
 import com.wgtpivotlo.wgtpivotlo.model.Skill;
 import com.wgtpivotlo.wgtpivotlo.service.SkillService;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/skill")
@@ -30,8 +32,16 @@ public class SkillController {
 //    }
 
     @GetMapping("/")
-    public Page<Skill> getPaginatedSkills(@RequestParam int pageNumber, @RequestParam int pageSize){
-        return skillService.findAllPagination(pageNumber,pageSize);
+    public ResponseEntity<Map<String, Object>> getPaginatedSkills(
+            @RequestParam(defaultValue = "1") @Min(1) int pageNumber,
+            @RequestParam(defaultValue = "10") @Min(1) @Max(15) int pageSize){
+        Map<String, Object> responseBody = skillService.findAllPagination(pageNumber,pageSize);
+        return ResponseEntity.ok(responseBody);
+    }
+
+    @GetMapping("/{id}")
+    public Optional<Skill> getSkillId(@PathVariable long id){
+        return skillService.findId(id);
     }
 
 }

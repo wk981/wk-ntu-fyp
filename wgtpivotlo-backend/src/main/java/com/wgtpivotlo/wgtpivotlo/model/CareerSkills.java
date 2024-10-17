@@ -2,6 +2,7 @@ package com.wgtpivotlo.wgtpivotlo.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.wgtpivotlo.wgtpivotlo.enums.SkillLevel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
@@ -19,12 +20,12 @@ public class CareerSkills {
     @Id
     private Long id;
 
-    @JsonBackReference
+    @JsonIgnoreProperties("careerSkills") // Ignore back reference to CareerSkills from Skill
     @ManyToOne
     @JoinColumn(name="skill_id")
     private Skill skill;
 
-    @JsonBackReference
+    @JsonIgnoreProperties("careerSkills") // Ignore back reference to CareerSkills from Career
     @ManyToOne
     @JoinColumn(name="career_id")
     private Career career;

@@ -1,5 +1,6 @@
 package com.wgtpivotlo.wgtpivotlo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.wgtpivotlo.wgtpivotlo.enums.CareerLevel;
 import com.wgtpivotlo.wgtpivotlo.enums.WorkEnvironment;
 import jakarta.persistence.*;
@@ -45,5 +46,6 @@ public class Career extends SuperClass{
 
 
     @OneToMany(mappedBy = "career")
+    @JsonIgnoreProperties("career")  // Ignore career in CareerSkills to prevent circular reference
     private Set<CareerSkills> careerSkills;
 }

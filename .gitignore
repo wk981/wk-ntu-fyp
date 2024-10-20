@@ -25,5 +25,5 @@ replay_pid*
 
 node_modules
 .venv/
-script/__pychache__
 script/*.json
+__pycache__/

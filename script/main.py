@@ -18,9 +18,10 @@ def main():
         logging.warning(f"xls sheets loaded successfully")
     except FileNotFoundError:
         logging.error(f"Skills Framework file is not found at: {file_path}")
-    db.upload_schema(".\init.sql")
-    skill_framework_manager.insert_into_db_initial()
-    skill_framework_manager.insert_into_db_foreign_tables()
+    # db.upload_schema(".\init.sql")
+    # skill_framework_manager.insert_into_db_initial()
+    # skill_framework_manager.insert_into_db_foreign_tables()
+    skill_framework_manager.test_public_function()
 
 
 main()

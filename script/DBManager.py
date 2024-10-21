@@ -84,13 +84,38 @@ SELECT career_id FROM careers WHERE sector LIKE %s AND track LIKE %s AND job_rol
         self.cursor.execute(query, data)
         return self.cursor.fetchone()
 
-    def get_skill_id(self, data):
+    def get_career_id_where_job_role(self, job_role):
         query = """
-SELECT skill_id FROM skills WHERE sector LIKE %s AND category LIKE %s AND title LIKE %s
-"""
-        self.cursor.execute(query, data)
+        SELECT career_id FROM careers WHERE job_role ILIKE %s
+        """
+        self.cursor.execute(query, (job_role,))  # Note the comma, making it a tuple
+        return self.cursor.fetchone()
+
+    def get_skill_id(self, data):        
+        query = """
+        SELECT skill_id 
+        FROM skills 
+        WHERE sector LIKE %s 
+        AND category LIKE %s 
+        AND title LIKE %s
+        """
+        
+        self.cursor.execute(query, (data))
+        
+        return self.cursor.fetchone()
+    
+    def get_skill_id_where_title(self, data):        
+        query = """
+        SELECT skill_id 
+        FROM skills 
+        WHERE title ILIKE %s
+        """
+        
+        self.cursor.execute(query, (data,))
+
         return self.cursor.fetchone()
 
     def __process_str(self,s):
         return s.lower().replace(" ", "_")
+
         

@@ -1,0 +1,1350 @@
+{
+    "Bayesian Statistics": [
+        "Nursing Research and Statistics",
+        0.6
+    ],
+    "Banking": [
+        "Benchmarking",
+        0.631578947368421
+    ],
+    "Account Management": [
+        "Account Management",
+        1.0
+    ],
+    "Operating Systems": [
+        "Accounting Systems",
+        0.6857142857142857
+    ],
+    "Artificial Neural Networks": [
+        "Aerial Camera Operations",
+        0.56
+    ],
+    "Software Framework": [
+        "Audit Frameworks",
+        0.6470588235294118
+    ],
+    "Software Security": [
+        "Network Security",
+        0.7272727272727273
+    ],
+    "Database Design": [
+        "Data Design",
+        0.8461538461538461
+    ],
+    "Research and Design": [
+        "Research Design",
+        0.8823529411764706
+    ],
+    "Solution Sales Engineering": [
+        "Sustainable Engineering",
+        0.8163265306122449
+    ],
+    "Computer Graphic Techniques": [
+        "Computer Vision Technology",
+        0.6037735849056604
+    ],
+    "Matlab": [
+        "Adaptability",
+        0.4444444444444444
+    ],
+    "System Security": [
+        "Cyber Security",
+        0.7586206896551724
+    ],
+    "Statistical Programming": [
+        "Audio Programming",
+        0.65
+    ],
+    "Digital Marketing": [
+        "Digital Marketing",
+        1.0
+    ],
+    "Probability & Statistics": [
+        "Data and Statistical Analysis",
+        0.5283018867924528
+    ],
+    "Statistical Tests": [
+        "Data and Statistical Analysis",
+        0.6086956521739131
+    ],
+    "User Experience Design": [
+        "User Experience Design",
+        1.0
+    ],
+    "Recruitment": [
+        "Volunteer Recruitment",
+        0.6875
+    ],
+    "Market Analysis": [
+        "Market Trend Analysis",
+        0.8333333333333334
+    ],
+    "Microsoft Azure": [
+        "Quality Assurance",
+        0.4375
+    ],
+    "Technical Product Management": [
+        "Technical Services Management",
+        0.8070175438596491
+    ],
+    "Taxes": [
+        "Tax Advisory",
+        0.47058823529411764
+    ],
+    "Financial Accounting": [
+        "Financial Acumen",
+        0.7777777777777778
+    ],
+    "Sales Systems": [
+        "Quality Systems",
+        0.7142857142857143
+    ],
+    "Entrepreneurship": [
+        "Creative Entrepreneurship",
+        0.7804878048780488
+    ],
+    "Data Management": [
+        "Data Management",
+        1.0
+    ],
+    "HTML and CSS": [
+        "Health and Safety",
+        0.4827586206896552
+    ],
+    "Accounting": [
+        "Fund Accounting",
+        0.8
+    ],
+    "Basic Descriptive Statistics": [
+        "Nursing Research and Statistics",
+        0.576271186440678
+    ],
+    "Knitr": [
+        "Infection Control",
+        0.36363636363636365
+    ],
+    "Storytelling": [
+        "Creative Storytelling",
+        0.7272727272727273
+    ],
+    "Geometry": [
+        "Perform Refractory Work",
+        0.45161290322580644
+    ],
+    "Data Mining": [
+        "Data Engineering",
+        0.7407407407407407
+    ],
+    "Persona Research": [
+        "Research",
+        0.6666666666666666
+    ],
+    "Statistical Machine Learning": [
+        "Sustainable Engineering",
+        0.5882352941176471
+    ],
+    "Cloud Engineering": [
+        "Value Engineering",
+        0.8235294117647058
+    ],
+    "Software Testing": [
+        "Software Testing",
+        1.0
+    ],
+    "Human Resources Operations": [
+        "Human Resource Digitalisation",
+        0.7272727272727273
+    ],
+    "Cryptography": [
+        "Chartwork",
+        0.47619047619047616
+    ],
+    "Amazon Web Services": [
+        "Wine Service",
+        0.6451612903225806
+    ],
+    "Exploratory Data Analysis": [
+        "Laboratory Data Analysis",
+        0.8571428571428571
+    ],
+    "ArcGIS": [
+        "Project Scope",
+        0.3157894736842105
+    ],
+    "Project Management": [
+        "Project Management",
+        1.0
+    ],
+    "Probability Distribution": [
+        "Content Distribution",
+        0.6818181818181818
+    ],
+    "Docker (Software)": [
+        "Software Design",
+        0.5
+    ],
+    "Database Theory": [
+        "Database Administration",
+        0.5263157894736842
+    ],
+    "Adaptability": [
+        "Adaptability",
+        1.0
+    ],
+    "Conflict Management": [
+        "Conflict Management",
+        1.0
+    ],
+    "User Research": [
+        "Research",
+        0.7619047619047619
+    ],
+    "Cloud Clients": [
+        "Cloud Computing",
+        0.6428571428571429
+    ],
+    "Collaboration": [
+        "Collaboration",
+        1.0
+    ],
+    "Planning": [
+        "Test Planning",
+        0.7619047619047619
+    ],
+    "Regression": [
+        "Arrestation",
+        0.5714285714285714
+    ],
+    "Business Psychology": [
+        "Business Planning",
+        0.6666666666666666
+    ],
+    "Journalism": [
+        "Failure Analysis",
+        0.5384615384615384
+    ],
+    "Brand Management": [
+        "Brand Management",
+        1.0
+    ],
+    "Securities Trading": [
+        "Security Administration",
+        0.6341463414634146
+    ],
+    "Experiment": [
+        "Operation Management",
+        0.5333333333333333
+    ],
+    "Combinatorics": [
+        "Communication",
+        0.5384615384615384
+    ],
+    "Applied Mathematics": [
+        "Airline Marketing",
+        0.5555555555555556
+    ],
+    "Compensation": [
+        "Communication",
+        0.72
+    ],
+    "iOS Development": [
+        "Tools Development",
+        0.75
+    ],
+    "Mathematical Theory & Analysis": [
+        "Qualitative Analysis",
+        0.6
+    ],
+    "Design and Product": [
+        "Design Thinking Practice",
+        0.6190476190476191
+    ],
+    "Devops Tools": [
+        "Developing People",
+        0.5517241379310345
+    ],
+    "Cloud Infrastructure": [
+        "Infrastructure Design",
+        0.6829268292682927
+    ],
+    "Network Model": [
+        "Network Slicing",
+        0.6428571428571429
+    ],
+    "Software Architecture": [
+        "Solution Architecture",
+        0.7619047619047619
+    ],
+    "Cloud Computing": [
+        "Cloud Computing",
+        1.0
+    ],
+    "Transportation Operations Management": [
+        "Train Station Operations Management",
+        0.9014084507042254
+    ],
+    "Human Learning": [
+        "Plant Pruning",
+        0.5925925925925926
+    ],
+    "Estimation": [
+        "Arrestation",
+        0.6666666666666666
+    ],
+    "Supply Chain Systems": [
+        "Supply Chain Management",
+        0.6976744186046512
+    ],
+    "Jira (Software)": [
+        "Software Design",
+        0.5333333333333333
+    ],
+    "Microsoft Excel": [
+        "Service Excellence",
+        0.48484848484848486
+    ],
+    "Financial Management": [
+        "Financial Management",
+        1.0
+    ],
+    "Mobile Development": [
+        "People Development",
+        0.8333333333333334
+    ],
+    "Network Analysis": [
+        "Network Simulation and Analysis",
+        0.6808510638297872
+    ],
+    "Database Application": [
+        "Database Administration",
+        0.7441860465116279
+    ],
+    "Cloud Storage": [
+        "Colour Grading",
+        0.5925925925925926
+    ],
+    "HR Tech": [
+        "Research",
+        0.5333333333333333
+    ],
+    "Big Data": [
+        "Big Data Analysis",
+        0.64
+    ],
+    "Public Relations": [
+        "Public Relations Management",
+        0.7441860465116279
+    ],
+    "Machine Learning": [
+        "Machining",
+        0.72
+    ],
+    "Supply Chain and Logistics": [
+        "Supply Chain Management",
+        0.6938775510204082
+    ],
+    "Web Design": [
+        "Website Design",
+        0.8333333333333334
+    ],
+    "Payments": [
+        "Game Analytics",
+        0.5454545454545454
+    ],
+    "Statistical Visualization": [
+        "Data Visualisation",
+        0.6976744186046512
+    ],
+    "People Analysis": [
+        "Value Analysis",
+        0.7586206896551724
+    ],
+    "Database Administration": [
+        "Database Administration",
+        1.0
+    ],
+    "Data Visualization Software": [
+        "Data Visualisation",
+        0.7555555555555555
+    ],
+    "Apache": [
+        "Audit Compliance",
+        0.45454545454545453
+    ],
+    "Computer Networking": [
+        "Game Networking",
+        0.7647058823529411
+    ],
+    "Leadership and Management": [
+        "Partnership Management",
+        0.7659574468085106
+    ],
+    "Geostatistics": [
+        "Game Analytics",
+        0.5185185185185185
+    ],
+    "Network Architecture": [
+        "Security Architecture",
+        0.7317073170731707
+    ],
+    "Epidemiology": [
+        "Emerging Technology",
+        0.5161290322580645
+    ],
+    "Process Analysis": [
+        "Business Process Analysis",
+        0.7804878048780488
+    ],
+    "Customer Support": [
+        "Customer Loyalty",
+        0.6875
+    ],
+    "Computer Security Incident Management": [
+        "Cyber Incident Management",
+        0.7419354838709677
+    ],
+    "Angular": [
+        "Regulatory Strategy",
+        0.38461538461538464
+    ],
+    "Looker (Software)": [
+        "Software Design",
+        0.5
+    ],
+    "Hardware Design": [
+        "Software Design",
+        0.7333333333333333
+    ],
+    "FinTech": [
+        "Emerging Technology",
+        0.46153846153846156
+    ],
+    "Other Cloud Platforms and Tools": [
+        "Operate Explosive Powered Tools",
+        0.5483870967741935
+    ],
+    "Statistical Analysis": [
+        "Data and Statistical Analysis",
+        0.8163265306122449
+    ],
+    "Emotional Intelligence": [
+        "Market Intelligence",
+        0.6829268292682927
+    ],
+    "Cloud Load Balancing": [
+        "Cargo Load Planning",
+        0.717948717948718
+    ],
+    "Human Factors (Security)": [
+        "Human Factors Management",
+        0.6666666666666666
+    ],
+    "Distributed Computing Architecture": [
+        "Solution Architecture",
+        0.6545454545454545
+    ],
+    "Natural Language Processing": [
+        "Text Analytics and Processing",
+        0.6071428571428571
+    ],
+    "Game Theory": [
+        "Game Networking",
+        0.6153846153846154
+    ],
+    "Shipping and Receiving": [
+        "Joining and Welding",
+        0.6341463414634146
+    ],
+    "Cloud-Based Integration": [
+        "System Integration",
+        0.6829268292682927
+    ],
+    "Scrum (Software Development)": [
+        "Agile Software Development",
+        0.7777777777777778
+    ],
+    "Mobile Development Tools": [
+        "People Development",
+        0.7142857142857143
+    ],
+    "Strategy": [
+        "IT Strategy",
+        0.8421052631578947
+    ],
+    "Investment Management": [
+        "Inventory Management",
+        0.8292682926829268
+    ],
+    "Data Structures": [
+        "Data Strategy",
+        0.7142857142857143
+    ],
+    "Advertising": [
+        "Budgeting",
+        0.6
+    ],
+    "Product Marketing": [
+        "Food Product Marketing",
+        0.8717948717948718
+    ],
+    "Web Development": [
+        "People Development",
+        0.7878787878787878
+    ],
+    "PostgreSQL": [
+        "Process Integration",
+        0.41379310344827586
+    ],
+    "Culture": [
+        "Cell Culture",
+        0.7368421052631579
+    ],
+    "People Management": [
+        "People Management",
+        1.0
+    ],
+    "Survey Creation": [
+        "Concept Creation",
+        0.6451612903225806
+    ],
+    "Product Strategy": [
+        "Pricing Strategy",
+        0.75
+    ],
+    "Dimensionality Reduction": [
+        "Conflict Resolution",
+        0.6046511627906976
+    ],
+    "Business Design": [
+        "Business Insights",
+        0.75
+    ],
+    "Java Programming": [
+        "Audio Programming",
+        0.7272727272727273
+    ],
+    "Stata": [
+        "IT Strategy",
+        0.5
+    ],
+    "Feature Engineering": [
+        "Value Engineering",
+        0.8333333333333334
+    ],
+    "Talent Management": [
+        "Talent Management",
+        1.0
+    ],
+    "Correlation And Dependence": [
+        "Auditor Independence",
+        0.6086956521739131
+    ],
+    "Marketing Design": [
+        "Marketing Strategy",
+        0.7058823529411765
+    ],
+    "Risk Management": [
+        "Risk Management",
+        1.0
+    ],
+    "Android Development": [
+        "Product Development",
+        0.7894736842105263
+    ],
+    "Continuous Delivery": [
+        "Continuous Improvement",
+        0.6341463414634146
+    ],
+    "Deep Learning": [
+        "Tree Pruning",
+        0.64
+    ],
+    "Javascript": [
+        "Cybersecurity",
+        0.43478260869565216
+    ],
+    "Entrepreneurial Finance": [
+        "Behavioural Finance",
+        0.6190476190476191
+    ],
+    "Programming Principles": [
+        "Programming and Coding",
+        0.6363636363636364
+    ],
+    "Django (Web Framework)": [
+        "Career Framework Design",
+        0.5333333333333333
+    ],
+    "Computer Science": [
+        "Computer-aided Design",
+        0.5945945945945946
+    ],
+    "Continuous Integration": [
+        "Systems Integration",
+        0.6829268292682927
+    ],
+    "Data Engineering": [
+        "Data Engineering",
+        1.0
+    ],
+    "Strategy and Operations": [
+        "Aircraft Landing Operations",
+        0.72
+    ],
+    "Internet Of Things": [
+        "Internet of Things Management",
+        0.723404255319149
+    ],
+    "Regulations and Compliance": [
+        "Regulatory Compliance",
+        0.8085106382978723
+    ],
+    "Communication": [
+        "Communication",
+        1.0
+    ],
+    "Writing": [
+        "Design Writing",
+        0.6666666666666666
+    ],
+    "Cloud Applications": [
+        "Cloud Computing Application",
+        0.7555555555555555
+    ],
+    "B2B Sales": [
+        "Sales Closure",
+        0.45454545454545453
+    ],
+    "Supplier Relationship Management": [
+        "Student Relationship Management",
+        0.8571428571428571
+    ],
+    "Computational Logic": [
+        "Computational Design",
+        0.7692307692307693
+    ],
+    "Business Research": [
+        "Business Excellence",
+        0.6666666666666666
+    ],
+    "Geovisualization": [
+        "Data Visualisation",
+        0.6470588235294118
+    ],
+    "Vendor Management": [
+        "Vendor Management",
+        1.0
+    ],
+    "Data Model": [
+        "3D Modelling",
+        0.6363636363636364
+    ],
+    "Computer Graphics": [
+        "Colour Grading",
+        0.5806451612903226
+    ],
+    "Cross Platform Development": [
+        "News Story Development",
+        0.7083333333333334
+    ],
+    "Benefits": [
+        "Benefits Management",
+        0.5925925925925926
+    ],
+    "Business Analysis": [
+        "Business Data Analysis",
+        0.8717948717948718
+    ],
+    "Semantic Web": [
+        "Sealants Process",
+        0.5
+    ],
+    "Market Research": [
+        "Market Research",
+        1.0
+    ],
+    "C Programming Language Family": [
+        "Programme Management",
+        0.6122448979591837
+    ],
+    "Agile Software Development": [
+        "Agile Software Development",
+        1.0
+    ],
+    "Training": [
+        "Machining",
+        0.7058823529411765
+    ],
+    "Computer Programming": [
+        "Audio Programming",
+        0.7027027027027027
+    ],
+    "Innovation": [
+        "Innovation",
+        1.0
+    ],
+    "Cloud Platforms": [
+        "Media Platforms Management",
+        0.5365853658536586
+    ],
+    "C++ Programming": [
+        "Audio Programming",
+        0.75
+    ],
+    "Finance": [
+        "Financial Acumen",
+        0.6086956521739131
+    ],
+    "Product Development": [
+        "Product Development",
+        1.0
+    ],
+    "Accounts Payable and Receivable": [
+        "Account Management",
+        0.4897959183673469
+    ],
+    "Resilience": [
+        "Resilience and Self-care",
+        0.5882352941176471
+    ],
+    "R Programming": [
+        "Audio Programming",
+        0.8
+    ],
+    "E-Commerce": [
+        "E-commerce Management",
+        0.5806451612903226
+    ],
+    "Data Science": [
+        "Data Governance",
+        0.6666666666666666
+    ],
+    "Transform": [
+        "Transformer Maintenance",
+        0.5625
+    ],
+    "BlockChain": [
+        "Block Trading",
+        0.6956521739130435
+    ],
+    "Customer Analysis": [
+        "Customer Data Analysis",
+        0.8717948717948718
+    ],
+    "IBM Cloud": [
+        "Sales Closure",
+        0.45454545454545453
+    ],
+    "Data Analysis": [
+        "Big Data Analysis",
+        0.8666666666666667
+    ],
+    "Salesforce": [
+        "Sales Closure",
+        0.6956521739130435
+    ],
+    "Virtual Reality": [
+        "Virtual Reality Application",
+        0.7142857142857143
+    ],
+    "Product Lifecycle": [
+        "Product Lifecycle Management",
+        0.7555555555555555
+    ],
+    "Software Visualization": [
+        "Data Visualisation",
+        0.75
+    ],
+    "Business Development": [
+        "Business Development",
+        1.0
+    ],
+    "Financial Analysis": [
+        "Financial Analysis",
+        1.0
+    ],
+    "User Experience": [
+        "User Experience Design",
+        0.8108108108108109
+    ],
+    "Visual Design": [
+        "Visual Testing",
+        0.8148148148148148
+    ],
+    "Marketing Management": [
+        "Marketing Management",
+        1.0
+    ],
+    "Cloud Management": [
+        "Crowd Management",
+        0.875
+    ],
+    "Web Development Tools": [
+        "People Development",
+        0.6666666666666666
+    ],
+    "Applied Machine Learning": [
+        "Workplace Learning Delivery",
+        0.5490196078431373
+    ],
+    "Interactive Data Visualization": [
+        "Data Visualisation",
+        0.7083333333333334
+    ],
+    "Spatial Data Analysis": [
+        "Big Data Analysis",
+        0.7894736842105263
+    ],
+    "Small Data": [
+        "Sales Strategy",
+        0.5
+    ],
+    "Python Programming": [
+        "Audio Programming",
+        0.7428571428571429
+    ],
+    "Data Analysis Software": [
+        "Big Data Analysis",
+        0.6666666666666666
+    ],
+    "Computational Thinking": [
+        "Computational Design",
+        0.7619047619047619
+    ],
+    "Spatial Analysis": [
+        "Financial Analysis",
+        0.7647058823529411
+    ],
+    "Business Intelligence": [
+        "Business Excellence",
+        0.8
+    ],
+    "Retail Sales": [
+        "Retail Space Utilisation",
+        0.6111111111111112
+    ],
+    "Other Web Frameworks": [
+        "Audit Frameworks",
+        0.6666666666666666
+    ],
+    "Securities Sales": [
+        "Security Risk Analysis",
+        0.6842105263157895
+    ],
+    "Negotiation": [
+        "Business Negotiation",
+        0.7096774193548387
+    ],
+    "Front-End Web Development": [
+        "Product Development",
+        0.6818181818181818
+    ],
+    "Human Computer Interaction": [
+        "Tax Computation",
+        0.6341463414634146
+    ],
+    "Human Resources": [
+        "Human Resource Advisory",
+        0.7894736842105263
+    ],
+    "Operations Research": [
+        "Arts Education Research",
+        0.7142857142857143
+    ],
+    "Cloud API": [
+        "Cloud Computing",
+        0.5
+    ],
+    "NoSQL": [
+        "Network Slicing",
+        0.3
+    ],
+    "Creativity": [
+        "Creative Thinking",
+        0.5925925925925926
+    ],
+    "Sales": [
+        "Sales Closure",
+        0.5555555555555556
+    ],
+    "Algorithms": [
+        "Flight Dispatch",
+        0.4
+    ],
+    "People Development": [
+        "People Development",
+        1.0
+    ],
+    "Cost Accounting": [
+        "Fund Accounting",
+        0.7333333333333333
+    ],
+    "Security Strategy": [
+        "Security Strategy",
+        1.0
+    ],
+    "Prospecting and Qualification": [
+        "Material Qualification",
+        0.6666666666666666
+    ],
+    "Industrial and Organizational Psychology": [
+        "Organisational Design",
+        0.5245901639344263
+    ],
+    "Reinforcement Learning": [
+        "Engagement Planning",
+        0.5853658536585366
+    ],
+    "Econometrics": [
+        "Empathetic Design",
+        0.4827586206896552
+    ],
+    "Billing & Invoicing": [
+        "Building Inclusivity",
+        0.5641025641025641
+    ],
+    "System Programming": [
+        "Control System Programming",
+        0.8181818181818182
+    ],
+    "Machine Learning Software": [
+        "Self-Learning Systems",
+        0.5652173913043478
+    ],
+    "Software As A Service": [
+        "After-sales Service",
+        0.65
+    ],
+    "Software-Defined Networking": [
+        "Game Networking",
+        0.6190476190476191
+    ],
+    "Full-Stack Web Development": [
+        "Strategy Development",
+        0.6956521739130435
+    ],
+    "Visualization (Computer Graphics)": [
+        "Data Visualisation and Storyboarding",
+        0.4927536231884058
+    ],
+    "Inside Sales": [
+        "Airside Safety",
+        0.6153846153846154
+    ],
+    "Audit": [
+        "Audit Frameworks",
+        0.47619047619047616
+    ],
+    "Employee Relations": [
+        "Employee Relations",
+        1.0
+    ],
+    "Decision Making": [
+        "Decision Making",
+        1.0
+    ],
+    "Insurance Sales": [
+        "Insurance Claims Handling",
+        0.6
+    ],
+    "Data Architecture": [
+        "Security Architecture",
+        0.7368421052631579
+    ],
+    "Swift Programming": [
+        "Audio Programming",
+        0.7647058823529411
+    ],
+    "Databases": [
+        "Data Design",
+        0.6
+    ],
+    "Other Programming Languages": [
+        "Volunteer Programme Management",
+        0.631578947368421
+    ],
+    "Linear Algebra": [
+        "Container Operations",
+        0.47058823529411764
+    ],
+    "Operational Analysis": [
+        "Organisational Analysis",
+        0.8372093023255814
+    ],
+    "Budget Management": [
+        "Budget Management",
+        1.0
+    ],
+    "Computer Security Models": [
+        "Cyber Security",
+        0.631578947368421
+    ],
+    "Cyberattacks": [
+        "Cyber Forensics",
+        0.5185185185185185
+    ],
+    "Differential Equations": [
+        "Financial Transactions",
+        0.5454545454545454
+    ],
+    "Business Communication": [
+        "Crisis Communication",
+        0.8095238095238095
+    ],
+    "Biostatistics": [
+        "Big Data Analytics",
+        0.5161290322580645
+    ],
+    "Kubernetes": [
+        "Cybersecurity",
+        0.43478260869565216
+    ],
+    "Computer Vision": [
+        "Computer Vision Technology",
+        0.7317073170731707
+    ],
+    "Accounting Software": [
+        "Accounting Standards",
+        0.7692307692307693
+    ],
+    "Search Engine Optimization": [
+        "Search Engine Optimisation (SEO)",
+        0.8620689655172413
+    ],
+    "Extract": [
+        "Patent Practice",
+        0.45454545454545453
+    ],
+    "Application Development": [
+        "Application Development",
+        1.0
+    ],
+    "Product Design": [
+        "Production Design",
+        0.9032258064516129
+    ],
+    "SAS (Software)": [
+        "Software Design",
+        0.5517241379310345
+    ],
+    "Tableau Software": [
+        "Sales Strategy",
+        0.5333333333333333
+    ],
+    "Warehouse Management": [
+        "Warehouse Facility Management",
+        0.8163265306122449
+    ],
+    "Mobile Security": [
+        "Cyber Security",
+        0.7586206896551724
+    ],
+    "Linux": [
+        "Lashing",
+        0.5
+    ],
+    "Tensorflow": [
+        "Workflow Management",
+        0.41379310344827586
+    ],
+    "Graph Theory": [
+        "Game Networking",
+        0.4444444444444444
+    ],
+    "Business Process Management": [
+        "Business Process Management",
+        1.0
+    ],
+    "Media Strategy & Planning": [
+        "Strategy Planning",
+        0.8095238095238095
+    ],
+    "Information Technology": [
+        "Construction Technology",
+        0.7555555555555555
+    ],
+    "Back-End Web Development": [
+        "Brand Guideline Development",
+        0.7058823529411765
+    ],
+    "Networking Hardware": [
+        "Networking",
+        0.6896551724137931
+    ],
+    "Clinical Data Management": [
+        "Media Data Management",
+        0.8
+    ],
+    "Problem Solving": [
+        "Problem Solving",
+        1.0
+    ],
+    "Operations Management": [
+        "Operations Management",
+        1.0
+    ],
+    "Machine Learning Algorithms": [
+        "Learning Agility",
+        0.6046511627906976
+    ],
+    "Data Warehousing": [
+        "Data Sharing",
+        0.7142857142857143
+    ],
+    "General Accounting": [
+        "Fund Accounting",
+        0.7272727272727273
+    ],
+    "Customer Relationship Management": [
+        "Customer Relationship Management",
+        1.0
+    ],
+    "Software Engineering": [
+        "Data Engineering",
+        0.7777777777777778
+    ],
+    "Load": [
+        "Onboarding",
+        0.42857142857142855
+    ],
+    "Material Handling": [
+        "Material Joining",
+        0.7878787878787878
+    ],
+    "Change Management": [
+        "Change Management",
+        1.0
+    ],
+    "GIS Software": [
+        "Software Design",
+        0.5925925925925926
+    ],
+    "Health": [
+        "Health Promotion",
+        0.5454545454545454
+    ],
+    "Computer Programming Tools": [
+        "Control System Programming",
+        0.6153846153846154
+    ],
+    "Strategic Thinking": [
+        "Creative Thinking",
+        0.7428571428571429
+    ],
+    "Marketing Psychology": [
+        "Manufacturing Technology",
+        0.6363636363636364
+    ],
+    "Network Security": [
+        "Network Security",
+        1.0
+    ],
+    "SQL": [
+        "Lashing",
+        0.2
+    ],
+    "Google App Engine": [
+        "Value Engineering",
+        0.5294117647058824
+    ],
+    "Inventory Management": [
+        "Inventory Management",
+        1.0
+    ],
+    "Contract Management": [
+        "Contract Management",
+        1.0
+    ],
+    "Procurement": [
+        "Procurement",
+        1.0
+    ],
+    "Power BI": [
+        "Practitioner Inquiry",
+        0.42857142857142855
+    ],
+    "Mergers & Acquisitions": [
+        "Mergers and Acquisition",
+        0.8888888888888888
+    ],
+    "Plot (Graphics)": [
+        "Studio Graphics Operations",
+        0.4878048780487805
+    ],
+    "System Software": [
+        "Systems Design",
+        0.5517241379310345
+    ],
+    "Security Engineering": [
+        "Quality Engineering",
+        0.8205128205128205
+    ],
+    "Leadership Development": [
+        "Leadership Development",
+        1.0
+    ],
+    "Computer Architecture": [
+        "Solution Architecture",
+        0.7619047619047619
+    ],
+    "Social Media": [
+        "Social Media Marketing",
+        0.7058823529411765
+    ],
+    "Performance Management": [
+        "Performance Management",
+        1.0
+    ],
+    "Algebra": [
+        "Collaboration",
+        0.4
+    ],
+    "Bioinformatics": [
+        "Rigging for Animation",
+        0.5714285714285714
+    ],
+    "Microarchitecture": [
+        "Solution Architecture",
+        0.6842105263157895
+    ],
+    "Mathematics": [
+        "Empathetic Design",
+        0.5714285714285714
+    ],
+    "Cash Management": [
+        "Claims Management",
+        0.875
+    ],
+    "Software Engineering Tools": [
+        "Data Engineering",
+        0.6666666666666666
+    ],
+    "Customer Success": [
+        "In-Flight Customer Services",
+        0.6046511627906976
+    ],
+    "Bayesian Network": [
+        "Game Networking",
+        0.6451612903225806
+    ],
+    "Cloud Standards": [
+        "IT Standards",
+        0.7407407407407407
+    ],
+    "React (web framework)": [
+        "Audit Frameworks",
+        0.5405405405405406
+    ],
+    "Forecasting": [
+        "Trend Forecasting",
+        0.7857142857142857
+    ],
+    "DevOps": [
+        "Delivery Optimisation",
+        0.4444444444444444
+    ],
+    "Organizational Development": [
+        "Organisational Culture Development",
+        0.8333333333333334
+    ],
+    "Markov Model": [
+        "Material Flow Modelling",
+        0.5714285714285714
+    ],
+    "Spreadsheet Software": [
+        "Sales Strategy",
+        0.47058823529411764
+    ],
+    "Retail Store Operations": [
+        "Container Operations",
+        0.6976744186046512
+    ],
+    "Security Software": [
+        "Security Strategy",
+        0.7647058823529411
+    ],
+    "Theoretical Computer Science": [
+        "Tax Compliance",
+        0.5238095238095238
+    ],
+    "Underwriting": [
+        "Underwriting Process",
+        0.75
+    ],
+    "Google Cloud Platform": [
+        "Psychological Formulation",
+        0.4782608695652174
+    ],
+    "General Statistics": [
+        "Game Analytics",
+        0.5625
+    ],
+    "Graphic Design": [
+        "Biophilic Design",
+        0.7333333333333333
+    ],
+    "Scientific Visualization": [
+        "Data Visualisation",
+        0.6666666666666666
+    ],
+    "Marketing": [
+        "Market Profiling",
+        0.72
+    ],
+    "Business Transformation": [
+        "Business Innovation",
+        0.7619047619047619
+    ],
+    "Interactive Design": [
+        "User Interface Design",
+        0.7692307692307693
+    ],
+    "Influencing": [
+        "Influence",
+        0.8
+    ],
+    "Management Accounting": [
+        "Management Decision Making",
+        0.723404255319149
+    ],
+    "Behavioral Economics": [
+        "Behavioural Economics in Design",
+        0.7843137254901961
+    ],
+    "Generally Accepted Accounting Principles (GAAP)": [
+        "Visual Design and Communication Principles",
+        0.5168539325842697
+    ],
+    "Professional Development": [
+        "Product Design and Development",
+        0.7407407407407407
+    ],
+    "People Analytics": [
+        "Game Analytics",
+        0.7333333333333333
+    ],
+    "Product Management": [
+        "Product Management",
+        1.0
+    ],
+    "Critical Thinking": [
+        "Critical Thinking",
+        1.0
+    ],
+    "Corporate Accouting": [
+        "Location Scouting",
+        0.6111111111111112
+    ],
+    "Calculus": [
+        "Cell Culture",
+        0.5
+    ],
+    "Data Visualization": [
+        "Data Visualisation",
+        0.9444444444444444
+    ],
+    "Systems Design": [
+        "Systems Design",
+        1.0
+    ]
+}

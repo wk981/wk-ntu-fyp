@@ -1,0 +1,888 @@
+{
+    "Academic Advisor": {
+      "sector": "Education",
+      "responsibility": "Provide academic guidance to students, assist with course selection, and support academic success and graduation planning.",
+      "career_level": "Mid Level"
+    },
+    "Account Manager": {
+      "sector": "Sales and Marketing",
+      "responsibility": "Manage client accounts, maintain strong client relationships, identify sales opportunities, and coordinate with internal teams.",
+      "career_level": "Mid Level"
+    },
+    "Accountant": {
+      "sector": "Finance",
+      "responsibility": "Prepare financial records, conduct audits, ensure compliance with accounting standards, and manage financial transactions.",
+      "career_level": "Mid Level"
+    },
+    "Administrative Assistant": {
+      "sector": "Administration",
+      "responsibility": "Manage schedules, organize documents, handle correspondence, and support daily office operations.",
+      "career_level": "Entry Level"
+    },
+    "Administrative Officer": {
+      "sector": "Administration",
+      "responsibility": "Coordinate office activities, oversee staff schedules, manage office resources, and support organizational efficiency.",
+      "career_level": "Mid Level"
+    },
+    "Art Gallery Manager": {
+      "sector": "Arts and Culture",
+      "responsibility": "Oversee gallery operations, manage exhibitions, collaborate with artists, and promote gallery events.",
+      "career_level": "Mid Level"
+    },
+    "Artificial Intelligence / Machine Learning Engineer": {
+      "sector": "Technology",
+      "responsibility": "Design, train, and optimize machine learning models, analyze large datasets, and integrate AI solutions into applications.",
+      "career_level": "Mid Level"
+    },
+    "Assistant Digital Marketing Manager": {
+      "sector": "Sales and Marketing",
+      "responsibility": "Assist in developing digital marketing strategies, manage online campaigns, and analyze digital performance metrics.",
+      "career_level": "Entry Level"
+    },
+    "Assistant Marketing Communications Manager": {
+      "sector": "Sales and Marketing",
+      "responsibility": "Support marketing communications, assist in content creation, manage campaigns, and coordinate public relations efforts.",
+      "career_level": "Entry Level"
+    },
+    "Assistant Public Relations Manager": {
+      "sector": "Public Relations",
+      "responsibility": "Assist in managing public relations activities, coordinate media interactions, and support branding initiatives.",
+      "career_level": "Entry Level"
+    },
+    "Assistant Sales Manager": {
+      "sector": "Sales and Marketing",
+      "responsibility": "Support the sales team, track sales metrics, assist with client relationships, and help in achieving sales targets.",
+      "career_level": "Entry Level"
+    },
+    "Associate Security Analyst": {
+      "sector": "Information Security",
+      "responsibility": "Monitor security alerts, perform vulnerability assessments, assist in threat analysis, and support incident response.",
+      "career_level": "Entry Level"
+    },
+    "Associate Software Engineer": {
+      "sector": "Technology",
+      "responsibility": "Write and debug code, assist in software development, collaborate with team members, and contribute to application features.",
+      "career_level": "Entry Level"
+    },
+    "Associate, Performance and Rewards": {
+      "sector": "Human Resources",
+      "responsibility": "Support performance review processes, assist with compensation analysis, and contribute to employee reward programs.",
+      "career_level": "Entry Level"
+    },
+    "Associate, Talent Attraction and Employee Experience and Relations": {
+      "sector": "Human Resources",
+      "responsibility": "Assist in talent acquisition efforts, enhance employee experience initiatives, and support employee relations.",
+      "career_level": "Entry Level"
+    },
+    "Associate, Talent Management and Learning and Organisational Development": {
+      "sector": "Human Resources",
+      "responsibility": "Support talent development programs, assist in designing training initiatives, and contribute to organizational learning.",
+      "career_level": "Entry Level"
+    },
+    "Audit Manager": {
+      "sector": "Finance / Audit",
+      "responsibility": "Lead audit processes, ensure financial accuracy, manage audit teams, and ensure regulatory compliance.",
+      "career_level": "Senior Level"
+    },
+    "Backend Developer": {
+      "sector": "Technology",
+      "responsibility": "Develop server-side logic, maintain databases, implement APIs, and ensure application functionality.",
+      "career_level": "Mid Level"
+    },
+    "Bank Teller": {
+      "sector": "Banking",
+      "responsibility": "Process customer transactions, handle cash deposits and withdrawals, provide customer assistance, and ensure compliance with banking policies.",
+      "career_level": "Entry Level"
+    },
+    "Branch Manager (Banking)": {
+      "sector": "Banking",
+      "responsibility": "Oversee branch operations, manage staff, ensure compliance with banking regulations, and achieve branch performance targets.",
+      "career_level": "Senior Level"
+    },
+    "Business Development Manager": {
+        "sector": "Sales and Marketing",
+        "responsibility": "Identify new business opportunities, build client relationships, develop strategies to increase revenue, and drive business growth.",
+        "career_level": "Mid Level"
+      },
+      "Business Intelligence Director": {
+        "sector": "Data and Analytics",
+        "responsibility": "Lead the BI team, develop data strategies, provide insights to support decision-making, and ensure data accuracy and integrity.",
+        "career_level": "Senior Level"
+      },
+      "Business-to-Customer Sales Manager": {
+        "sector": "Sales and Marketing",
+        "responsibility": "Manage B2C sales operations, build customer relationships, implement sales strategies, and drive revenue growth.",
+        "career_level": "Mid Level"
+      },
+      "Career Counselor": {
+        "sector": "Education",
+        "responsibility": "Assist clients with career planning, provide guidance on career options, and support job search strategies.",
+        "career_level": "Mid Level"
+      },
+      "Catering Manager": {
+        "sector": "Hospitality",
+        "responsibility": "Oversee catering services, manage staff, coordinate event logistics, and ensure high-quality customer service.",
+        "career_level": "Mid Level"
+      },
+      "Channel Sales Manager": {
+        "sector": "Sales and Marketing",
+        "responsibility": "Develop and manage channel partnerships, implement sales strategies, and meet revenue targets through partner relationships.",
+        "career_level": "Mid Level"
+      },
+      "Chief Human Resource Officer": {
+        "sector": "Human Resources",
+        "responsibility": "Develop HR strategy, oversee talent management, ensure alignment with business goals, and manage HR policies and procedures.",
+        "career_level": "Senior Level"
+      },
+      "Chief Information Security Officer": {
+        "sector": "Information Security",
+        "responsibility": "Lead the information security strategy, ensure data protection, manage security policies, and oversee incident response.",
+        "career_level": "Senior Level"
+      },
+      "Chief Operating Officer (COO)": {
+        "sector": "Executive",
+        "responsibility": "Oversee daily operations, implement business strategies, ensure efficiency across departments, and support organizational goals.",
+        "career_level": "Senior Level"
+      },
+      "Chief Technology Officer": {
+        "sector": "Technology",
+        "responsibility": "Drive technology strategy, oversee IT infrastructure, promote innovation, and align technology initiatives with business objectives.",
+        "career_level": "Senior Level"
+      },
+      "Clinical Research Coordinator": {
+        "sector": "Healthcare",
+        "responsibility": "Coordinate clinical trials, ensure regulatory compliance, manage research data, and support research teams.",
+        "career_level": "Mid Level"
+      },
+      "Compliance Officer": {
+        "sector": "Finance / Regulatory",
+        "responsibility": "Ensure regulatory compliance, develop and enforce compliance programs, and conduct internal audits.",
+        "career_level": "Mid Level"
+      },
+      "Conservation Scientist": {
+        "sector": "Environmental Science",
+        "responsibility": "Conduct research on ecosystems, develop conservation plans, advise on environmental policies, and work with conservation teams.",
+        "career_level": "Mid Level"
+      },
+      "Content Writer": {
+        "sector": "Media and Communications",
+        "responsibility": "Create written content for various platforms, conduct research, ensure brand alignment, and optimize content for engagement.",
+        "career_level": "Entry Level"
+      },
+      "Credit Manager": {
+        "sector": "Finance",
+        "responsibility": "Oversee credit assessment processes, manage risk, ensure compliance with credit policies, and support lending decisions.",
+        "career_level": "Mid Level"
+      },
+      "Customer Experience Manager": {
+        "sector": "Customer Service",
+        "responsibility": "Enhance customer satisfaction, develop customer experience strategies, and manage customer feedback processes.",
+        "career_level": "Mid Level"
+      },
+      "Customer Service Manager": {
+        "sector": "Customer Service",
+        "responsibility": "Lead the customer service team, resolve customer issues, ensure high service quality, and support team development.",
+        "career_level": "Mid Level"
+      },
+      "Customer Service Representative": {
+        "sector": "Customer Service",
+        "responsibility": "Assist customers with inquiries, provide support, handle complaints, and ensure customer satisfaction.",
+        "career_level": "Entry Level"
+      },
+      "Customer Success Manager": {
+        "sector": "Customer Service",
+        "responsibility": "Manage client relationships, ensure product success, provide ongoing support, and work to maximize customer satisfaction.",
+        "career_level": "Mid Level"
+      },
+      "Cyber Risk Analyst": {
+        "sector": "Information Security",
+        "responsibility": "Analyze cybersecurity risks, conduct risk assessments, support threat analysis, and recommend mitigation strategies.",
+        "career_level": "Entry Level"
+      },
+      "Cyber Risk Manager": {
+        "sector": "Information Security",
+        "responsibility": "Lead cyber risk management efforts, assess vulnerabilities, develop mitigation strategies, and ensure policy adherence.",
+        "career_level": "Senior Level"
+      },
+      "Data Analyst / Associate Data Engineer": {
+        "sector": "Data and Analytics",
+        "responsibility": "Collect and analyze data, generate insights, create visualizations, and support data infrastructure development.",
+        "career_level": "Entry Level"
+      },
+      "Data Engineer": {
+        "sector": "Data and Analytics",
+        "responsibility": "Design data pipelines, maintain data infrastructure, ensure data quality, and support data accessibility for analytics.",
+        "career_level": "Mid Level"
+      },
+      "Digital Marketing Manager": {
+        "sector": "Sales and Marketing",
+        "responsibility": "Develop digital marketing strategies, manage online campaigns, analyze performance metrics, and optimize digital presence.",
+        "career_level": "Mid Level"
+      },
+      "Event Coordinator": {
+        "sector": "Event Planning",
+        "responsibility": "Organize event logistics, coordinate with vendors, manage event budgets, and ensure smooth execution of events.",
+        "career_level": "Entry Level"
+      },
+      "Event Host": {
+        "sector": "Event Planning",
+        "responsibility": "Welcome and engage guests, provide event information, and ensure attendees have a positive experience.",
+        "career_level": "Entry Level"
+      },
+      "Event Manager": {
+        "sector": "Event Planning",
+        "responsibility": "Oversee all aspects of event planning, manage staff and vendors, coordinate logistics, and ensure successful event outcomes.",
+        "career_level": "Mid Level"
+      },
+      "Event Planner": {
+        "sector": "Event Planning",
+        "responsibility": "Develop event concepts, coordinate logistics, manage budgets, and ensure events meet client expectations.",
+        "career_level": "Mid Level"
+      },
+      "Executive Assistant": {
+        "sector": "Administration",
+        "responsibility": "Manage schedules, handle communications, organize meetings, and support executive needs.",
+        "career_level": "Entry Level"
+      },
+      "Executive Director": {
+        "sector": "Executive",
+        "responsibility": "Lead organizational strategy, oversee operations, manage executive team, and support organizational goals.",
+        "career_level": "Senior Level"
+      },
+      "Executive, Performance and Rewards": {
+        "sector": "Human Resources",
+        "responsibility": "Assist in performance evaluation processes, support compensation analysis, and manage reward programs.",
+        "career_level": "Entry Level"
+      },
+      "Executive, Talent Attraction and Employee Experience and Relations": {
+        "sector": "Human Resources",
+        "responsibility": "Support recruitment efforts, enhance employee experience initiatives, and manage employee relations.",
+        "career_level": "Entry Level"
+      },
+      "Executive, Talent Management and Learning and Organisational Development": {
+        "sector": "Human Resources",
+        "responsibility": "Assist in talent development programs, support training initiatives, and contribute to organizational learning projects.",
+        "career_level": "Entry Level"
+      },
+      "Financial Advisor": {
+        "sector": "Finance",
+        "responsibility": "Provide financial advice to clients, assist in financial planning, and recommend investment strategies.",
+        "career_level": "Mid Level"
+      },
+      "Financial Controller": {
+        "sector": "Finance",
+        "responsibility": "Oversee financial reporting, manage budgets, ensure compliance, and support financial strategy.",
+        "career_level": "Senior Level"
+      },
+      "Financial Manager": {
+        "sector": "Finance",
+        "responsibility": "Manage financial planning, oversee budgeting, ensure compliance, and support financial decision-making.",
+        "career_level": "Mid Level"
+      },
+      "Forensics Investigation Manager": {
+        "sector": "Information Security",
+        "responsibility": "Lead forensic investigations, analyze evidence, ensure regulatory compliance, and support legal processes.",
+        "career_level": "Senior Level"
+      },
+      "Forensics Investigator": {
+        "sector": "Information Security",
+        "responsibility": "Conduct forensic investigations, analyze digital evidence, and support cybersecurity investigations.",
+        "career_level": "Mid Level"
+      },
+      "Fundraising Manager": {
+        "sector": "Non-Profit",
+        "responsibility": "Develop and implement fundraising strategies, manage donor relationships, and coordinate fundraising events.",
+        "career_level": "Mid Level"
+      },
+      "Grant Writer": {
+        "sector": "Non-Profit",
+        "responsibility": "Research and write grant proposals, develop funding strategies, and manage grant submission processes.",
+        "career_level": "Entry Level"
+      },
+      "HR Business Partner": {
+        "sector": "Human Resources",
+        "responsibility": "Align HR strategies with business goals, manage talent development, and support employee relations.",
+        "career_level": "Mid Level"
+      },
+      "HR Business Partner / HR Manager": {
+        "sector": "Human Resources",
+        "responsibility": "Oversee HR operations, support talent management, manage employee relations, and implement HR policies.",
+        "career_level": "Mid Level"
+      },
+      "HR Coordinator": {
+        "sector": "Human Resources",
+        "responsibility": "Support HR processes, manage records, coordinate recruitment, and assist in onboarding.",
+        "career_level": "Entry Level"
+      },
+      "HR Executive": {
+        "sector": "Human Resources",
+        "responsibility": "Support HR initiatives, assist with recruitment and employee relations, and manage HR documentation.",
+        "career_level": "Entry Level"
+      },
+      "HR Specialist": {
+        "sector": "Human Resources",
+        "responsibility": "Focus on specific HR areas, support recruitment, manage employee development, and oversee HR compliance.",
+        "career_level": "Mid Level"
+      },
+      "Head of Software Engineering": {
+        "sector": "Technology",
+        "responsibility": "Lead the software engineering team, oversee project development, manage technology strategy, and ensure quality standards.",
+        "career_level": "Senior Level"
+      },
+      "Head, Employee Experience and Relations": {
+        "sector": "Human Resources",
+        "responsibility": "Oversee employee engagement initiatives, manage employee relations, and enhance organizational culture.",
+        "career_level": "Senior Level"
+      },
+      "Head, HR Business Partner": {
+        "sector": "Human Resources",
+        "responsibility": "Lead HR business partnering strategy, align HR with business goals, and manage employee relations.",
+        "career_level": "Senior Level"
+      },
+      "Head, Learning and Organisation Development": {
+        "sector": "Human Resources",
+        "responsibility": "Develop learning and development strategy, manage training programs, and support organizational growth.",
+        "career_level": "Senior Level"
+      },
+      "Head, Operations and Technology": {
+        "sector": "Operations",
+        "responsibility": "Oversee operational efficiency, manage technology infrastructure, and support strategic initiatives.",
+        "career_level": "Senior Level"
+      },
+      "Head, Performance and Rewards": {
+        "sector": "Human Resources",
+        "responsibility": "Develop performance management strategies, oversee compensation and rewards programs, and ensure HR alignment with goals.",
+        "career_level": "Senior Level"
+      },
+      "Head, Talent Attraction": {
+        "sector": "Human Resources",
+        "responsibility": "Lead talent acquisition strategy, manage recruitment efforts, and enhance employer branding.",
+        "career_level": "Senior Level"
+      },
+      "Head, Talent Management": {
+        "sector": "Human Resources",
+        "responsibility": "Develop talent management strategy, oversee employee development, and support succession planning.",
+        "career_level": "Senior Level"
+      },
+      "Healthcare Administrator": {
+        "sector": "Healthcare",
+        "responsibility": "Manage healthcare facility operations, oversee staff, ensure compliance, and support quality patient care.",
+        "career_level": "Mid Level"
+      },
+      "Hospitality Manager": {
+        "sector": "Hospitality",
+        "responsibility": "Oversee hospitality operations, manage staff, ensure guest satisfaction, and maintain quality standards.",
+        "career_level": "Mid Level"
+      },
+      "Hotel Manager": {
+        "sector": "Hospitality",
+        "responsibility": "Manage hotel operations, oversee staff, ensure guest satisfaction, and achieve financial targets.",
+        "career_level": "Mid Level"
+      },
+      "Human Resources Director": {
+        "sector": "Human Resources",
+        "responsibility": "Oversee HR strategy, manage HR team, ensure policy compliance, and align HR with organizational goals.",
+        "career_level": "Senior Level"
+      },
+      "Humanitarian Aid Worker": {
+        "sector": "Non-Profit",
+        "responsibility": "Provide support to communities in crisis, manage relief efforts, and ensure effective aid delivery.",
+        "career_level": "Mid Level"
+      },
+      "IT Audit Manager": {
+        "sector": "Information Technology / Audit",
+        "responsibility": "Oversee IT audit processes, ensure compliance with regulations, and manage audit team activities.",
+        "career_level": "Senior Level"
+      },
+      "Incident Investigation Manager": {
+        "sector": "Risk Management",
+        "responsibility": "Lead investigations into incidents, analyze risk factors, ensure compliance, and report findings.",
+        "career_level": "Senior Level"
+      },
+      "Incident Investigator": {
+        "sector": "Risk Management",
+        "responsibility": "Investigate incidents, gather data, support risk assessment, and document findings.",
+        "career_level": "Mid Level"
+      },
+      "Insurance Broker": {
+        "sector": "Insurance",
+        "responsibility": "Advise clients on insurance options, facilitate policy acquisition, and maintain client relationships.",
+        "career_level": "Mid Level"
+      },
+      "Insurance Sales Agent": {
+        "sector": "Insurance",
+        "responsibility": "Sell insurance policies, assess client needs, and provide guidance on policy options.",
+        "career_level": "Entry Level"
+      },
+      "Insurance Underwriter": {
+        "sector": "Insurance",
+        "responsibility": "Evaluate insurance applications, assess risk, and determine policy terms and premiums.",
+        "career_level": "Mid Level"
+      },
+      "Internal Audit Senior Manager": {
+        "sector": "Finance / Audit",
+        "responsibility": "Lead the internal audit team, oversee audit planning and execution, ensure regulatory compliance, and report findings to executive management.",
+        "career_level": "Senior Level"
+      },
+      "Internal Audit Manager": {
+        "sector": "Finance / Audit",
+        "responsibility": "Manage internal audit activities, ensure compliance with standards, conduct audits, and provide recommendations for risk management.",
+        "career_level": "Mid Level"
+      },
+      "Interpreter/Translator": {
+        "sector": "Language Services",
+        "responsibility": "Translate spoken or written content accurately, facilitate communication between parties, and ensure cultural relevance in translations.",
+        "career_level": "Mid Level"
+      },
+      "Journalist": {
+        "sector": "Media and Communications",
+        "responsibility": "Research, investigate, and report on news stories, conduct interviews, and provide accurate information to the public.",
+        "career_level": "Mid Level"
+      },
+      "Junior Backend Developer": {
+        "sector": "Technology",
+        "responsibility": "Develop server-side logic, assist in database maintenance, implement APIs, and support backend development tasks.",
+        "career_level": "Entry Level"
+      },
+      "Junior Data Scientist": {
+        "sector": "Data and Analytics",
+        "responsibility": "Analyze data, support model development, conduct data cleaning, and assist in generating insights for business decisions.",
+        "career_level": "Entry Level"
+      },
+      "Junior DevOps Engineer": {
+        "sector": "Technology",
+        "responsibility": "Assist in automating workflows, maintain CI/CD pipelines, monitor infrastructure, and support development and operations teams.",
+        "career_level": "Entry Level"
+      },
+      "Junior Frontend Developer": {
+        "sector": "Technology",
+        "responsibility": "Develop user-facing features, assist with UI/UX improvements, and collaborate with backend developers to integrate APIs.",
+        "career_level": "Entry Level"
+      },
+      "Junior Full Stack Developer": {
+        "sector": "Technology",
+        "responsibility": "Support both frontend and backend development, assist in building APIs, and ensure seamless user experience across the application.",
+        "career_level": "Entry Level"
+      },
+      "Junior Software Architect": {
+        "sector": "Technology",
+        "responsibility": "Assist in designing software architecture, support technology planning, and ensure alignment with system requirements.",
+        "career_level": "Entry Level"
+      },
+      "Key Account Manager": {
+        "sector": "Sales and Marketing",
+        "responsibility": "Manage relationships with key clients, understand client needs, and ensure client satisfaction through tailored solutions.",
+        "career_level": "Mid Level"
+      },
+      "Logistics Coordinator": {
+        "sector": "Supply Chain",
+        "responsibility": "Coordinate shipments, manage logistics schedules, track inventory, and ensure timely delivery of goods.",
+        "career_level": "Entry Level"
+      },
+      "Manager, Employee Experience and Relations": {
+        "sector": "Human Resources",
+        "responsibility": "Oversee employee engagement initiatives, manage employee relations programs, and enhance workplace culture.",
+        "career_level": "Mid Level"
+      },
+      "Manager, Learning and Organisation Development": {
+        "sector": "Human Resources",
+        "responsibility": "Develop training programs, support employee development, and implement learning initiatives to support organizational growth.",
+        "career_level": "Mid Level"
+      },
+      "Manager, Operations and Technology": {
+        "sector": "Operations",
+        "responsibility": "Oversee operational processes, manage technology integration, and ensure operational efficiency.",
+        "career_level": "Mid Level"
+      },
+      "Manager, Performance and Rewards": {
+        "sector": "Human Resources",
+        "responsibility": "Develop performance management programs, oversee compensation and rewards, and ensure alignment with organizational goals.",
+        "career_level": "Mid Level"
+      },
+      "Manager, Talent Attraction": {
+        "sector": "Human Resources",
+        "responsibility": "Lead recruitment efforts, enhance employer branding, and attract top talent to the organization.",
+        "career_level": "Mid Level"
+      },
+      "Manager, Talent Management": {
+        "sector": "Human Resources",
+        "responsibility": "Oversee talent development programs, manage succession planning, and support employee career growth.",
+        "career_level": "Mid Level"
+      },
+      "Market Research Analyst": {
+        "sector": "Market Research",
+        "responsibility": "Conduct market research, analyze consumer trends, and provide insights to support business decisions.",
+        "career_level": "Mid Level"
+      },
+      "Marketing Communications Manager": {
+        "sector": "Sales and Marketing",
+        "responsibility": "Develop marketing communication strategies, manage campaigns, and ensure brand alignment across all channels.",
+        "career_level": "Mid Level"
+      },
+      "Marketing Manager": {
+        "sector": "Sales and Marketing",
+        "responsibility": "Oversee marketing strategies, manage marketing campaigns, and analyze performance metrics to optimize brand growth.",
+        "career_level": "Mid Level"
+      },
+      "Medical Billing Specialist": {
+        "sector": "Healthcare",
+        "responsibility": "Manage medical billing processes, ensure accurate billing for healthcare services, and handle patient insurance claims.",
+        "career_level": "Entry Level"
+      },
+      "Museum Curator": {
+        "sector": "Arts and Culture",
+        "responsibility": "Oversee museum collections, organize exhibits, manage acquisitions, and provide educational information to visitors.",
+        "career_level": "Mid Level"
+      },
+      "Non-Profit Program Coordinator": {
+        "sector": "Non-Profit",
+        "responsibility": "Coordinate non-profit programs, manage resources, engage stakeholders, and ensure program success.",
+        "career_level": "Mid Level"
+      },
+      "Office Manager": {
+        "sector": "Administration",
+        "responsibility": "Oversee office operations, manage administrative staff, maintain office resources, and ensure a productive work environment.",
+        "career_level": "Mid Level"
+      },
+      "Operations Coordinator": {
+        "sector": "Operations",
+        "responsibility": "Coordinate operational activities, manage schedules, track resources, and support efficient business operations.",
+        "career_level": "Entry Level"
+      },
+      "Operations Manager": {
+        "sector": "Operations",
+        "responsibility": "Oversee day-to-day operations, manage operational staff, improve processes, and ensure operational goals are met.",
+        "career_level": "Mid Level"
+      },
+      "PR Specialist": {
+        "sector": "Public Relations",
+        "responsibility": "Manage public relations activities, handle media relations, develop press releases, and support brand reputation.",
+        "career_level": "Mid Level"
+      },
+      "Personal Assistant": {
+        "sector": "Administration",
+        "responsibility": "Provide administrative support to executives, manage schedules, coordinate meetings, and handle communications.",
+        "career_level": "Entry Level"
+      },
+      "Pharmaceutical Sales Representative": {
+        "sector": "Pharmaceutical Sales",
+        "responsibility": "Promote pharmaceutical products to healthcare professionals, maintain client relationships, and achieve sales targets.",
+        "career_level": "Entry Level"
+      },
+      "Procurement Manager": {
+        "sector": "Supply Chain",
+        "responsibility": "Oversee procurement processes, manage supplier relationships, negotiate contracts, and ensure cost efficiency.",
+        "career_level": "Mid Level"
+      },
+      "Procurement Specialist": {
+        "sector": "Supply Chain",
+        "responsibility": "Coordinate purchasing activities, analyze supplier options, and ensure timely acquisition of materials.",
+        "career_level": "Entry Level"
+      },
+      "Product Manager": {
+        "sector": "Product Development",
+        "responsibility": "Oversee product development, manage cross-functional teams, and ensure products meet market needs.",
+        "career_level": "Mid Level"
+      },
+      "Product Marketing Manager": {
+        "sector": "Marketing",
+        "responsibility": "Develop marketing strategies for products, analyze customer feedback, and manage product launch campaigns.",
+        "career_level": "Mid Level"
+      },
+      "Project Cargo Sales Manager": {
+        "sector": "Logistics and Sales",
+        "responsibility": "Develop and manage sales strategies for cargo projects, build client relationships, and ensure project success.",
+        "career_level": "Mid Level"
+      },
+      "Project Manager": {
+        "sector": "Project Management",
+        "responsibility": "Plan, execute, and monitor projects, manage teams, ensure deadlines are met, and stay within budget.",
+        "career_level": "Mid Level"
+      },
+      "Project Manager / Scrum Master": {
+        "sector": "Project Management",
+        "responsibility": "Facilitate Agile processes, support project execution, and ensure team collaboration and project alignment.",
+        "career_level": "Mid Level"
+      },
+      "Public Health Administrator": {
+        "sector": "Healthcare",
+        "responsibility": "Manage public health programs, oversee staff, ensure compliance with health policies, and improve health outcomes.",
+        "career_level": "Mid Level"
+      },
+      "Public Policy Analyst": {
+        "sector": "Government and Public Policy",
+        "responsibility": "Research and analyze policies, provide recommendations, and assess policy impact on the public.",
+        "career_level": "Mid Level"
+      },
+      "Public Relations Manager": {
+        "sector": "Public Relations",
+        "responsibility": "Oversee PR strategies, manage media relationships, handle crisis communications, and protect brand reputation.",
+        "career_level": "Mid Level"
+      },
+      "Public Relations Specialist": {
+        "sector": "Public Relations",
+        "responsibility": "Develop press releases, coordinate media events, maintain brand image, and support PR campaigns.",
+        "career_level": "Entry Level"
+      },
+      "Purchasing Agent": {
+        "sector": "Supply Chain",
+        "responsibility": "Evaluate suppliers, negotiate contracts, place orders, and ensure the timely delivery of goods.",
+        "career_level": "Entry Level"
+      },
+      "Quality Control Inspector": {
+        "sector": "Manufacturing and Quality Assurance",
+        "responsibility": "Inspect products, identify defects, ensure quality standards are met, and report quality issues.",
+        "career_level": "Entry Level"
+      },
+      "Recruitment Consultant": {
+        "sector": "Human Resources",
+        "responsibility": "Source and evaluate candidates, support hiring processes, and consult with clients on recruitment strategies.",
+        "career_level": "Mid Level"
+      },
+      "Restaurant Manager": {
+        "sector": "Hospitality",
+        "responsibility": "Manage restaurant operations, oversee staff, ensure customer satisfaction, and maintain quality standards.",
+        "career_level": "Mid Level"
+      },
+      "Retail Buyer": {
+        "sector": "Retail",
+        "responsibility": "Select and purchase merchandise for retail stores, analyze market trends, and negotiate with suppliers.",
+        "career_level": "Mid Level"
+      },
+      "Retail Manager": {
+        "sector": "Retail",
+        "responsibility": "Oversee retail store operations, manage staff, ensure customer satisfaction, and meet sales targets.",
+        "career_level": "Mid Level"
+      },
+      "Retail Sales Associate": {
+        "sector": "Retail",
+        "responsibility": "Assist customers, process sales, restock inventory, and ensure a positive shopping experience.",
+        "career_level": "Entry Level"
+      },
+      "Route Development Manager": {
+        "sector": "Logistics",
+        "responsibility": "Develop and optimize transportation routes, analyze market trends, and support logistics strategies.",
+        "career_level": "Mid Level"
+      },
+      "Sales Coordinator": {
+        "sector": "Sales",
+        "responsibility": "Assist sales team, manage schedules, handle customer inquiries, and coordinate sales activities.",
+        "career_level": "Entry Level"
+      },
+      "Sales Director": {
+        "sector": "Sales",
+        "responsibility": "Lead sales strategy, manage sales teams, achieve revenue targets, and oversee key client relationships.",
+        "career_level": "Senior Level"
+      },
+      "Sales Manager": {
+        "sector": "Sales",
+        "responsibility": "Manage sales team, implement sales strategies, monitor performance, and drive revenue growth.",
+        "career_level": "Mid Level"
+      },
+      "Sales Representative": {
+        "sector": "Sales",
+        "responsibility": "Engage with clients, promote products, achieve sales targets, and maintain customer relationships.",
+        "career_level": "Entry Level"
+      },
+      "Sales and Marketing Manager": {
+        "sector": "Sales and Marketing",
+        "responsibility": "Oversee sales and marketing strategies, coordinate campaigns, manage teams, and analyze performance metrics.",
+        "career_level": "Mid Level"
+      },
+      "School Principal": {
+        "sector": "Education",
+        "responsibility": "Lead school operations, manage staff, implement educational programs, and support student success.",
+        "career_level": "Senior Level"
+      },
+      "Security Architect": {
+        "sector": "Information Security",
+        "responsibility": "Design security infrastructure, ensure data protection, manage cybersecurity risks, and enforce security policies.",
+        "career_level": "Senior Level"
+      },
+      "Security Engineer": {
+        "sector": "Information Security",
+        "responsibility": "Implement security measures, monitor systems for vulnerabilities, and support incident response efforts.",
+        "career_level": "Mid Level"
+      },
+      "Security Operations Analyst": {
+        "sector": "Information Security",
+        "responsibility": "Monitor security systems, detect threats, perform vulnerability assessments, and support security operations.",
+        "career_level": "Entry Level"
+      },
+      "Security Operations Manager": {
+        "sector": "Information Security",
+        "responsibility": "Lead security operations, oversee threat response, manage security policies, and ensure compliance.",
+        "career_level": "Senior Level"
+      },
+      "Senior Artificial Intelligence / Machine Learning Engineer": {
+        "sector": "Technology",
+        "responsibility": "Develop advanced machine learning models, lead AI projects, and optimize data-driven solutions.",
+        "career_level": "Senior Level"
+      },
+      "Senior Data Engineer": {
+        "sector": "Data and Analytics",
+        "responsibility": "Design data infrastructure, optimize data pipelines, and ensure data accessibility for analytics.",
+        "career_level": "Senior Level"
+      },
+      "Senior Data Scientist": {
+        "sector": "Data and Analytics",
+        "responsibility": "Lead data science projects, develop predictive models, and provide insights for strategic decisions.",
+        "career_level": "Senior Level"
+      },
+      "Senior DevOps Engineer": {
+        "sector": "Technology",
+        "responsibility": "Manage CI/CD pipelines, automate workflows, monitor infrastructure, and support DevOps strategy.",
+        "career_level": "Senior Level"
+      },
+      "Senior Frontend Developer": {
+        "sector": "Technology",
+        "responsibility": "Develop and optimize user interfaces, collaborate with backend developers, and ensure a seamless user experience.",
+        "career_level": "Senior Level"
+      },
+      "Senior Full Stack Developer": {
+        "sector": "Technology",
+        "responsibility": "Oversee both frontend and backend development, manage complex systems, and ensure high application performance.",
+        "career_level": "Senior Level"
+      },
+      "Senior Security Engineer": {
+        "sector": "Information Security",
+        "responsibility": "Lead security engineering efforts, implement advanced security measures, and oversee threat mitigation.",
+        "career_level": "Senior Level"
+      },
+      "Senior Software Architect": {
+        "sector": "Technology",
+        "responsibility": "Design software architecture, guide technical decisions, and ensure system scalability and reliability.",
+        "career_level": "Senior Level"
+      },
+      "Senior Trade Finance Analyst": {
+        "sector": "Finance",
+        "responsibility": "Analyze trade finance options, assess risks, support trade deals, and ensure compliance with regulations.",
+        "career_level": "Senior Level"
+      },
+      "Social Worker": {
+        "sector": "Social Services",
+        "responsibility": "Provide support to individuals and families, assess needs, develop intervention plans, and connect clients with resources.",
+        "career_level": "Mid Level"
+      },
+      "Software Engineer": {
+        "sector": "Technology",
+        "responsibility": "Design, develop, and maintain software applications, debug code, and collaborate with cross-functional teams.",
+        "career_level": "Mid Level"
+      },
+      "Software Engineering Manager": {
+        "sector": "Technology",
+        "responsibility": "Lead a team of software engineers, manage project timelines, oversee development processes, and ensure quality standards.",
+        "career_level": "Senior Level"
+      },
+      "Solutions Architect": {
+        "sector": "Technology",
+        "responsibility": "Design technical solutions, collaborate with stakeholders, ensure alignment with business requirements, and oversee implementation.",
+        "career_level": "Senior Level"
+      },
+      "Store Manager": {
+        "sector": "Retail",
+        "responsibility": "Oversee daily store operations, manage staff, ensure customer satisfaction, and meet sales goals.",
+        "career_level": "Mid Level"
+      },
+      "Store Supervisor": {
+        "sector": "Retail",
+        "responsibility": "Supervise store staff, assist with daily operations, maintain inventory, and ensure a positive customer experience.",
+        "career_level": "Entry Level"
+      },
+      "Supply Chain Analyst": {
+        "sector": "Supply Chain",
+        "responsibility": "Analyze supply chain data, optimize processes, forecast demand, and support efficient logistics.",
+        "career_level": "Entry Level"
+      },
+      "Supply Chain Manager": {
+        "sector": "Supply Chain",
+        "responsibility": "Oversee supply chain operations, manage suppliers, ensure cost efficiency, and optimize logistics.",
+        "career_level": "Mid Level"
+      },
+      "Talent Acquisition Specialist": {
+        "sector": "Human Resources",
+        "responsibility": "Source and recruit candidates, manage the hiring process, and support employer branding initiatives.",
+        "career_level": "Mid Level"
+      },
+      "Teacher": {
+        "sector": "Education",
+        "responsibility": "Develop lesson plans, instruct students, assess progress, and support student development.",
+        "career_level": "Mid Level"
+      },
+      "Technical Product Manager": {
+        "sector": "Product Development",
+        "responsibility": "Manage the technical aspects of product development, work with engineering teams, and ensure product alignment with market needs.",
+        "career_level": "Mid Level"
+      },
+      "Threat Analysis Manager": {
+        "sector": "Information Security",
+        "responsibility": "Oversee threat analysis, manage cybersecurity assessments, and ensure proactive threat mitigation strategies.",
+        "career_level": "Senior Level"
+      },
+      "Tour Guide": {
+        "sector": "Tourism",
+        "responsibility": "Lead guided tours, provide information about attractions, ensure group safety, and enhance visitor experiences.",
+        "career_level": "Entry Level"
+      },
+      "Trade Finance Analyst": {
+        "sector": "Finance",
+        "responsibility": "Analyze trade finance options, assess transaction risks, and support trade deals within regulatory compliance.",
+        "career_level": "Entry Level"
+      },
+      "Trade Lane Manager": {
+        "sector": "Logistics",
+        "responsibility": "Manage trade routes, coordinate shipments, optimize logistics, and maintain client relationships.",
+        "career_level": "Mid Level"
+      },
+      "Training Coordinator": {
+        "sector": "Human Resources",
+        "responsibility": "Organize training sessions, coordinate with trainers, manage training resources, and track attendance.",
+        "career_level": "Entry Level"
+      },
+      "Training Specialist": {
+        "sector": "Human Resources",
+        "responsibility": "Develop and deliver training programs, assess training needs, and evaluate training effectiveness.",
+        "career_level": "Mid Level"
+      },
+      "Training and Development Manager": {
+        "sector": "Human Resources",
+        "responsibility": "Oversee employee development programs, manage training initiatives, and support organizational learning.",
+        "career_level": "Senior Level"
+      },
+      "Travel Agent": {
+        "sector": "Travel and Tourism",
+        "responsibility": "Plan and book travel arrangements, provide travel advice, and assist clients with trip itineraries.",
+        "career_level": "Entry Level"
+      },
+      "University Registrar": {
+        "sector": "Education",
+        "responsibility": "Manage student records, oversee course registration, ensure data accuracy, and support academic policies.",
+        "career_level": "Mid Level"
+      },
+      "Vertical Sales Account Manager": {
+        "sector": "Sales",
+        "responsibility": "Manage client accounts within a specific vertical, identify growth opportunities, and ensure customer satisfaction.",
+        "career_level": "Mid Level"
+      },
+      "Veterinary Technician": {
+        "sector": "Healthcare",
+        "responsibility": "Assist veterinarians, handle animal care, conduct lab tests, and support medical procedures.",
+        "career_level": "Entry Level"
+      },
+      "Vulnerability Assessment and Penetration Testing Analyst": {
+        "sector": "Information Security",
+        "responsibility": "Conduct vulnerability assessments, perform penetration tests, and report on security weaknesses.",
+        "career_level": "Entry Level"
+      },
+      "Vulnerability Assessment and Penetration Testing Manager": {
+        "sector": "Information Security",
+        "responsibility": "Oversee vulnerability assessments, manage penetration testing efforts, and ensure security best practices.",
+        "career_level": "Senior Level"
+      },
+      "Warehouse Manager": {
+        "sector": "Supply Chain",
+        "responsibility": "Manage warehouse operations, oversee inventory control, ensure timely shipments, and maintain safety standards.",
+        "career_level": "Mid Level"
+      }
+  }
+  

@@ -1,0 +1,1761 @@
+{
+  "Junior Full Stack Developer": [
+    "Full-Stack Web Development",
+    "JavaScript",
+    "Python Programming",
+    "React (web framework)",
+    "SQL",
+    "NoSQL",
+    "Cloud Computing",
+    "Problem Solving",
+    "Agile Software Development",
+    "Git and Version Control",
+    "Web Development Tools",
+    "Front-End Web Development",
+    "Back-End Web Development"
+  ],
+  "Senior Full Stack Developer": [
+    "Full-Stack Web Development",
+    "JavaScript",
+    "Python Programming",
+    "React (web framework)",
+    "SQL",
+    "NoSQL",
+    "Cloud Computing",
+    "Problem Solving",
+    "Agile Software Development",
+    "Git and Version Control",
+    "Web Development Tools",
+    "Front-End Web Development",
+    "Back-End Web Development"
+  ],
+  "Junior Frontend Developer": [
+    "HTML and CSS",
+    "Javascript",
+    "React (web framework)",
+    "Web Design",
+    "Web Development Tools",
+    "Front-End Web Development",
+    "User Experience Design",
+    "Angular"
+  ],
+  "Senior Frontend Developer": [
+    "HTML and CSS",
+    "Javascript",
+    "React (web framework)",
+    "Web Design",
+    "Web Development Tools",
+    "Front-End Web Development",
+    "User Experience Design",
+    "Angular"
+  ],
+  "Backend Developer": [
+    "Python Programming",
+    "Java Programming",
+    "SQL",
+    "NoSQL",
+    "Node.js",
+    "Back-End Web Development",
+    "Systems Design",
+    "Database Design",
+    "Cloud Computing"
+  ],
+  "Junior Backend Developer": [
+    "Python Programming",
+    "Java Programming",
+    "SQL",
+    "NoSQL",
+    "Node.js",
+    "Back-End Web Development",
+    "Systems Design",
+    "Database Design",
+    "Cloud Computing"
+  ],
+  "Junior Data Scientist": [
+    "Data Analysis",
+    "Data Science",
+    "Machine Learning",
+    "Applied Machine Learning",
+    "Statistical Analysis",
+    "Probability & Statistics",
+    "Python Programming",
+    "R Programming",
+    "SQL",
+    "Data Visualization",
+    "Data Mining",
+    "Data Structures",
+    "Exploratory Data Analysis",
+    "Deep Learning",
+    "Algorithms",
+    "Bayesian Statistics"
+  ],
+  "Senior Data Scientist": [
+    "Data Analysis",
+    "Data Science",
+    "Machine Learning",
+    "Applied Machine Learning",
+    "Statistical Analysis",
+    "Probability & Statistics",
+    "Python Programming",
+    "R Programming",
+    "SQL",
+    "Data Visualization",
+    "Data Mining",
+    "Data Structures",
+    "Exploratory Data Analysis",
+    "Deep Learning",
+    "Algorithms",
+    "Bayesian Statistics"
+  ],
+  "Junior Software Architect": [
+    "Software Architecture",
+    "Systems Design",
+    "Software Engineering",
+    "Cloud Platforms",
+    "Programming Principles",
+    "Leadership and Management",
+    "Problem Solving",
+    "Design and Product",
+    "Solution Sales Engineering",
+    "Software Security",
+    "Agile Software Development"
+  ],
+  "Senior Software Architect": [
+    "Software Architecture",
+    "Systems Design",
+    "Software Engineering",
+    "Cloud Platforms",
+    "Programming Principles",
+    "Leadership and Management",
+    "Problem Solving",
+    "Design and Product",
+    "Solution Sales Engineering",
+    "Software Security",
+    "Agile Software Development"
+  ],
+  "Product Manager": [
+    "Product Management",
+    "Project Management",
+    "Business Analysis",
+    "Strategic Thinking",
+    "Leadership and Management",
+    "Problem Solving",
+    "Market Analysis",
+    "Marketing Management",
+    "Communication",
+    "User Experience Design",
+    "Business Development"
+  ],
+  "Business Intelligence Director": [
+    "Business Intelligence",
+    "Data Analysis",
+    "Data Visualization",
+    "SQL",
+    "Power BI",
+    "Business Process Management",
+    "Business Analysis",
+    "Communication",
+    "Leadership and Management",
+    "Strategic Thinking"
+  ],
+  "Junior DevOps Engineer": [
+    "DevOps",
+    "Continuous Integration",
+    "Automation",
+    "Cloud Computing",
+    "Docker (Software)",
+    "Kubernetes",
+    "Problem Solving",
+    "Cloud Platforms",
+    "Linux",
+    "Systems Design",
+    "Infrastructure Management",
+    "Agile Software Development"
+  ],
+  "Senior DevOps Engineer": [
+    "DevOps",
+    "Continuous Integration",
+    "Automation",
+    "Cloud Computing",
+    "Docker (Software)",
+    "Kubernetes",
+    "Problem Solving",
+    "Cloud Platforms",
+    "Linux",
+    "Systems Design",
+    "Infrastructure Management",
+    "Agile Software Development"
+  ],
+  "Associate Security Analyst": [
+    "Security Engineering",
+    "Risk Management",
+    "Incident Management",
+    "Problem Solving",
+    "Systems Security"
+  ],
+  "Chief Information Security Officer": [
+    "Security Engineering",
+    "Risk Management",
+    "Cyberattacks",
+    "Incident Management",
+    "Systems Security",
+    "Problem Solving"
+  ],
+  "Cyber Risk Analyst": [
+    "Risk Management",
+    "Incident Management",
+    "Problem Solving",
+    "Security Software"
+  ],
+  "Cyber Risk Manager": [
+    "Risk Management",
+    "Cyberattacks",
+    "Incident Management",
+    "Security Engineering",
+    "Systems Security"
+  ],
+  "Forensics Investigation Manager": [
+    "Security Engineering",
+    "Risk Management",
+    "Cyberattacks",
+    "Incident Management",
+    "Problem Solving"
+  ],
+  "Forensics Investigator": [
+    "Security Engineering",
+    "Cyberattacks",
+    "Incident Management",
+    "Problem Solving",
+    "Systems Security"
+  ],
+  "Incident Investigation Manager": [
+    "Incident Management",
+    "Cyberattacks",
+    "Risk Management",
+    "Problem Solving",
+    "Security Software"
+  ],
+  "Incident Investigator": [
+    "Incident Management",
+    "Cyberattacks",
+    "Problem Solving",
+    "Systems Security"
+  ],
+  "Security Architect": [
+    "Security Engineering",
+    "Systems Security",
+    "Cryptography",
+    "Problem Solving",
+    "Network Security"
+  ],
+  "Security Operations Analyst": [
+    "Security Engineering",
+    "Incident Management",
+    "Risk Management",
+    "Systems Security",
+    "Problem Solving"
+  ],
+  "Security Operations Manager": [
+    "Security Engineering",
+    "Risk Management",
+    "Cyberattacks",
+    "Incident Management",
+    "Problem Solving",
+    "Systems Security"
+  ],
+  "Senior Security Engineer": [
+    "Security Engineering",
+    "Cyberattacks",
+    "Network Security",
+    "Problem Solving",
+    "Systems Security",
+    "Cryptography"
+  ],
+  "Security Engineer": [
+    "Security Engineering",
+    "Cyberattacks",
+    "Network Security",
+    "Problem Solving",
+    "Systems Security",
+    "Cryptography"
+  ],
+  "Threat Analysis Manager": [
+    "Risk Management",
+    "Cyberattacks",
+    "Security Engineering",
+    "Problem Solving",
+    "Systems Security"
+  ],
+  "Vulnerability Assessment and Penetration Testing Analyst": [
+    "Security Engineering",
+    "Network Security",
+    "Incident Management",
+    "Problem Solving",
+    "Cryptography"
+  ],
+  "Vulnerability Assessment and Penetration Testing Manager": [
+    "Security Engineering",
+    "Risk Management",
+    "Network Security",
+    "Problem Solving",
+    "Cyberattacks",
+    "Systems Security"
+  ],
+  "Artificial Intelligence / Machine Learning Engineer": [
+    "Machine Learning",
+    "Deep Learning",
+    "Artificial Neural Networks",
+    "Python Programming",
+    "Data Science",
+    "TensorFlow",
+    "Applied Machine Learning",
+    "Algorithms",
+    "Statistical Machine Learning",
+    "Data Engineering",
+    "Feature Engineering"
+  ],
+  "Senior Artificial Intelligence / Machine Learning Engineer": [
+    "Machine Learning",
+    "Deep Learning",
+    "Artificial Neural Networks",
+    "Python Programming",
+    "Data Science",
+    "TensorFlow",
+    "Applied Machine Learning",
+    "Algorithms",
+    "Statistical Machine Learning",
+    "Data Engineering",
+    "Feature Engineering"
+  ],
+  "Audit Manager": [
+    "Leadership and Management",
+    "Strategic Thinking",
+    "Project Management",
+    "Communication",
+    "Problem Solving",
+    "IT Strategy",
+    "Infrastructure Management"
+  ],
+  "Internal Audit Senior Manager / Internal Audit Manager": [
+    "Leadership and Management",
+    "IT Strategy",
+    "Strategic Thinking",
+    "Communication",
+    "Problem Solving",
+    "Project Management",
+    "Infrastructure Management"
+  ],
+  "IT Audit Manager": [
+    "IT Strategy",
+    "Leadership and Management",
+    "Project Management",
+    "Strategic Thinking",
+    "Systems Design",
+    "Communication",
+    "Problem Solving",
+    "Infrastructure Management"
+  ],
+  "Credit Manager": [
+    "Leadership and Management",
+    "Strategic Thinking",
+    "Communication",
+    "Problem Solving",
+    "Project Management",
+    "IT Strategy"
+  ],
+  "Solutions Architect": [
+    "Software Architecture",
+    "Systems Design",
+    "Cloud Platforms",
+    "Problem Solving",
+    "Communication",
+    "Strategic Thinking",
+    "Solution Sales Engineering",
+    "Infrastructure Management",
+    "Leadership and Management"
+  ],
+  "Project Manager / Scrum Master": [
+    "Project Management",
+    "Scrum (Software Development)",
+    "Agile Software Development",
+    "Leadership and Management",
+    "Communication",
+    "Problem Solving",
+    "Planning",
+    "Continuous Delivery"
+  ],
+  "Technical Product Manager": [
+    "Technical Product Management",
+    "Product Development",
+    "Project Management",
+    "Agile Software Development",
+    "Leadership and Management",
+    "Communication",
+    "Business Analysis",
+    "Problem Solving"
+  ],
+  "Data Engineer": [
+    "Data Engineering",
+    "Data Warehousing",
+    "SQL",
+    "Python Programming",
+    "Data Architecture",
+    "Cloud Computing",
+    "Database Design",
+    "Extract, Transform, Load (ETL)",
+    "Data Structures",
+    "Problem Solving"
+  ],
+  "Data Analyst / Associate Data Engineer": [
+    "Data Analysis",
+    "SQL",
+    "Python Programming",
+    "Data Warehousing",
+    "Data Architecture",
+    "Extract, Transform, Load (ETL)",
+    "Problem Solving",
+    "Data Visualization"
+  ],
+  "Senior Data Engineer": [
+    "Data Engineering",
+    "Data Warehousing",
+    "SQL",
+    "Python Programming",
+    "Data Architecture",
+    "Cloud Computing",
+    "Database Design",
+    "Extract, Transform, Load (ETL)",
+    "Data Structures",
+    "Leadership and Management",
+    "Problem Solving"
+  ],
+  "Head of Software Engineering": [
+    "Software Engineering",
+    "Leadership and Management",
+    "Strategic Thinking",
+    "Java Programming",
+    "Python Programming",
+    "Problem Solving",
+    "Software Architecture",
+    "Agile Software Development",
+    "Continuous Integration",
+    "DevOps Tools",
+    "Systems Design",
+    "Cloud Platforms",
+    "Programming Principles",
+    "Design and Product",
+    "Solution Sales Engineering",
+    "Software Security"
+],
+  "Software Engineering Manager": [
+    "Software Engineering",
+    "Leadership and Management",
+    "Project Management",
+    "Agile Software Development",
+    "Python Programming",
+    "Java Programming",
+    "Problem Solving",
+    "Software Testing",
+    "Continuous Integration",
+    "DevOps Tools"
+  ],
+  "Associate Software Engineer": [
+    "Software Engineering",
+    "Python Programming",
+    "Java Programming",
+    "Problem Solving",
+    "C++ Programming",
+    "Software Testing",
+    "Agile Software Development",
+    "Continuous Integration"
+  ],
+  "Software Engineer": [
+    "Software Engineering",
+    "Python Programming",
+    "Java Programming",
+    "C++ Programming",
+    "Problem Solving",
+    "Software Testing",
+    "Agile Software Development",
+    "Continuous Integration",
+    "DevOps Tools"
+  ],
+  "Chief Technology Officer": [
+    "Leadership and Management",
+    "Strategic Thinking",
+    "Innovation",
+    "Software Architecture",
+    "IT Strategy",
+    "Project Management",
+    "Business Development",
+    "Communication"
+  ],
+  "Marketing Manager": [
+    "Marketing",
+    "Marketing Management",
+    "Advertising",
+    "Market Analysis",
+    "Strategic Thinking",
+    "Communication",
+    "Social Media",
+    "Customer Analysis",
+    "Creativity",
+    "Problem Solving",
+    "B2B Sales"
+  ],
+  "Marketing Communications Manager / Digital Marketing Manager / Public Relations Manager / Assistant Marketing Communications Manager / Assistant Digital Marketing Manager / Assistant Public Relations Manager": [
+    "Marketing",
+    "Marketing Management",
+    "Advertising",
+    "Market Analysis",
+    "Strategic Thinking",
+    "Communication",
+    "Social Media",
+    "Customer Analysis",
+    "Creativity",
+    "Problem Solving",
+    "Digital Marketing",
+    "Content Strategy",
+    "SEO (Search Engine Optimization)"
+  ],
+  "Business Development Manager": [
+    "Business Development",
+    "Negotiation",
+    "Strategic Thinking",
+    "Communication",
+    "Customer Relationship Management",
+    "Market Analysis",
+    "Sales",
+    "Leadership and Management",
+    "Planning"
+  ],
+  "Senior Trade Finance Analyst": [
+    "Finance",
+    "Financial Analysis",
+    "Budget Management",
+    "Accounting",
+    "Forecasting",
+    "Risk Management",
+    "Problem Solving",
+    "Microsoft Excel",
+    "Mathematics"
+  ],
+  "Trade Finance Analyst":[
+    "Finance",
+    "Financial Analysis",
+    "Budget Management",
+    "Accounting",
+    "Forecasting",
+    "Risk Management",
+    "Problem Solving",
+    "Microsoft Excel",
+    "Mathematics"
+  ],
+  "Head, Employee Experience and Relations": [
+    "Human Resources",
+    "Talent Management",
+    "Employee Relations",
+    "Leadership and Management",
+    "Communication",
+    "Strategic Thinking",
+    "Conflict Management",
+    "People Management",
+    "Emotional Intelligence"
+  ],
+  "Manager, Employee Experience and Relations": [
+    "Human Resources",
+    "Employee Relations",
+    "Leadership and Management",
+    "Communication",
+    "Strategic Thinking",
+    "Conflict Management",
+    "People Management",
+    "Emotional Intelligence"
+  ],
+  "Head, HR Business Partner": [
+    "Human Resources",
+    "Leadership and Management",
+    "Talent Management",
+    "Recruitment",
+    "Communication",
+    "Strategic Thinking",
+    "People Management"
+  ],
+  "HR Business Partner / HR Manager": [
+    "Human Resources",
+    "Talent Management",
+    "Recruitment",
+    "Employee Relations",
+    "Leadership and Management",
+    "Communication",
+    "Conflict Management",
+    "People Management",
+    "Strategic Thinking",
+    "Emotional Intelligence"
+  ],
+  "Head, Learning and Organisation Development": [
+    "Human Resources",
+    "Talent Management",
+    "Leadership and Management",
+    "Strategic Thinking",
+    "Communication",
+    "People Development",
+    "Training",
+    "Organizational Development"
+  ],
+  "Manager, Learning and Organisation Development": [
+    "Human Resources",
+    "Talent Management",
+    "Leadership and Management",
+    "Communication",
+    "People Development",
+    "Training",
+    "Strategic Thinking"
+  ],
+  "Head, Operations and Technology": [
+    "Leadership and Management",
+    "Strategic Thinking",
+    "Communication",
+    "Problem Solving",
+    "Technology Management",
+    "Operational Strategy",
+    "Human Resources"
+  ],
+  "Manager, Operations and Technology": [
+    "Leadership and Management",
+    "Communication",
+    "Problem Solving",
+    "Technology Management",
+    "Human Resources",
+    "Strategic Thinking"
+  ],
+  "Chief Human Resource Officer": [
+    "Human Resources",
+    "Leadership and Management",
+    "Strategic Thinking",
+    "Communication",
+    "Talent Management",
+    "Employee Relations",
+    "Conflict Management",
+    "People Management",
+    "Organizational Strategy"
+  ],
+  "Associate, Performance and Rewards": [
+    "Human Resources",
+    "Performance Management",
+    "Compensation and Benefits",
+    "Communication",
+    "Strategic Thinking",
+    "Problem Solving"
+  ],
+  "Executive, Performance and Rewards": [
+    "Human Resources",
+    "Performance Management",
+    "Compensation and Benefits",
+    "Communication",
+    "Leadership and Management",
+    "Strategic Thinking"
+  ],
+  "Head, Performance and Rewards": [
+    "Human Resources",
+    "Leadership and Management",
+    "Strategic Thinking",
+    "Performance Management",
+    "Compensation and Benefits",
+    "Communication",
+    "Problem Solving"
+  ],
+  "Manager, Performance and Rewards": [
+    "Human Resources",
+    "Performance Management",
+    "Leadership and Management",
+    "Communication",
+    "Strategic Thinking",
+    "Compensation and Benefits"
+  ],
+  "Head, Talent Attraction": [
+    "Human Resources",
+    "Talent Management",
+    "Recruitment",
+    "Strategic Thinking",
+    "Leadership and Management",
+    "Communication",
+    "People Management"
+  ],
+  "Manager, Talent Attraction": [
+    "Human Resources",
+    "Talent Management",
+    "Recruitment",
+    "Leadership and Management",
+    "Communication",
+    "Strategic Thinking"
+  ],
+  "Associate, Talent Attraction and Employee Experience and Relations": [
+    "Human Resources",
+    "Talent Management",
+    "Recruitment",
+    "Employee Relations",
+    "Communication",
+    "Strategic Thinking"
+  ],
+  "Executive, Talent Attraction and Employee Experience and Relations": [
+    "Human Resources",
+    "Talent Management",
+    "Recruitment",
+    "Employee Relations",
+    "Leadership and Management",
+    "Communication"
+  ],
+  "Head, Talent Management": [
+    "Human Resources",
+    "Talent Management",
+    "Leadership and Management",
+    "Strategic Thinking",
+    "Communication",
+    "People Development"
+  ],
+  "Manager, Talent Management": [
+    "Human Resources",
+    "Talent Management",
+    "Leadership and Management",
+    "Communication",
+    "Strategic Thinking"
+  ],
+  "Associate, Talent Management and Learning and Organisational Development": [
+    "Human Resources",
+    "Talent Management",
+    "Training",
+    "Leadership and Management",
+    "Communication"
+  ],
+  "Executive, Talent Management and Learning and Organisational Development": [
+    "Human Resources",
+    "Talent Management",
+    "Training",
+    "Leadership and Management",
+    "Communication",
+    "Strategic Thinking"
+  ],
+  "Business-to-Customer Sales Manager": [
+    "Sales",
+    "Customer Relationship Management",
+    "Negotiation",
+    "Leadership and Management",
+    "Problem Solving",
+    "Communication",
+    "Sales Systems",
+    "Planning",
+    "Customer Support"
+  ],
+  "Sales Manager": [
+    "Sales",
+    "Customer Relationship Management",
+    "Negotiation",
+    "Leadership and Management",
+    "Problem Solving",
+    "Communication",
+    "Sales Systems",
+    "Planning",
+    "Customer Support",
+    "Event Planning",
+    "Catering Management"
+  ],
+  "Assistant Sales Manager": [
+    "Sales",
+    "Customer Relationship Management",
+    "Negotiation",
+    "Leadership and Management",
+    "Problem Solving",
+    "Communication",
+    "Sales Systems",
+    "Planning",
+    "Customer Support",
+    "Event Planning",
+    "Catering Management"
+  ],
+  "Channel Sales Manager": [
+    "Sales",
+    "Customer Relationship Management",
+    "Negotiation",
+    "Leadership and Management",
+    "Communication",
+    "Problem Solving",
+    "Sales Systems",
+    "Strategic Planning",
+    "Partnership Development"
+  ],
+  "Business Development Manager / Sales and Marketing Manager / Vertical Sales Account Manager / Key Account Manager / Project Cargo Sales Manager / Route Development Manager / Trade Lane Manager": [
+    "Sales",
+    "Customer Relationship Management",
+    "Negotiation",
+    "Leadership and Management",
+    "Problem Solving",
+    "Communication",
+    "Strategic Thinking",
+    "Planning",
+    "Business Development",
+    "Key Account Management",
+    "Marketing",
+    "Marketing Management",
+    "Advertising",
+    "Market Analysis",
+    "Strategic Thinking",
+    "Communication",
+    "Social Media",
+    "Customer Analysis",
+    "Creativity",
+    "Problem Solving"
+  ],
+  "Operations Manager": [
+    "Operations Management",
+    "Process Analysis",
+    "Leadership and Management",
+    "Problem Solving",
+    "Strategic Thinking",
+    "Supply Chain and Logistics",
+    "Operational Analysis",
+    "Planning",
+    "Communication"
+  ],
+  "Project Manager": [
+    "Project Management",
+    "Leadership and Management",
+    "Communication",
+    "Planning",
+    "Problem Solving",
+    "Strategic Thinking",
+    "Budget Management",
+    "Change Management",
+    "Decision Making"
+  ],
+  "Customer Success Manager": [
+    "Customer Success",
+    "Communication",
+    "Problem Solving",
+    "Customer Relationship Management",
+    "Leadership and Management",
+    "Strategic Thinking",
+    "Sales",
+    "Negotiation",
+    "Customer Support"
+  ],
+  "HR Executive": [
+    "Human Resources",
+    "Recruitment",
+    "Employee Relations",
+    "Communication",
+    "Talent Management",
+    "Compensation",
+    "Problem Solving",
+    "People Development"
+  ],
+  "Account Manager": [
+    "Account Management",
+    "Customer Relationship Management",
+    "Negotiation",
+    "Communication",
+    "Sales",
+    "Problem Solving",
+    "Strategic Thinking",
+    "Customer Analysis"
+  ],
+  "Public Relations Specialist": [
+    "Public Relations",
+    "Communication",
+    "Marketing",
+    "Strategic Thinking",
+    "Creativity",
+    "Writing",
+    "Social Media",
+    "Negotiation",
+    "Problem Solving"
+  ],
+  "Event Manager": [
+    "Event Planning",
+    "Project Management",
+    "Communication",
+    "Negotiation",
+    "Budget Management",
+    "Leadership and Management",
+    "Creativity",
+    "Problem Solving",
+    "Customer Support"
+  ],
+  "Content Writer": [
+    "Writing",
+    "Creativity",
+    "Communication",
+    "Storytelling",
+    "Research and Design",
+    "Content Strategy",
+    "SEO (Search Engine Optimization)"
+  ],
+  "Journalist": [
+    "Journalism",
+    "Writing",
+    "Communication",
+    "Research and Design",
+    "Creativity",
+    "Critical Thinking",
+    "Storytelling"
+  ],
+  "Product Marketing Manager": [
+    "Product Marketing",
+    "Market Analysis",
+    "Strategic Thinking",
+    "Communication",
+    "Sales",
+    "Advertising",
+    "Customer Analysis",
+    "Problem Solving",
+    "Marketing",
+    "Marketing Management",
+    "Social Media",
+    "Creativity"
+  ],
+  "Logistics Coordinator": [
+    "Supply Chain and Logistics",
+    "Planning",
+    "Problem Solving",
+    "Communication",
+    "Inventory Management",
+    "Operational Analysis"
+  ],
+  "Training and Development Manager": [
+    "Training",
+    "Talent Management",
+    "Leadership and Management",
+    "Communication",
+    "People Development",
+    "Planning",
+    "Problem Solving"
+  ],
+  "Legal Assistant": [
+    "Legal Knowledge",
+    "Attention to Detail",
+    "Communication",
+    "Research",
+    "Problem Solving",
+    "Documentation"
+  ],
+  "Insurance Sales Agent": [
+    "Insurance Sales",
+    "Customer Relationship Management",
+    "Communication",
+    "Negotiation",
+    "Problem Solving",
+    "Customer Support"
+  ],
+  "Retail Manager": [
+    "Retail Sales",
+    "Customer Relationship Management",
+    "Inventory Management",
+    "Leadership and Management",
+    "Problem Solving",
+    "Communication",
+    "Planning"
+  ],
+  "Financial Manager": [
+    "Financial Management",
+    "Risk Management",
+    "Accounting",
+    "Budget Management",
+    "Leadership and Management",
+    "Communication",
+    "Problem Solving",
+    "Strategic Thinking"
+  ],
+  "Administrative Assistant": [
+    "Communication",
+    "Problem Solving",
+    "Organization",
+    "Microsoft Excel",
+    "Planning",
+    "Customer Support",
+    "Data Management",
+    "Attention to Detail",
+    "Documentation"
+  ],
+  "HR Specialist": [
+    "Human Resources",
+    "Recruitment",
+    "Employee Relations",
+    "Communication",
+    "Talent Management",
+    "Compensation",
+    "Problem Solving",
+    "People Development"
+  ],
+  "Accountant": [
+    "Accounting",
+    "Financial Accounting",
+    "Budget Management",
+    "Cost Accounting",
+    "Microsoft Excel",
+    "Attention to Detail",
+    "Problem Solving",
+    "Compliance"
+  ],
+  "Financial Advisor": [
+    "Financial Analysis",
+    "Investment Management",
+    "Customer Relationship Management",
+    "Negotiation",
+    "Communication",
+    "Risk Management",
+    "Planning",
+    "Problem Solving"
+  ],
+  "Sales Representative": [
+    "Sales",
+    "Customer Relationship Management",
+    "Communication",
+    "Negotiation",
+    "Customer Support",
+    "Problem Solving",
+    "Product Knowledge"
+  ],
+  "Event Coordinator": [
+    "Event Planning",
+    "Communication",
+    "Negotiation",
+    "Budget Management",
+    "Problem Solving",
+    "Creativity",
+    "Customer Support",
+    "Attention to Detail"
+  ],
+  "Procurement Manager": [
+    "Procurement",
+    "Negotiation",
+    "Budget Management",
+    "Supply Chain and Logistics",
+    "Leadership and Management",
+    "Communication",
+    "Problem Solving",
+    "Vendor Management"
+  ],
+  "Customer Service Manager": [
+    "Customer Support",
+    "Customer Success",
+    "Communication",
+    "Leadership and Management",
+    "Problem Solving",
+    "Customer Relationship Management",
+    "Negotiation"
+  ],
+  "Operations Coordinator": [
+    "Operations Management",
+    "Process Analysis",
+    "Planning",
+    "Communication",
+    "Problem Solving",
+    "Supply Chain and Logistics",
+    "Operational Analysis"
+  ],
+  "Public Relations Manager": [
+    "Public Relations",
+    "Communication",
+    "Strategic Thinking",
+    "Writing",
+    "Marketing",
+    "Creativity",
+    "Problem Solving",
+    "Negotiation"
+  ],
+  "Real Estate Agent": [
+    "Sales",
+    "Customer Relationship Management",
+    "Negotiation",
+    "Communication",
+    "Problem Solving",
+    "Customer Support",
+    "Market Analysis"
+  ],
+  "Executive Assistant": [
+    "Organization",
+    "Communication",
+    "Problem Solving",
+    "Planning",
+    "Attention to Detail",
+    "Leadership and Management",
+    "Documentation",
+    "Time Management"
+  ],
+  "Human Resources Director": [
+    "Leadership and Management",
+    "Talent Management",
+    "Employee Relations",
+    "Recruitment",
+    "Strategic Thinking",
+    "Communication",
+    "Problem Solving",
+    "Compensation"
+  ],
+  "Supply Chain Manager": [
+    "Supply Chain and Logistics",
+    "Operational Analysis",
+    "Planning",
+    "Problem Solving",
+    "Communication",
+    "Leadership and Management",
+    "Inventory Management",
+    "Vendor Management"
+  ],
+  "Market Research Analyst": [
+    "Market Research",
+    "Data Analysis",
+    "Communication",
+    "Problem Solving",
+    "Statistics",
+    "Critical Thinking",
+    "Strategic Thinking"
+  ],
+  "Healthcare Administrator": [
+    "Healthcare Management",
+    "Leadership and Management",
+    "Communication",
+    "Budget Management",
+    "Problem Solving",
+    "Compliance",
+    "Planning",
+    "People Management"
+  ],
+  "Insurance Underwriter": [
+    "Underwriting",
+    "Risk Management",
+    "Attention to Detail",
+    "Problem Solving",
+    "Communication",
+    "Data Analysis",
+    "Decision Making"
+  ],
+  "Training Specialist": [
+    "Training",
+    "Talent Management",
+    "Communication",
+    "People Development",
+    "Planning",
+    "Problem Solving",
+    "Instructional Design"
+  ],
+  "Retail Buyer": [
+    "Procurement",
+    "Negotiation",
+    "Market Analysis",
+    "Budget Management",
+    "Communication",
+    "Problem Solving",
+    "Inventory Management"
+  ],
+  "Store Manager": [
+    "Retail Sales",
+    "Leadership and Management",
+    "Customer Relationship Management",
+    "Communication",
+    "Problem Solving",
+    "Inventory Management",
+    "Planning"
+  ],
+  "Administrative Officer": [
+    "Organization",
+    "Communication",
+    "Data Management",
+    "Problem Solving",
+    "Planning",
+    "Attention to Detail",
+    "Customer Support",
+    "Documentation"
+  ],
+  "HR Coordinator": [
+    "Human Resources",
+    "Recruitment",
+    "Employee Relations",
+    "Communication",
+    "Talent Management",
+    "Compensation",
+    "Planning",
+    "Problem Solving"
+  ],
+  "Hotel Manager": [
+    "Customer Relationship Management",
+    "Leadership and Management",
+    "Problem Solving",
+    "Communication",
+    "Planning",
+    "Customer Support",
+    "Budget Management",
+    "Negotiation"
+  ],
+  "Sales Director": [
+    "Sales",
+    "Leadership and Management",
+    "Customer Relationship Management",
+    "Negotiation",
+    "Strategic Thinking",
+    "Communication",
+    "Problem Solving",
+    "Sales Systems"
+  ],
+  "Chief Operating Officer (COO)": [
+    "Leadership and Management",
+    "Operations Management",
+    "Strategic Thinking",
+    "Process Analysis",
+    "Risk Management",
+    "Communication",
+    "Planning",
+    "Problem Solving"
+  ],
+  "Retail Sales Associate": [
+    "Retail Sales",
+    "Customer Relationship Management",
+    "Communication",
+    "Problem Solving",
+    "Customer Support",
+    "Sales",
+    "Product Knowledge"
+  ],
+  "Financial Controller": [
+    "Finance",
+    "Budget Management",
+    "Accounting",
+    "Risk Management",
+    "Financial Analysis",
+    "Leadership and Management",
+    "Communication",
+    "Problem Solving"
+  ],
+  "Public Health Administrator": [
+    "Health",
+    "Leadership and Management",
+    "Communication",
+    "Problem Solving",
+    "Planning",
+    "Compliance",
+    "Data Analysis",
+    "Strategic Thinking"
+  ],
+  "Training Coordinator": [
+    "Training",
+    "Communication",
+    "People Development",
+    "Planning",
+    "Leadership and Management",
+    "Problem Solving",
+    "Instructional Design"
+  ],
+  "Customer Experience Manager": [
+    "Customer Success",
+    "Communication",
+    "Problem Solving",
+    "Customer Relationship Management",
+    "Leadership and Management",
+    "Customer Support",
+    "Strategic Thinking"
+  ],
+  "Procurement Specialist": [
+    "Procurement",
+    "Negotiation",
+    "Supply Chain and Logistics",
+    "Communication",
+    "Vendor Management",
+    "Problem Solving",
+    "Budget Management"
+  ],
+  "Restaurant Manager": [
+    "Customer Relationship Management",
+    "Leadership and Management",
+    "Communication",
+    "Problem Solving",
+    "Planning",
+    "Customer Support",
+    "Inventory Management",
+    "Negotiation"
+  ],
+  "Recruitment Consultant": [
+    "Recruitment",
+    "Communication",
+    "Negotiation",
+    "Talent Management",
+    "Customer Relationship Management",
+    "Problem Solving",
+    "Planning"
+  ],
+  "Compliance Officer": [
+    "Compliance",
+    "Risk Management",
+    "Attention to Detail",
+    "Communication",
+    "Problem Solving",
+    "Documentation",
+    "Regulations and Compliance"
+  ],
+  "Real Estate Manager": [
+    "Real Estate",
+    "Sales",
+    "Negotiation",
+    "Customer Relationship Management",
+    "Leadership and Management",
+    "Communication",
+    "Problem Solving",
+    "Market Analysis"
+  ],
+  "Event Planner": [
+    "Event Planning",
+    "Negotiation",
+    "Communication",
+    "Budget Management",
+    "Customer Support",
+    "Creativity",
+    "Problem Solving"
+  ],
+  "Store Supervisor": [
+    "Retail Sales",
+    "Leadership and Management",
+    "Customer Support",
+    "Inventory Management",
+    "Communication",
+    "Problem Solving",
+    "Planning"
+  ],
+  "Facilities Manager": [
+    "Facilities Management",
+    "Leadership and Management",
+    "Budget Management",
+    "Planning",
+    "Problem Solving",
+    "Communication",
+    "Risk Management"
+  ],
+  "Insurance Claims Adjuster": [
+    "Insurance",
+    "Communication",
+    "Negotiation",
+    "Problem Solving",
+    "Attention to Detail",
+    "Risk Management",
+    "Documentation"
+  ],
+  "Tour Guide": [
+    "Communication",
+    "Customer Support",
+    "Storytelling",
+    "Problem Solving",
+    "Creativity",
+    "Customer Relationship Management"
+  ],
+  "Teacher": [
+    "Training",
+    "Communication",
+    "People Development",
+    "Problem Solving",
+    "Creativity",
+    "Instructional Design",
+    "Planning"
+  ],
+  "Customer Service Representative": [
+    "Customer Support",
+    "Communication",
+    "Problem Solving",
+    "Customer Relationship Management",
+    "Product Knowledge",
+    "Attention to Detail"
+  ],
+  "Legal Secretary": [
+    "Legal Knowledge",
+    "Documentation",
+    "Attention to Detail",
+    "Communication",
+    "Organization",
+    "Problem Solving",
+    "Customer Support"
+  ],
+  "Office Manager": [
+    "Organization",
+    "Leadership and Management",
+    "Communication",
+    "Problem Solving",
+    "Budget Management",
+    "Planning",
+    "Customer Support"
+  ],
+  "Executive Director": [
+    "Leadership and Management",
+    "Strategic Thinking",
+    "Communication",
+    "Problem Solving",
+    "Project Management",
+    "Budget Management",
+    "Risk Management"
+  ],
+  "School Principal": [
+    "Leadership and Management",
+    "Education Management",
+    "Communication",
+    "Problem Solving",
+    "Planning",
+    "People Development",
+    "Strategic Thinking"
+  ],
+  "HR Business Partner": [
+    "Human Resources",
+    "Talent Management",
+    "Employee Relations",
+    "Leadership and Management",
+    "Strategic Thinking",
+    "Communication",
+    "Problem Solving"
+  ],
+  "Bank Teller": [
+    "Customer Support",
+    "Cash Management",
+    "Attention to Detail",
+    "Communication",
+    "Problem Solving",
+    "Customer Relationship Management"
+  ],
+  "Personal Assistant": [
+    "Organization",
+    "Time Management",
+    "Communication",
+    "Problem Solving",
+    "Planning",
+    "Attention to Detail",
+    "Customer Support"
+  ],
+  "Sales Coordinator": [
+    "Sales",
+    "Customer Relationship Management",
+    "Communication",
+    "Negotiation",
+    "Problem Solving",
+    "Planning",
+    "Sales Systems"
+  ],
+  "Insurance Broker": [
+    "Insurance Sales",
+    "Customer Relationship Management",
+    "Negotiation",
+    "Communication",
+    "Risk Management",
+    "Problem Solving",
+    "Customer Support"
+  ],
+  "Talent Acquisition Specialist": [
+    "Recruitment",
+    "Communication",
+    "Negotiation",
+    "Talent Management",
+    "Employee Relations",
+    "Problem Solving",
+    "Planning"
+  ],
+  "PR Specialist": [
+    "Public Relations",
+    "Communication",
+    "Writing",
+    "Creativity",
+    "Strategic Thinking",
+    "Problem Solving",
+    "Marketing"
+  ],
+  "Branch Manager (Banking)": [
+    "Leadership and Management",
+    "Customer Relationship Management",
+    "Finance",
+    "Communication",
+    "Problem Solving",
+    "Planning",
+    "Risk Management"
+  ],
+  "Claims Examiner": [
+    "Insurance",
+    "Risk Management",
+    "Attention to Detail",
+    "Communication",
+    "Problem Solving",
+    "Documentation",
+    "Customer Support"
+  ],
+  "Supply Chain Analyst": [
+    "Supply Chain and Logistics",
+    "Data Analysis",
+    "Problem Solving",
+    "Planning",
+    "Operational Analysis",
+    "Communication",
+    "Vendor Management"
+  ],
+  "Hospitality Manager": [
+    "Customer Relationship Management",
+    "Leadership and Management",
+    "Communication",
+    "Problem Solving",
+    "Planning",
+    "Customer Support",
+    "Budget Management"
+  ],
+  "Public Policy Analyst": [
+    "Policy Analysis",
+    "Research",
+    "Strategic Thinking",
+    "Communication",
+    "Data Analysis",
+    "Problem Solving",
+    "Critical Thinking"
+  ],
+  "Warehouse Manager": [
+    "Warehouse Management",
+    "Leadership and Management",
+    "Inventory Management",
+    "Problem Solving",
+    "Planning",
+    "Communication",
+    "Risk Management"
+  ],
+  "Quality Control Inspector": [
+    "Quality Assurance",
+    "Attention to Detail",
+    "Problem Solving",
+    "Documentation",
+    "Communication",
+    "Compliance",
+    "Data Analysis"
+  ],
+  "Humanitarian Aid Worker": [
+    "Problem Solving",
+    "Communication",
+    "Cultural Sensitivity",
+    "Planning",
+    "Risk Management",
+    "Leadership and Management",
+    "Customer Support"
+  ],
+  "Catering Manager": [
+    "Event Planning",
+    "Customer Relationship Management",
+    "Budget Management",
+    "Leadership and Management",
+    "Problem Solving",
+    "Communication",
+    "Negotiation"
+  ],
+  "Fashion Buyer": [
+    "Procurement",
+    "Market Analysis",
+    "Negotiation",
+    "Creativity",
+    "Communication",
+    "Planning",
+    "Trend Analysis"
+  ],
+  "Purchasing Agent": [
+    "Procurement",
+    "Negotiation",
+    "Vendor Management",
+    "Problem Solving",
+    "Budget Management",
+    "Communication",
+    "Planning"
+  ],
+  "Medical Billing Specialist": [
+    "Billing & Invoicing",
+    "Data Management",
+    "Attention to Detail",
+    "Problem Solving",
+    "Communication",
+    "Healthcare Compliance",
+    "Customer Support"
+  ],
+  "Clinical Research Coordinator": [
+    "Clinical Data Management",
+    "Research",
+    "Communication",
+    "Attention to Detail",
+    "Problem Solving",
+    "Data Analysis",
+    "Compliance"
+  ],
+  "Pharmaceutical Sales Representative": [
+    "Sales",
+    "Customer Relationship Management",
+    "Negotiation",
+    "Communication",
+    "Product Knowledge",
+    "Problem Solving",
+    "Healthcare Knowledge"
+  ],
+  "Legal Researcher": [
+    "Legal Knowledge",
+    "Research",
+    "Critical Thinking",
+    "Communication",
+    "Documentation",
+    "Problem Solving",
+    "Attention to Detail"
+  ],
+  "Paralegal": [
+    "Legal Knowledge",
+    "Research",
+    "Communication",
+    "Documentation",
+    "Attention to Detail",
+    "Problem Solving",
+    "Compliance"
+  ],
+  "Court Clerk": [
+    "Legal Knowledge",
+    "Documentation",
+    "Organization",
+    "Attention to Detail",
+    "Communication",
+    "Problem Solving",
+    "Customer Support"
+  ],
+  "Academic Advisor": [
+    "Education Management",
+    "Communication",
+    "Problem Solving",
+    "People Development",
+    "Planning",
+    "Strategic Thinking",
+    "Student Support"
+  ],
+  "University Registrar": [
+    "Data Management",
+    "Communication",
+    "Organization",
+    "Problem Solving",
+    "Planning",
+    "Compliance",
+    "Leadership and Management"
+  ],
+  "Curriculum Developer": [
+    "Instructional Design",
+    "Education Management",
+    "Communication",
+    "Creativity",
+    "Planning",
+    "Problem Solving",
+    "Training"
+  ],
+  "Museum Curator": [
+    "Research",
+    "Communication",
+    "Creativity",
+    "Documentation",
+    "Strategic Thinking",
+    "Event Planning",
+    "Leadership and Management"
+  ],
+  "Art Gallery Manager": [
+    "Leadership and Management",
+    "Customer Relationship Management",
+    "Communication",
+    "Event Planning",
+    "Problem Solving",
+    "Budget Management",
+    "Creativity"
+  ],
+  "Non-Profit Program Coordinator": [
+    "Program Management",
+    "Communication",
+    "Budget Management",
+    "Problem Solving",
+    "Leadership and Management",
+    "Strategic Thinking",
+    "Fundraising"
+  ],
+  "Grant Writer": [
+    "Writing",
+    "Research",
+    "Communication",
+    "Attention to Detail",
+    "Problem Solving",
+    "Creativity",
+    "Documentation"
+  ],
+  "Social Worker": [
+    "Communication",
+    "Problem Solving",
+    "Customer Support",
+    "Cultural Sensitivity",
+    "Empathy",
+    "Documentation",
+    "Planning"
+  ],
+  "Veterinary Technician": [
+    "Animal Care",
+    "Communication",
+    "Problem Solving",
+    "Attention to Detail",
+    "Customer Support",
+    "Data Management",
+    "Healthcare Knowledge"
+  ],
+  "Travel Agent": [
+    "Customer Support",
+    "Communication",
+    "Problem Solving",
+    "Negotiation",
+    "Planning",
+    "Customer Relationship Management",
+    "Attention to Detail"
+  ],
+  "Event Host": [
+    "Event Planning",
+    "Communication",
+    "Customer Support",
+    "Creativity",
+    "Problem Solving",
+    "Public Speaking",
+    "Organization"
+  ],
+  "Food Critic": [
+    "Writing",
+    "Research",
+    "Critical Thinking",
+    "Creativity",
+    "Communication",
+    "Attention to Detail",
+    "Culinary Knowledge"
+  ],
+  "Conservation Scientist": [
+    "Environmental Science",
+    "Research",
+    "Data Analysis",
+    "Problem Solving",
+    "Communication",
+    "Critical Thinking",
+    "Planning"
+  ],
+  "Fundraising Manager": [
+    "Fundraising",
+    "Communication",
+    "Strategic Thinking",
+    "Negotiation",
+    "Marketing",
+    "Problem Solving",
+    "Event Planning"
+  ],
+  "Interpreter/Translator": [
+    "Translation",
+    "Communication",
+    "Cultural Sensitivity",
+    "Attention to Detail",
+    "Problem Solving",
+    "Research",
+    "Customer Support"
+  ],
+  "Career Counselor": [
+    "Communication",
+    "People Development",
+    "Problem Solving",
+    "Training",
+    "Leadership and Management",
+    "Strategic Thinking",
+    "Customer Support"
+  ]
+}
+

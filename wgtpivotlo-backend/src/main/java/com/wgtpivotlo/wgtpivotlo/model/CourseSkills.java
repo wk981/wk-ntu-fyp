@@ -22,6 +22,9 @@ public class CourseSkills {
     @JoinColumn(name="skill_id")
     private Skill skill;
 
-    private String skill_earn_level;
-    private String skill_recommended_level;
+    @Column(name="skill_earn_level")
+    private String skillEarnLevel;
+
+    @Column(name="skill_recommended_level")
+    private String skillRecommendedLevel;
 }

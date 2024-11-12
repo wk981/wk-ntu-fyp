@@ -1,30 +1,32 @@
 package com.wgtpivotlo.wgtpivotlo.model;
 
+import com.wgtpivotlo.wgtpivotlo.enums.CareerLevel;
+import com.wgtpivotlo.wgtpivotlo.enums.SkillLevel;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Table(name="course_skill")
 @Builder
 @Setter
 @Getter
-public class CourseSkills {
+@AllArgsConstructor
+@NoArgsConstructor
+public class CourseSkills extends SuperClass{
     @Id
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name="course_id")
-    private Course course;
+    @Enumerated(EnumType.STRING)
+    @Column(name="profiency")
+    private SkillLevel profiency;
 
     @ManyToOne
     @JoinColumn(name="skill_id")
     private Skill skill;
 
-    @Column(name="skill_earn_level")
-    private String skillEarnLevel;
-
-    @Column(name="skill_recommended_level")
-    private String skillRecommendedLevel;
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
 }

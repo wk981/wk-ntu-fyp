@@ -22,30 +22,15 @@ public class Career extends SuperClass{
     private long career_id;
 
     @Column(nullable = false)
-    private String name;
+    private String title;
 
-    @Column(columnDefinition = "TEXT")
-    private String description;
-
-    private String responsibility;
     private String sector;
+    private String responsibility;
 
     @Enumerated(EnumType.STRING)
     @Column(name="career_level")
     private CareerLevel careerLevel;
-    private String branch;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name="work_environment",columnDefinition = "TEXT")
-    private WorkEnvironment workEnvironment;
-
-    @Column(name="career_goal",columnDefinition = "TEXT")
-    private String careerGoal;
-
-    private String pic;
-
-
-    @OneToMany(mappedBy = "career")
-    @JsonIgnoreProperties("career")  // Ignore career in CareerSkills to prevent circular reference
-    private Set<CareerSkills> careerSkills;
+    private String pic_url;
+    
 }

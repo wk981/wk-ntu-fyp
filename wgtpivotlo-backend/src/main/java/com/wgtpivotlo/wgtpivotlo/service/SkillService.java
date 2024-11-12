@@ -36,7 +36,6 @@ public class SkillService {
     public List<Skill> findAll(){
         List<Skill> skillsList = skillRepository.findAll();
         log.info("Fetching all of the skills");
-        log.info(skillsList.toString());
         if (skillsList.isEmpty()){
             log.warn("No skills found in the database");
             throw new ResourceNotFoundException("No skill found in the database");
@@ -55,7 +54,6 @@ public class SkillService {
             log.warn("Page number out of bounds");
             throw new PageItemsOutOfBoundException("Page number out of bounds");
         }
-
         log.info("Step1b: Creating skillDTO");
         List<SkillDTO> skillDTOList= paginatedSkills.getContent().stream().map(SkillDTO::new).collect(Collectors.toList());;
 

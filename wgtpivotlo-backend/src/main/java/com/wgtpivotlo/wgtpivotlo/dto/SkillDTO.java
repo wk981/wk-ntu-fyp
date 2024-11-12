@@ -19,7 +19,6 @@ public class SkillDTO {
         this.skillId = skill.getSkillId();
         this.name = skill.getName();
         this.description = skill.getDescription();
-        this.pic = skill.getPic();
-        this.type = skill.getPic();
+        this.pic = skill.getPic_url();
     }
 }

@@ -26,22 +26,22 @@ public class SkillController {
         this.skillService = skillService;
     }
 
-//    @GetMapping(name = "/")
-//    public List<Skill> getSkills(){
-//        return skillService.findAll();
-//    }
+    @GetMapping("/test")
+    public List<Skill> getSkills(){
+        return skillService.findAll();
+    }
 
     @GetMapping("/")
     public ResponseEntity<Map<String, Object>> getPaginatedSkills(
             @RequestParam(defaultValue = "1") @Min(1) int pageNumber,
-            @RequestParam(defaultValue = "10") @Min(1) @Max(15) int pageSize){
+            @RequestParam(defaultValue = "10") @Min(1) int pageSize){
         Map<String, Object> responseBody = skillService.findAllPagination(pageNumber,pageSize);
         return ResponseEntity.ok(responseBody);
     }
 
-    @GetMapping("/{id}")
-    public Optional<Skill> getSkillId(@PathVariable long id){
-        return skillService.findId(id);
-    }
+//    @GetMapping("/{id}")
+//    public Optional<Skill> getSkillId(@PathVariable long id){
+//        return skillService.findId(id);
+//    }
 
 }

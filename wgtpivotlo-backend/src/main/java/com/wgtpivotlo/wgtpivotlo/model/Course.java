@@ -2,16 +2,17 @@ package com.wgtpivotlo.wgtpivotlo.model;
 
 import com.wgtpivotlo.wgtpivotlo.enums.CourseSource;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import java.util.Set;
+import java.util.List;
 
 @Entity
-@Getter
+@Table(name="course")
+@Builder
 @Setter
-@RequiredArgsConstructor
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Course extends SuperClass{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,21 +22,13 @@ public class Course extends SuperClass{
     @Column(nullable = false)
     private String name;
 
-    @Column(columnDefinition = "TEXT")
-    private String description;
+    @Column(name="link")
+    private String link;
 
-    @Column(name="course_original_link")
-    private String courseOriginalLink;
+    private float rating;
+    private float reviews_counts;
 
     @Enumerated(EnumType.STRING)
-    @Column(name="course_source")
+    @Column(name = "course_source", length = 20)
     private CourseSource courseSource;
-
-    @ManyToOne
-    @JoinColumn(name="career_id", referencedColumnName = "career_id")
-    private Career career;
-
-    @OneToMany(mappedBy = "course")
-    private Set<CourseSkills> courseSkills;
-
 }

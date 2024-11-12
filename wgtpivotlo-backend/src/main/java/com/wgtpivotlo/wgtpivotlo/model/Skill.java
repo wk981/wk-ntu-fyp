@@ -4,9 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Set;
+import java.util.List;
 
-// TODO: Convert this to unidirection
 @Entity
 @Table(name="skill")
 @Builder
@@ -24,16 +23,5 @@ public class Skill extends SuperClass{
 
     @Column(columnDefinition = "TEXT")
     private String description;
-    private String pic;
-    private String type;
-
-    @OneToMany(mappedBy = "skill")
-    private Set<UserSkills> userSkills;
-
-    @OneToMany(mappedBy = "skill")
-    @JsonIgnoreProperties("skill")  // Ignore skill in CareerSkills to prevent circular reference
-    private Set<CareerSkills> careerSkills;
-
-    @OneToMany(mappedBy = "skill")
-    private Set<CourseSkills> courseSkills;
+    private String pic_url;
 }

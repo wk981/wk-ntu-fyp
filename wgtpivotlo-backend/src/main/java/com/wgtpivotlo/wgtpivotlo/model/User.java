@@ -34,13 +34,4 @@ public class User extends SuperClass{
     private Role role;
 
     private String pic;
-
-    // Why many to one cus many users can have the same career
-    @ManyToOne
-    @JoinColumn(name="career_id", referencedColumnName = "career_id")
-    private Career career;
-
-    @OneToMany(mappedBy = "user")
-    private Set<UserSkills> userSkills;
-
 }

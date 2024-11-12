@@ -3,85 +3,131 @@ from bs4 import BeautifulSoup
 import requests
 import logging
 import json
+import re
+import pandas as pd
+
+learning_product_list = [
+    "Guided Project",
+    "Course",
+    "Project",
+    "Specialization",
+    "Professional Certificate",
+    "MasterTrack Certificate",
+    "Degree",
+    "Postgraduate Diploma",
+    "Graduate Certificate",
+    "University Certificate"
+]
+
+difficulty_list = ["Beginner", "Intermediate", "Advanced", "Mixed"]
 class WebCoursesScrapperManager:
     def __init__(self, url):
         self.url = url
-        self.courses_dict = {}
+        self.courses_data = []
+
+    def scrape_coursera(self):
+        for i in range(1,85):
+            logging.warning(f'Scraping page {i}')
+            self._scrape_coursera_page(self.url+str(i))
     
-    def scrape_url(self):
-        logging.warning("Scraping now")
-        for i in range(1,50):
-            page = requests.get(self.url + str(i))
-            self.__scrape_helper(page=page,html_tag='h3',course_dict_key="course_title", tag_class='cds-CommonCard-title css-6ecy9b')
-        logging.warning("Scarped done")
+    def _scrape_coursera_page(self,url):
+        page = requests.get(url)
+        soup = BeautifulSoup(page.content, 'html.parser')
 
-    def get_courses_dict(self):
-        return self.courses_dict
-    
-    def __scrape_helper(self, page, html_tag, course_dict_key, tag_class, div_class=None):
-            """
-            Helper function to scrape specific elements from a webpage and store the result in a dictionary.
+        # Find the main container div
+        logging.warning(f'Scraping course cards')
+        cards = soup.find_all('div', class_='cds-CommonCard-clickArea')
+        logging.warning(f'Done scraping cards')
+        if cards:
+            logging.warning(f'Scraping features now')
+            for card in cards:
+                course_data = {}
+                title = card.find('h3', class_='cds-CommonCard-title')
+                course_data['title'] = title.get_text(strip=True) if title else None
 
-            Parameters:
-            ----------
-            page: str
-                Page to scrape
-            html_tag : str
-                The HTML tag to target, such as "h1", "h2", etc., that contains the data to be scraped.
-                
-            course_dict_key : str
-                The key that will be created in `self.courses_dict`. The scraped data will be stored as the value for this key.
+                skills = card.find('div', class_='cds-ProductCard-body')
+                data = None
+                if skills:
+                    skills_list = skills.get_text(strip=True).replace('Skills you\'ll gain:', '').split(', ')
+                    data = ', '.join(skills_list)  # Joining the list into a string separated by commas
+                course_data['skills'] = data
 
-            tag_class : str
-                The class name of the target HTML tag (e.g., "course-title", "course-description"). This is used to filter the elements being scraped.
+                organization = card.find('p', class_="cds-ProductCard-partnerNames css-vac8rf")
+                course_data['organization'] = organization.get_text(strip=True) if organization else None
 
-            div_class : str, optional
-                The class name of a specific div tag to further narrow down the target elements. If provided, the function will prioritize scraping within this div tag, and `html_tag` will be set to 'div'.
+                rating = card.find('span',class_='css-6ecy9b')
+                course_data['rating'] = rating.get_text(strip=True) if rating else None
 
-            Returns:
-            -------
-            None
+                reviews = card.find('div', class_='css-vac8rf')
+                course_data['reviews'] = self._convert_reviews(reviews.get_text(strip=True).lower()) if reviews else None
 
-            Example:
-            -------
-            If you want to scrape all h2 elements with the class "course-title" and store the data under the key "title", call:
-                __scrape_helper("h2", "title", "course-title")
-            If you want to scrape div elements with the class "course-details" and store the data under the key "details", call:
-                __scrape_helper("div", "details", "course-details")
-            """
-            soup = BeautifulSoup(page.content, 'html.parser')
-            name, class_ = None, None
-            if div_class:
-                name = 'div'
-                class_ = div_class
+                metadata = card.find('div', class_='cds-CommonCard-metadata')
+                metadata_text = metadata.get_text(strip=True)
+                metadata_list = self._clean_metadata(metadata_text)
+                metadata_category = self._handle_metadata_category(metadata_list)
+                course_data['difficulty'] = metadata_category.get('difficulty', None)
+                course_data['learning_product'] = metadata_category.get('learning_product', None)
+                course_data['duration'] = metadata_category.get('duration', None)
+
+                course_link = card.find('a', class_='cds-CommonCard-titleLink')
+                course_data['link'] = f"https://www.coursera.org{course_link['href']}" if course_link else None
+
+                self.courses_data.append(course_data)
+                logging.warning(f'Finished scraping features')
+
+    def _convert_reviews(self,review):
+        if 'k' in review:
+            # Extract the number and multiply by 1000
+            num = int(re.findall(r'\d+', review)[0]) * 1000
+            return num
+        elif review.isdigit():
+            # For cases without 'K'
+            return int(review)
+        else:
+            # For "None" or other non-numeric cases
+            return None
+
+    def _clean_metadata(self,metadata_text):
+        res = []
+        temp = ""
+        for char in metadata_text:
+            if char != "·":
+                temp += char
             else:
-                name = html_tag
-                class_ = tag_class
+                # Strip whitespace around each section and add to the result list
+                res.append(temp.strip())
+                temp = ""
+        # Add the last segment after the loop ends
+        if temp:
+            res.append(temp.strip())
+        return res
 
-            elements = soup.find_all(name,  class_ = class_)
-            if (len(elements)) != 12:  
-                for _ in range(0,12):    # There are 12 courses per page
-                    self.__dict_helper(course_dict_key, None)
-                return
+
+    def _handle_metadata_category(self,metadata_list):
+        # Initialize course_data with None for missing values
+        course_data = {
+            'learning_product': None,
+            'difficulty': None,
+            'duration': None
+        }
+
+        for metadata in metadata_list:
+            metadata_lower = metadata.lower()
+
+            # Check for matches in lowercase lists
+            if metadata_lower in [item.lower() for item in learning_product_list]:
+                course_data['learning_product'] = metadata
+            elif metadata_lower in [item.lower() for item in difficulty_list]:
+                course_data['difficulty'] = metadata
             else:
-                for element in elements:
-                    x = element.get_text()
-                    logging.warning(f"Appending into {course_dict_key}, value: {x}")
-                    if x:
-                        self.__dict_helper(course_dict_key, x)
-                    else:
-                        self.__dict_helper(course_dict_key, None)
+                course_data['duration'] = metadata
 
-
+        return course_data
     
-    def __dict_helper(self, key, value):
-        if key not in self.courses_dict:
-            self.courses_dict[key] = []
-        self.courses_dict[key].append(value)
-
     def __str__(self):
-        return f"{self.courses_dict}"
+        return f"{self.courses_data}"
     
-    def output_json(self):
-        with open('scraped_data.json', 'w') as outfile:
-            json.dump(self.courses_dict, outfile, indent=4)
+    def output_df_excel(self):
+        logging.warning(f'Converting to dataframe and saving as xlsx')
+        pd.DataFrame(self.courses_data).to_excel("course_data.xlsx", index=False, sheet_name="Course Data")
+        logging.warning(f'Finished convertion')

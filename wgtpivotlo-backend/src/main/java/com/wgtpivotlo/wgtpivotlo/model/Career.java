@@ -1,12 +1,9 @@
 package com.wgtpivotlo.wgtpivotlo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.wgtpivotlo.wgtpivotlo.enums.CareerLevel;
-import com.wgtpivotlo.wgtpivotlo.enums.WorkEnvironment;
+import com.wgtpivotlo.wgtpivotlo.enums.converter.CareerLevelConverter;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.Set;
 
 @Entity
 @Table(name="career")
@@ -27,7 +24,7 @@ public class Career extends SuperClass{
     private String sector;
     private String responsibility;
 
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = CareerLevelConverter.class)
     @Column(name="career_level")
     private CareerLevel careerLevel;
 

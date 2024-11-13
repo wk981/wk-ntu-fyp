@@ -2,8 +2,9 @@ package com.wgtpivotlo.wgtpivotlo.dto;
 
 import com.wgtpivotlo.wgtpivotlo.model.Skill;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
-@Builder
+@SuperBuilder
 @Setter
 @Getter
 @AllArgsConstructor
@@ -13,7 +14,6 @@ public class SkillDTO {
     private String name;
     private String description;
     private String pic;
-    private String type;
 
     public SkillDTO(Skill skill) {
         this.skillId = skill.getSkillId();

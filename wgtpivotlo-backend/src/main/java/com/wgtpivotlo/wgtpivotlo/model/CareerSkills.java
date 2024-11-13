@@ -30,5 +30,5 @@ public class CareerSkills {
 
     @ManyToOne
     @JoinColumn(name = "career_id")
-    private Course course;
+    private Career career;
 }

@@ -11,7 +11,7 @@ public enum CareerLevel {
         this.level = level;
     }
 
-    public String getlevel(){
+    public String getLevel(){
         return this.level;
     }
 }

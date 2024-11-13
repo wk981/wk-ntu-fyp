@@ -24,4 +24,12 @@ public class Skill extends SuperClass{
     @Column(columnDefinition = "TEXT")
     private String description;
     private String pic_url;
+
+    public Skill(Skill skill) {
+        super();
+        this.skillId = skill.getSkillId();
+        this.name = skill.getName();
+        this.description = skill.getDescription();
+        this.pic_url = skill.getDescription();
+    }
 }

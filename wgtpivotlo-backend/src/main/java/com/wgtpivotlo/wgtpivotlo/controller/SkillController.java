@@ -26,10 +26,10 @@ public class SkillController {
         this.skillService = skillService;
     }
 
-    @GetMapping("/test")
-    public List<Skill> getSkills(){
-        return skillService.findAll();
-    }
+//    @GetMapping("/test")
+//    public List<Skill> getSkills(){
+//        return skillService.findAll();
+//    }
 
     @GetMapping("/")
     public ResponseEntity<Map<String, Object>> getPaginatedSkills(
@@ -39,9 +39,9 @@ public class SkillController {
         return ResponseEntity.ok(responseBody);
     }
 
-//    @GetMapping("/{id}")
-//    public Optional<Skill> getSkillId(@PathVariable long id){
-//        return skillService.findId(id);
-//    }
+    @GetMapping("/{id}")
+    public Optional<Skill> getSkillId(@PathVariable long id){
+        return skillService.findId(id);
+    }
 
 }

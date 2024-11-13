@@ -30,6 +30,7 @@ public class CareerSkillAssociationService {
         Optional<Career> career = careerRepository.findById(career_id);
         Optional<List<CareerSkills>> careerSkillsList = careerSkillAssociationRepository.findByCareer(career);
         CareerSkillListDTO careerSkillListDTO = null;
+
         if(careerSkillsList.isPresent() && career.isPresent()){
             List<CareerSkillWithProfiencyDTO> careerSkillWithProficiencyDTOList = new ArrayList<>();;
             for (CareerSkills careerSkills: careerSkillsList.get()){
@@ -49,13 +50,13 @@ public class CareerSkillAssociationService {
                     .skillsWithProfiency(careerSkillWithProficiencyDTOList)
                     .career_id(career.get().getCareer_id())
                     .title(career.get().getTitle())
-                    .sector(career.get().getTitle())
-                    .responsibility(career.get().getSector())
+                    .sector(career.get().getSector())
+                    .responsibility(career.get().getResponsibility())
                     .careerLevel(career.get().getCareerLevel())
                     .pic_url(career.get().getPic_url())
                     .build();
         }
+
         return Optional.ofNullable(careerSkillListDTO);
-        
     }
 }

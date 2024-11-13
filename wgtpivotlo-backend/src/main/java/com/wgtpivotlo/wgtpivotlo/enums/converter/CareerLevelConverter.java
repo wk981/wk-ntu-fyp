@@ -23,6 +23,9 @@ public class CareerLevelConverter implements AttributeConverter<CareerLevel, Str
             return null;
         }
 
-        return Stream.of(CareerLevel.values()).filter(c-> c.getLevel().equals(dbData)).findFirst().orElseThrow(IllegalArgumentException::new);
+        return Stream.of(CareerLevel.values())
+                .filter(c -> c.getLevel().equals(dbData))  // Match against custom level label
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Unknown career level: " + dbData));
     }
 }

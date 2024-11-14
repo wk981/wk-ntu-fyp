@@ -4,7 +4,6 @@ import com.wgtpivotlo.wgtpivotlo.dto.PageDTO;
 import com.wgtpivotlo.wgtpivotlo.dto.SkillDTO;
 import com.wgtpivotlo.wgtpivotlo.errors.exceptions.PageItemsOutOfBoundException;
 import com.wgtpivotlo.wgtpivotlo.errors.exceptions.ResourceNotFoundException;
-import com.wgtpivotlo.wgtpivotlo.mapper.PageMapper;
 import com.wgtpivotlo.wgtpivotlo.model.Skill;
 import com.wgtpivotlo.wgtpivotlo.repository.SkillRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -14,9 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -24,12 +21,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class SkillService {
     private final SkillRepository skillRepository;
-    private final PageMapper<Skill> pageMapper;
 
     @Autowired
-    public SkillService(SkillRepository skillRepository, PageMapper<Skill> pageMapper) {
+    public SkillService(SkillRepository skillRepository) {
         this.skillRepository = skillRepository;
-        this.pageMapper = pageMapper;
     }
 
 
@@ -43,8 +38,7 @@ public class SkillService {
         return skillsList;
     }
 
-    public Map<String, Object> findAllPagination(int pageNumber, int pageSize){
-        Map<String, Object> res = new HashMap<String, Object>();
+    public PageDTO<SkillDTO> findAllPagination(int pageNumber, int pageSize){
         int correctedPageNumber = (pageNumber > 0) ? pageNumber - 1 : 0;
         Pageable skillPageWithElements = PageRequest.of(correctedPageNumber, pageSize);
 
@@ -58,12 +52,7 @@ public class SkillService {
         List<SkillDTO> skillDTOList= paginatedSkills.getContent().stream().map(SkillDTO::new).collect(Collectors.toList());;
 
         log.info("Step2: Tidying up body and pagination");
-        PageDTO pageDTO = pageMapper.PageableToPageDTO(paginatedSkills);
-
-        res.put("totalPages", pageDTO.getPages());
-        res.put("pageNumber", pageNumber);
-        res.put("content", skillDTOList);
-        return res;
+        return new PageDTO<>(paginatedSkills.getTotalPages(), pageNumber, skillDTOList);
     }
 
     public Optional<Skill> findId(long id) {

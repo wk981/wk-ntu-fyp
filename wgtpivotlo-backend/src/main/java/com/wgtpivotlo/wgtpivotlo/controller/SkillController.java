@@ -1,5 +1,7 @@
 package com.wgtpivotlo.wgtpivotlo.controller;
 
+import com.wgtpivotlo.wgtpivotlo.dto.PageDTO;
+import com.wgtpivotlo.wgtpivotlo.dto.SkillDTO;
 import com.wgtpivotlo.wgtpivotlo.model.Skill;
 import com.wgtpivotlo.wgtpivotlo.service.SkillService;
 import jakarta.validation.constraints.Max;
@@ -32,16 +34,21 @@ public class SkillController {
 //    }
 
     @GetMapping("/")
-    public ResponseEntity<Map<String, Object>> getPaginatedSkills(
+    public ResponseEntity<PageDTO<SkillDTO>> getPaginatedSkills(
             @RequestParam(defaultValue = "1") @Min(1) int pageNumber,
             @RequestParam(defaultValue = "10") @Min(1) int pageSize){
-        Map<String, Object> responseBody = skillService.findAllPagination(pageNumber,pageSize);
+        PageDTO<SkillDTO> responseBody = skillService.findAllPagination(pageNumber,pageSize);
         return ResponseEntity.ok(responseBody);
     }
 
     @GetMapping("/{id}")
     public Optional<Skill> getSkillId(@PathVariable long id){
         return skillService.findId(id);
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<String> createNewSkill(){
+        return ResponseEntity.status(201).body("Created");
     }
 
 }

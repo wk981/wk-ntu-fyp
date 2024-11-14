@@ -2,6 +2,7 @@ package com.wgtpivotlo.wgtpivotlo.service;
 
 import com.wgtpivotlo.wgtpivotlo.dto.CareerSkillListDTO;
 import com.wgtpivotlo.wgtpivotlo.dto.CareerSkillWithProfiencyDTO;
+import com.wgtpivotlo.wgtpivotlo.errors.exceptions.ResourceNotFoundException;
 import com.wgtpivotlo.wgtpivotlo.model.Career;
 import com.wgtpivotlo.wgtpivotlo.model.CareerSkills;
 import com.wgtpivotlo.wgtpivotlo.repository.CareerRepository;
@@ -55,6 +56,9 @@ public class CareerSkillAssociationService {
                     .careerLevel(career.get().getCareerLevel())
                     .pic_url(career.get().getPic_url())
                     .build();
+        }
+        else{
+            throw new ResourceNotFoundException("career id with " + career_id + " is not found in database");
         }
 
         return Optional.ofNullable(careerSkillListDTO);

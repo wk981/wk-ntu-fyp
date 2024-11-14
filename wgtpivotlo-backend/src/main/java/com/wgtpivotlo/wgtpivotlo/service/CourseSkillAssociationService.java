@@ -4,6 +4,7 @@ import com.wgtpivotlo.wgtpivotlo.dto.CourseDTO;
 import com.wgtpivotlo.wgtpivotlo.dto.CourseSkillDTO;
 import com.wgtpivotlo.wgtpivotlo.dto.SkillDTO;
 import com.wgtpivotlo.wgtpivotlo.enums.SkillLevel;
+import com.wgtpivotlo.wgtpivotlo.errors.exceptions.ResourceNotFoundException;
 import com.wgtpivotlo.wgtpivotlo.model.Course;
 import com.wgtpivotlo.wgtpivotlo.model.CourseSkills;
 import com.wgtpivotlo.wgtpivotlo.model.Skill;
@@ -31,6 +32,7 @@ public class CourseSkillAssociationService {
         Optional<Course> course =  courseRepository.findById(courseId);
         Optional<List<CourseSkills>> courseSkillsList = courseSkillAssociationRepository.findByCourse(course);
         CourseSkillDTO courseSkillDTO = null;
+
         if(course.isPresent() && courseSkillsList.isPresent()){
             List<SkillDTO> skillDTOList = new ArrayList<>();
             SkillLevel profiency = null;
@@ -49,10 +51,10 @@ public class CourseSkillAssociationService {
                             .courseDTO(courseDTO)
                             .profiency(profiency)
                             .build();
-
-            return Optional.ofNullable(courseSkillDTO);
         }
-
-        return Optional.empty();
+        else{
+            throw new ResourceNotFoundException("course id with " + courseId + " is not found in database");
+        }
+        return Optional.ofNullable(courseSkillDTO);
     }
 }

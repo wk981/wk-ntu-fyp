@@ -40,10 +40,13 @@ public class DataLoader implements CommandLineRunner {
                 .role(Role.USER)
                 .build();
 
-        // Save the users to the database
-        userRepository.save(adminUser);
-        userRepository.save(normalUser);
-
-        log.info("New users have been added to database");
+        try{
+            // Save the users to the database
+            userRepository.save(adminUser);
+            userRepository.save(normalUser);
+            log.info("New users have been added to database");
+        } catch (Exception e) {
+            log.info("Users are already in the database");
+        }
     }
 }

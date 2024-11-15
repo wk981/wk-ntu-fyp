@@ -84,6 +84,7 @@ CREATE TABLE _user (
     created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT unique_username UNIQUE(username),
+    CONSTRAINT unique_email UNIQUE(email),
     FOREIGN KEY (career_id) REFERENCES career(career_id) ON DELETE CASCADE
 );
 

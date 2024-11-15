@@ -2,6 +2,7 @@ package com.wgtpivotlo.wgtpivotlo.errors;
 
 import com.wgtpivotlo.wgtpivotlo.errors.exceptions.PageItemsOutOfBoundException;
 import com.wgtpivotlo.wgtpivotlo.errors.exceptions.ResourceNotFoundException;
+import com.wgtpivotlo.wgtpivotlo.errors.exceptions.UserExists;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -82,4 +83,12 @@ public class GlobalDefaultExceptionHandler extends ResponseEntityExceptionHandle
         return buildResponseEntity(errorResponse);
     }
 
+    @ExceptionHandler(UserExists.class)
+    public ResponseEntity<Object> handleUserExistsException(HttpServletRequest req, UserExists ex){
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(HttpStatus.CONFLICT)
+                .message(ex.getMessage())
+                .build();
+        return buildResponseEntity(errorResponse);
+    }
 }

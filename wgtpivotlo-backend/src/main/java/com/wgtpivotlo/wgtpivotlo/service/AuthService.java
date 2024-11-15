@@ -6,6 +6,7 @@ import com.wgtpivotlo.wgtpivotlo.errors.exceptions.UserExists;
 import com.wgtpivotlo.wgtpivotlo.model.User;
 import com.wgtpivotlo.wgtpivotlo.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -77,6 +79,6 @@ public class AuthService {
             userRepository.save(newUser);
             log.warn("New user created");
         }
-
     }
+
 }

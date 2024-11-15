@@ -12,12 +12,15 @@ import java.util.Collection;
 import java.util.List;
 
 @Builder
+@Getter
 public class UserDetailsImpl implements UserDetails {
-    @Getter
+    private long id;
     private String email;
     private String username;
     private String password;
     private Role role;
+    private String pic;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();

@@ -1,5 +1,6 @@
 package com.wgtpivotlo.wgtpivotlo.security;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -15,6 +16,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.HeaderWriterLogoutHandler;
+import org.springframework.security.web.header.writers.ClearSiteDataHeaderWriter;
+import org.springframework.security.web.server.authentication.logout.DelegatingServerLogoutHandler;
+import org.springframework.security.web.server.authentication.logout.SecurityContextServerLogoutHandler;
+import org.springframework.security.web.server.authentication.logout.WebSessionServerLogoutHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -34,8 +40,17 @@ public class SecurityConfiguration {
                         .requestMatchers("/me").authenticated()
                         .anyRequest().authenticated()
         )
+        .csrf(AbstractHttpConfigurer::disable)
+        .logout((logout) -> logout
+                .logoutSuccessHandler((httpServletRequest, httpServletResponse, authentication) -> {
+                    httpServletResponse.setStatus(HttpServletResponse.SC_OK);
+                })
+                .logoutUrl("/logout") // URL to trigger logout
+                .invalidateHttpSession(true) // Invalidate session
+                .deleteCookies("JSESSIONID") // Delete session cookie
+                .permitAll()
+        );
 
-        .csrf(AbstractHttpConfigurer::disable);
 //        .formLogin(Customizer.withDefaults());
         return http.build();
     }

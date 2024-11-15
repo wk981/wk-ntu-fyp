@@ -2,17 +2,17 @@ package com.wgtpivotlo.wgtpivotlo.model;
 
 import com.wgtpivotlo.wgtpivotlo.enums.Role;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 
 @Entity
 @Table(name="_user")
-@Getter
-@Setter
 @Builder
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class User extends SuperClass{
 
     @Id
@@ -24,7 +24,7 @@ public class User extends SuperClass{
     private String email;
 
     @Column(nullable = false)
-    private String name;
+    private String username;
 
     @Column(nullable = false)
     private String password;

@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Limit;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -48,6 +49,7 @@ public class AuthService {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         log.warn("Setting user principal");
         securityContext.setAuthentication(authentication); // Set user token in session
+        log.warn("User Principal set");
 
         // Create a new session and add the security context.
         log.warn("Setting session");
@@ -59,11 +61,9 @@ public class AuthService {
     // TODO: Add validations
     public void registerUser(RegisterRequest registerRequest) {
         log.warn("Searching for existing user");
-        // Optimize this if slow
-        Optional<User> existEmail = userRepository.findByEmail(registerRequest.getEmail());
-        Optional<User> existUsername = userRepository.findByUsername(registerRequest.getUsername());
+        Optional<User> existUser = userRepository.findByUsernameOrEmail(registerRequest.getUsername(), registerRequest.getEmail(), Limit.of(1));
 
-        if(existUsername.isPresent() || existEmail.isPresent()){
+        if(existUser.isPresent()){
             throw new UserExists("Email or Username exists");
         }
 

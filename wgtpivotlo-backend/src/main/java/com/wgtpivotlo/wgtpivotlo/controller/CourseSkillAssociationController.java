@@ -1,6 +1,5 @@
 package com.wgtpivotlo.wgtpivotlo.controller;
 
-import com.wgtpivotlo.wgtpivotlo.dto.CareerSkillListDTO;
 import com.wgtpivotlo.wgtpivotlo.dto.CourseSkillDTO;
 import com.wgtpivotlo.wgtpivotlo.service.CourseSkillAssociationService;
 import org.springframework.http.ResponseEntity;

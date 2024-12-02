@@ -4,17 +4,11 @@ import com.wgtpivotlo.wgtpivotlo.dto.PageDTO;
 import com.wgtpivotlo.wgtpivotlo.dto.SkillDTO;
 import com.wgtpivotlo.wgtpivotlo.model.Skill;
 import com.wgtpivotlo.wgtpivotlo.service.SkillService;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -27,11 +21,6 @@ public class SkillController {
     public SkillController(SkillService skillService) {
         this.skillService = skillService;
     }
-
-//    @GetMapping("/test")
-//    public List<Skill> getSkills(){
-//        return skillService.findAll();
-//    }
 
     @GetMapping("/")
     public ResponseEntity<PageDTO<SkillDTO>> getPaginatedSkills(

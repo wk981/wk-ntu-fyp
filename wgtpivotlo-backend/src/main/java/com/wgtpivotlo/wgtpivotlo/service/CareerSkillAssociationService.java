@@ -1,20 +1,18 @@
 package com.wgtpivotlo.wgtpivotlo.service;
 
-import com.wgtpivotlo.wgtpivotlo.dto.CareerSkillListDTO;
-import com.wgtpivotlo.wgtpivotlo.dto.CareerSkillWithProfiencyDTO;
+import com.wgtpivotlo.wgtpivotlo.dto.CareerWithSkillDTO;
+import com.wgtpivotlo.wgtpivotlo.dto.SkillWithProfiencyDTO;
 import com.wgtpivotlo.wgtpivotlo.errors.exceptions.ResourceNotFoundException;
 import com.wgtpivotlo.wgtpivotlo.model.Career;
 import com.wgtpivotlo.wgtpivotlo.model.CareerSkills;
 import com.wgtpivotlo.wgtpivotlo.repository.CareerRepository;
 import com.wgtpivotlo.wgtpivotlo.repository.CareerSkillAssociationRepository;
-import jakarta.validation.constraints.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CareerSkillAssociationService {
@@ -27,16 +25,16 @@ public class CareerSkillAssociationService {
         this.careerRepository = careerRepository;
     }
 
-    public Optional<CareerSkillListDTO> findByCareerId(Long career_id){
+    public Optional<CareerWithSkillDTO> findByCareerId(Long career_id){
         Optional<Career> career = careerRepository.findById(career_id);
         Optional<List<CareerSkills>> careerSkillsList = careerSkillAssociationRepository.findByCareer(career);
-        CareerSkillListDTO careerSkillListDTO = null;
+        CareerWithSkillDTO careerWithSkillDTO = null;
 
         if(careerSkillsList.isPresent() && career.isPresent()){
-            List<CareerSkillWithProfiencyDTO> careerSkillWithProficiencyDTOList = new ArrayList<>();;
+            List<SkillWithProfiencyDTO> careerSkillWithProficiencyDTOList = new ArrayList<>();;
             for (CareerSkills careerSkills: careerSkillsList.get()){
-                CareerSkillWithProfiencyDTO careerSkillWithProfiencyDTO
-                        = CareerSkillWithProfiencyDTO
+                SkillWithProfiencyDTO skillWithProfiencyDTO
+                        = SkillWithProfiencyDTO
                         .builder()
                         .skillId(careerSkills.getSkill().getSkillId())
                         .name(careerSkills.getSkill().getName())
@@ -44,9 +42,9 @@ public class CareerSkillAssociationService {
                         .pic(careerSkills.getSkill().getPic_url())
                         .profiency(careerSkills.getProfiency())
                         .build();
-                careerSkillWithProficiencyDTOList.add(careerSkillWithProfiencyDTO);
+                careerSkillWithProficiencyDTOList.add(skillWithProfiencyDTO);
             }
-            careerSkillListDTO = CareerSkillListDTO
+            careerWithSkillDTO = CareerWithSkillDTO
                     .builder()
                     .skillsWithProfiency(careerSkillWithProficiencyDTOList)
                     .career_id(career.get().getCareer_id())
@@ -61,6 +59,6 @@ public class CareerSkillAssociationService {
             throw new ResourceNotFoundException("career id with " + career_id + " is not found in database");
         }
 
-        return Optional.ofNullable(careerSkillListDTO);
+        return Optional.ofNullable(careerWithSkillDTO);
     }
 }

@@ -30,6 +30,7 @@ public class CareerSkillAssociationRepositoryImpl implements CareerSkillAssociat
         Root<Career> CareerRoot = criteriaQuery.from(Career.class);
 
         // Explicit join with CareerSkills based on foreign key
+        // https://stackoverflow.com/questions/4483576/how-to-write-subqueries-with-in-expressions-in-jpa-2-0-criteria-api
         Root<CareerSkills> careerSkillsRoot = criteriaQuery.from(CareerSkills.class);
         Predicate joinCondition = criteriaBuilder.equal(CareerRoot.get("careerId"), careerSkillsRoot.get("career").get("careerId"));
 
@@ -38,6 +39,7 @@ public class CareerSkillAssociationRepositoryImpl implements CareerSkillAssociat
 
         // List to hold predicates
         List<Predicate> orPredicates = new ArrayList<>();
+        double totalWeightage = 0;
         // Iterate through the skillsProficiencyList
         for (CareerSkillDTO skillProficiency : skillsProfiencyList) {
             Optional<Long> skillId = skillProficiency.getSkillId().describeConstable();
@@ -58,12 +60,22 @@ public class CareerSkillAssociationRepositoryImpl implements CareerSkillAssociat
                     default -> throw new IllegalArgumentException("Invalid proficiency: " + profiency);
                 };
 
+                double proficiencyWeightage = switch (profiency.get().toString()) {
+                    case "Beginner" -> 0.25;
+                    case "Intermediate" -> 0.5;
+                    case "Advanced" -> 1;
+                    default -> throw new IllegalArgumentException("Invalid proficiency: " + profiency);
+                };
+                totalWeightage += proficiencyWeightage;
+
                 // Add the predicate for skillId and proficiency
                 Predicate skillPredicate = criteriaBuilder.equal(subRoot.get("skill").get("skillId"), skillId.get());
                 Predicate proficiencyPredicate = criteriaBuilder.lessThanOrEqualTo(skillProficiencyExpression, proficiencyLevel);
 
                 // Combine predicates with AND and add to orPredicates
                 orPredicates.add(criteriaBuilder.and(skillPredicate, proficiencyPredicate));
+
+                // calculate weighted score
             }
         }
 
@@ -75,7 +87,10 @@ public class CareerSkillAssociationRepositoryImpl implements CareerSkillAssociat
         criteriaQuery
                 .multiselect(
                         CareerRoot, // Select the entire Career entity
-                        criteriaBuilder.count(careerSkillsRoot.get("skill").get("skillId")) // Count skills
+                        criteriaBuilder.quot(
+                                totalWeightage, // Total weightage (numerator)
+                                criteriaBuilder.count(careerSkillsRoot.get("skill").get("skillId")) // Count of skills (denominator)
+                        ).alias("averageWeightage")
                 )
                 .where(
                         criteriaBuilder
@@ -87,7 +102,10 @@ public class CareerSkillAssociationRepositoryImpl implements CareerSkillAssociat
                                 )
                 )
                 .groupBy(CareerRoot.get("careerId"))
-                .orderBy(criteriaBuilder.desc(criteriaBuilder.count(careerSkillsRoot.get("skill").get("skillId"))));
+                .orderBy(criteriaBuilder.desc(                        criteriaBuilder.quot(
+                        totalWeightage, // Total weightage (numerator)
+                        criteriaBuilder.count(careerSkillsRoot.get("skill").get("skillId")) // Count of skills (denominator)
+                )));
 
         List<Object> res = em.createQuery(criteriaQuery).getResultList();
 

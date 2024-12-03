@@ -3,9 +3,6 @@ package com.wgtpivotlo.wgtpivotlo.service;
 import com.wgtpivotlo.wgtpivotlo.dto.*;
 import com.wgtpivotlo.wgtpivotlo.enums.SkillLevel;
 import com.wgtpivotlo.wgtpivotlo.mapper.CareerWithSkillMapper;
-import com.wgtpivotlo.wgtpivotlo.model.Career;
-import com.wgtpivotlo.wgtpivotlo.model.CareerSkills;
-import com.wgtpivotlo.wgtpivotlo.model.Skill;
 import com.wgtpivotlo.wgtpivotlo.repository.CareerSkillAssociationRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +23,7 @@ public class CareerRecommendationService {
         this.careerWithSkillMapper = careerWithSkillMapper;
     }
 
-    public List<CareerWithSimilarityScoreDTO> getRecommendedCareers(){
+    public List<Object> getRecommendedCareers(){
         CareerSkillDTO skillProfiencyData1 = new CareerSkillDTO(4L, SkillLevel.Advanced);
         CareerSkillDTO skillProfiencyData2 = new CareerSkillDTO(2L, SkillLevel.Advanced);
         CareerSkillDTO skillProfiencyData3 = new CareerSkillDTO(10L, SkillLevel.Advanced);
@@ -37,27 +34,28 @@ public class CareerRecommendationService {
         skillsProfiencyList.add(skillProfiencyData3);
 
         // Get all the career related to skills and profiency
-        List<CareerSkills> filteredCareers = careerSkillAssociationRepository.findAllBySkillIdsAndProfiency(skillsProfiencyList);
-
-        // Career Set
-        Set<Career> careerSet = filteredCareers.stream().map(CareerSkills::getCareer).collect(Collectors.toSet());
-        List<Long> careerIdList = filteredCareers.stream().map((careerSkills -> careerSkills.getCareer().getCareer_id())).toList();
-
-        List<CareerSkills> careerSkillsList = careerSkillAssociationRepository.findByCareerIdsNative(careerIdList);
-        Map<Long, List<CareerSkills>> careerSkillsMap = careerSkillsList.stream().collect(Collectors.groupingBy(careerSkills -> careerSkills.getCareer().getCareer_id()));
-
-        List<CareerWithSimilarityScoreDTO> res = new ArrayList<>();
-        // map to CareerSkillWithProfiencyDTO
-        if (!careerSkillsList.isEmpty()){
-            for(Career career: careerSet){
-                long careerId = career.getCareer_id();
-                List<CareerSkills> currentCareerSkills = careerSkillsMap.getOrDefault(careerId, List.of());
-                CareerWithSkillDTO careerWithSkillDTO = careerWithSkillMapper.mapSkillsIntoCareer(career, currentCareerSkills);
-                double similarityScore = calculateCareerSimilarityScore(careerWithSkillDTO, skillsProfiencyList);
-                res.add(CareerWithSimilarityScoreDTO.builder().career(career).similarityScore(similarityScore).build());
-            }
-        }
-        return res;
+        // TODO: Return a Page<Career> instead of CareerSkills. Then we fetch careerSkillsList using careerSkillAssociationRepository.findByCareerIdsNative
+        List<Object> filteredCareers = careerSkillAssociationRepository.findAllBySkillIdsAndProfiency(skillsProfiencyList);
+        return filteredCareers;
+//        // Career Set
+//        Set<Career> careerSet = filteredCareers.stream().map(CareerSkills::getCareer).collect(Collectors.toSet());
+//        List<Long> careerIdList = filteredCareers.stream().map((careerSkills -> careerSkills.getCareer().getCareer_id())).toList();
+//
+//        List<CareerSkills> careerSkillsList = careerSkillAssociationRepository.findByCareerIdsNative(careerIdList);
+//        Map<Long, List<CareerSkills>> careerSkillsMap = careerSkillsList.stream().collect(Collectors.groupingBy(careerSkills -> careerSkills.getCareer().getCareer_id()));
+//
+//        List<CareerWithSimilarityScoreDTO> res = new ArrayList<>();
+//        // map to CareerSkillWithProfiencyDTO
+//        if (!careerSkillsList.isEmpty()){
+//            for(Career career: careerSet){
+//                long careerId = career.getCareer_id();
+//                List<CareerSkills> currentCareerSkills = careerSkillsMap.getOrDefault(careerId, List.of());
+//                CareerWithSkillDTO careerWithSkillDTO = careerWithSkillMapper.mapSkillsIntoCareer(career, currentCareerSkills);
+//                double similarityScore = calculateCareerSimilarityScore(careerWithSkillDTO, skillsProfiencyList);
+//                res.add(CareerWithSimilarityScoreDTO.builder().career(career).similarityScore(similarityScore).build());
+//            }
+//        }
+//        return res;
     }
 
     private double calculateCareerSimilarityScore(CareerWithSkillDTO careerWithSkillDTO, List<CareerSkillDTO> userSkillsProfiencyList){

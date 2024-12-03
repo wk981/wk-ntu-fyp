@@ -1,6 +1,7 @@
 package com.wgtpivotlo.wgtpivotlo.controller;
 
 import com.wgtpivotlo.wgtpivotlo.dto.CareerWithSimilarityScoreDTO;
+import com.wgtpivotlo.wgtpivotlo.dto.CareerWithSkillCount;
 import com.wgtpivotlo.wgtpivotlo.dto.CareerWithSkillDTO;
 import com.wgtpivotlo.wgtpivotlo.service.CareerRecommendationService;
 import com.wgtpivotlo.wgtpivotlo.service.CareerSkillAssociationService;
@@ -33,8 +34,8 @@ public class CareerSkillAssociationController {
     }
 
     @GetMapping("/career/recommendations")
-    public ResponseEntity<List<CareerWithSimilarityScoreDTO>> getRecommendedCareers(){
-        List<CareerWithSimilarityScoreDTO> res = careerRecommendationService.getRecommendedCareers();
+    public ResponseEntity<List<Object>> getRecommendedCareers(){
+        List<Object> res = careerRecommendationService.getRecommendedCareers();
         return ResponseEntity.ok(res);
     }
 }

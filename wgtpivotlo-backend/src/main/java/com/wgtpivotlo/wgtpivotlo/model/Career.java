@@ -16,7 +16,7 @@ public class Career extends SuperClass{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="career_id")
-    private long career_id;
+    private long careerId;
 
     @Column(nullable = false)
     private String title;

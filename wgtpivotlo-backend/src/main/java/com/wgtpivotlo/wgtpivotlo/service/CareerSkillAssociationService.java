@@ -47,7 +47,7 @@ public class CareerSkillAssociationService {
             careerWithSkillDTO = CareerWithSkillDTO
                     .builder()
                     .skillsWithProfiency(careerSkillWithProficiencyDTOList)
-                    .career_id(career.get().getCareer_id())
+                    .career_id(career.get().getCareerId())
                     .title(career.get().getTitle())
                     .sector(career.get().getSector())
                     .responsibility(career.get().getResponsibility())

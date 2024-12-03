@@ -30,7 +30,7 @@ public class CareerWithSkillMapper {
         return CareerWithSkillDTO
             .builder()
             .skillsWithProfiency(careerSkillWithProficiencyDTOList)
-            .career_id(career.getCareer_id())
+            .career_id(career.getCareerId())
             .title(career.getTitle())
             .sector(career.getSector())
             .responsibility(career.getResponsibility())

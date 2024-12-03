@@ -2,6 +2,7 @@ package com.wgtpivotlo.wgtpivotlo.repository;
 
 import com.wgtpivotlo.wgtpivotlo.dto.CareerSkillDTO;
 import com.wgtpivotlo.wgtpivotlo.enums.SkillLevel;
+import com.wgtpivotlo.wgtpivotlo.model.Career;
 import com.wgtpivotlo.wgtpivotlo.model.CareerSkills;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
@@ -22,10 +23,19 @@ public class CareerSkillAssociationRepositoryImpl implements CareerSkillAssociat
     }
 
     @Override
-    public List<CareerSkills> findAllBySkillIdsAndProfiency(List<CareerSkillDTO> skillsProfiencyList) {
+    public List<Object> findAllBySkillIdsAndProfiency(List<CareerSkillDTO> skillsProfiencyList) {
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
-        CriteriaQuery<CareerSkills> criteriaQuery = criteriaBuilder.createQuery(CareerSkills.class);
-        Root<CareerSkills> root = criteriaQuery.from(CareerSkills.class);
+
+        CriteriaQuery<Object> criteriaQuery = criteriaBuilder.createQuery(Object.class);
+        Root<Career> CareerRoot = criteriaQuery.from(Career.class);
+
+        // Explicit join with CareerSkills based on foreign key
+        Root<CareerSkills> careerSkillsRoot = criteriaQuery.from(CareerSkills.class);
+        Predicate joinCondition = criteriaBuilder.equal(CareerRoot.get("careerId"), careerSkillsRoot.get("career").get("careerId"));
+
+        Subquery<Long> subQuery = criteriaQuery.subquery(Long.class);
+        Root<CareerSkills> subRoot = subQuery.from(CareerSkills.class);
+
         // List to hold predicates
         List<Predicate> orPredicates = new ArrayList<>();
         // Iterate through the skillsProficiencyList
@@ -33,11 +43,10 @@ public class CareerSkillAssociationRepositoryImpl implements CareerSkillAssociat
             Optional<Long> skillId = skillProficiency.getSkillId().describeConstable();
             Optional<SkillLevel> profiency = Optional.ofNullable(skillProficiency.getProfiency());
             if (skillId.isPresent() && profiency.isPresent()) {
-
-                // Map proficiency to levels (if needed)
+                // Map proficiency to levels
                 Expression<Integer> skillProficiencyExpression = criteriaBuilder.selectCase()
-                        .when(criteriaBuilder.equal(root.get("profiency"), "Beginner"), 1)
-                        .when(criteriaBuilder.equal(root.get("profiency"), "Intermediate"), 2)
+                        .when(criteriaBuilder.equal(subRoot.get("profiency"), "Beginner"), 1)
+                        .when(criteriaBuilder.equal(subRoot.get("profiency"), "Intermediate"), 2)
                         .otherwise(3)
                         .as(Integer.class);
 
@@ -50,20 +59,38 @@ public class CareerSkillAssociationRepositoryImpl implements CareerSkillAssociat
                 };
 
                 // Add the predicate for skillId and proficiency
-                Predicate skillPredicate = criteriaBuilder.equal(root.get("skill").get("skillId"), skillId.get());
+                Predicate skillPredicate = criteriaBuilder.equal(subRoot.get("skill").get("skillId"), skillId.get());
                 Predicate proficiencyPredicate = criteriaBuilder.lessThanOrEqualTo(skillProficiencyExpression, proficiencyLevel);
 
                 // Combine predicates with AND and add to orPredicates
                 orPredicates.add(criteriaBuilder.and(skillPredicate, proficiencyPredicate));
             }
         }
-        // Combine all the OR predicates
-        if (!orPredicates.isEmpty()) {
-            Predicate finalPredicate = criteriaBuilder.or(orPredicates.toArray(new Predicate[0]));
-            criteriaQuery.where(finalPredicate);
-        }
 
-        // Execute the query
-        return em.createQuery(criteriaQuery).getResultList();
+        Predicate finalPredicate = criteriaBuilder.or(orPredicates.toArray(new Predicate[0]));
+        subQuery
+                .select(subRoot.get("career").get("careerId"))
+                .where(finalPredicate);
+
+        criteriaQuery
+                .multiselect(
+                        CareerRoot, // Select the entire Career entity
+                        criteriaBuilder.count(careerSkillsRoot.get("skill").get("skillId")) // Count skills
+                )
+                .where(
+                        criteriaBuilder
+                                .and(
+                                        joinCondition,
+                                        criteriaBuilder
+                                                .in(CareerRoot.get("careerId"))
+                                                .value(subQuery)
+                                )
+                )
+                .groupBy(CareerRoot.get("careerId"))
+                .orderBy(criteriaBuilder.desc(criteriaBuilder.count(careerSkillsRoot.get("skill").get("skillId"))));
+
+        List<Object> res = em.createQuery(criteriaQuery).getResultList();
+
+        return res;
     }
 }

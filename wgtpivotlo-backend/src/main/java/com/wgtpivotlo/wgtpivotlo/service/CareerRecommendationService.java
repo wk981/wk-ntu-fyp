@@ -6,6 +6,9 @@ import com.wgtpivotlo.wgtpivotlo.mapper.CareerWithSkillMapper;
 import com.wgtpivotlo.wgtpivotlo.repository.CareerSkillAssociationRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -23,7 +26,8 @@ public class CareerRecommendationService {
         this.careerWithSkillMapper = careerWithSkillMapper;
     }
 
-    public List<Object> getRecommendedCareers(){
+    public Page<Object> getRecommendedCareers(){
+        // mock datas
         CareerSkillDTO skillProfiencyData1 = new CareerSkillDTO(4L, SkillLevel.Advanced);
         CareerSkillDTO skillProfiencyData2 = new CareerSkillDTO(2L, SkillLevel.Advanced);
         CareerSkillDTO skillProfiencyData3 = new CareerSkillDTO(10L, SkillLevel.Advanced);
@@ -33,50 +37,14 @@ public class CareerRecommendationService {
         skillsProfiencyList.add(skillProfiencyData2);
         skillsProfiencyList.add(skillProfiencyData3);
 
-        // Get all the career related to skills and profiency
-        // TODO: Return a Page<Career> instead of CareerSkills. Then we fetch careerSkillsList using careerSkillAssociationRepository.findByCareerIdsNative
-        List<Object> filteredCareers = careerSkillAssociationRepository.findAllBySkillIdsAndProfiency(skillsProfiencyList);
-        return filteredCareers;
-//        // Career Set
-//        Set<Career> careerSet = filteredCareers.stream().map(CareerSkills::getCareer).collect(Collectors.toSet());
-//        List<Long> careerIdList = filteredCareers.stream().map((careerSkills -> careerSkills.getCareer().getCareer_id())).toList();
-//
-//        List<CareerSkills> careerSkillsList = careerSkillAssociationRepository.findByCareerIdsNative(careerIdList);
-//        Map<Long, List<CareerSkills>> careerSkillsMap = careerSkillsList.stream().collect(Collectors.groupingBy(careerSkills -> careerSkills.getCareer().getCareer_id()));
-//
-//        List<CareerWithSimilarityScoreDTO> res = new ArrayList<>();
-//        // map to CareerSkillWithProfiencyDTO
-//        if (!careerSkillsList.isEmpty()){
-//            for(Career career: careerSet){
-//                long careerId = career.getCareer_id();
-//                List<CareerSkills> currentCareerSkills = careerSkillsMap.getOrDefault(careerId, List.of());
-//                CareerWithSkillDTO careerWithSkillDTO = careerWithSkillMapper.mapSkillsIntoCareer(career, currentCareerSkills);
-//                double similarityScore = calculateCareerSimilarityScore(careerWithSkillDTO, skillsProfiencyList);
-//                res.add(CareerWithSimilarityScoreDTO.builder().career(career).similarityScore(similarityScore).build());
-//            }
-//        }
-//        return res;
+        // Paging
+        Pageable pageable = PageRequest.of(14,10);
+
+        // Get all the career related to skills and profiency along with similarity score.
+        Page<Object> careersWithSimilairtyScorePage = careerSkillAssociationRepository.findAllBySkillIdsAndProfiency(skillsProfiencyList, pageable);
+
+        return careersWithSimilairtyScorePage;
+
     }
 
-    private double calculateCareerSimilarityScore(CareerWithSkillDTO careerWithSkillDTO, List<CareerSkillDTO> userSkillsProfiencyList){
-        List<SkillWithProfiencyDTO> skillWithProfiencyDTOList = careerWithSkillDTO.getSkillsWithProfiency();
-        Set<Long> careerSkillSet = skillWithProfiencyDTOList
-                .stream()
-                .map((SkillDTO::getSkillId))
-                .collect(Collectors.toSet());
-
-        Set<Long> userSkillSet = userSkillsProfiencyList
-                .stream()
-                .map((CareerSkillDTO::getSkillId))
-                .collect(Collectors.toSet());;
-
-        // intersection
-        Set<Long> intersection = new HashSet<>(userSkillSet);
-        intersection.retainAll(careerSkillSet);
-
-        // Calculate union
-        Set<Long> union = new HashSet<>(userSkillSet);
-        union.addAll(careerSkillSet);
-        return (double) intersection.size() / union.size();
-    }
 }

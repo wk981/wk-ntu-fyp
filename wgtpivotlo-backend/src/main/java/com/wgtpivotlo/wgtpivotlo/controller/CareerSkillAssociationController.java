@@ -6,6 +6,7 @@ import com.wgtpivotlo.wgtpivotlo.dto.CareerWithSkillDTO;
 import com.wgtpivotlo.wgtpivotlo.service.CareerRecommendationService;
 import com.wgtpivotlo.wgtpivotlo.service.CareerSkillAssociationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,8 +35,8 @@ public class CareerSkillAssociationController {
     }
 
     @GetMapping("/career/recommendations")
-    public ResponseEntity<List<Object>> getRecommendedCareers(){
-        List<Object> res = careerRecommendationService.getRecommendedCareers();
+    public ResponseEntity<Page<Object>> getRecommendedCareers(){
+        Page<Object> res = careerRecommendationService.getRecommendedCareers();
         return ResponseEntity.ok(res);
     }
 }

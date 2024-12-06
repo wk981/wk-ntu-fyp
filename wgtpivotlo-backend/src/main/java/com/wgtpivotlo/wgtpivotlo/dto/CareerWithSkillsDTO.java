@@ -10,7 +10,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CareerWithSkillDTO {
+public class CareerWithSkillsDTO {
     private long career_id;
     private String title;
     private String sector;
@@ -19,7 +19,7 @@ public class CareerWithSkillDTO {
     private String pic_url;
     private List<SkillWithProfiencyDTO> skillsWithProfiency;
 
-    public CareerWithSkillDTO(List<SkillWithProfiencyDTO> skillsWithProfiency, Long career_id, String title, String sector, String responsibility, CareerLevel careerLevel, String pic_url) {
+    public CareerWithSkillsDTO(List<SkillWithProfiencyDTO> skillsWithProfiency, Long career_id, String title, String sector, String responsibility, CareerLevel careerLevel, String pic_url) {
         this.skillsWithProfiency = skillsWithProfiency;
         this.career_id = career_id;
         this.title = title;

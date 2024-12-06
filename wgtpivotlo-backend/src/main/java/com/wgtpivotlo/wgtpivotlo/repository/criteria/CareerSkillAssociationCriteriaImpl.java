@@ -1,4 +1,4 @@
-package com.wgtpivotlo.wgtpivotlo.repository;
+package com.wgtpivotlo.wgtpivotlo.repository.criteria;
 
 import com.wgtpivotlo.wgtpivotlo.dto.CareerSkillDTO;
 import com.wgtpivotlo.wgtpivotlo.enums.SkillLevel;
@@ -21,22 +21,22 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class CareerSkillAssociationRepositoryImpl implements CareerSkillAssociationRepositoryCustom{
+public class CareerSkillAssociationCriteriaImpl implements RecommendationCriteria {
     private EntityManager em;
 
     @Autowired
-    public CareerSkillAssociationRepositoryImpl(EntityManager em) {
+    public CareerSkillAssociationCriteriaImpl(EntityManager em) {
         this.em = em;
     }
 
     @Override
-    public Page<Object> findAllBySkillIdsAndProfiency(List<CareerSkillDTO> skillsProfiencyList, Pageable pageable) {
+    public Page<Object[]> findAllBySkillIdsAndProfiency(List<CareerSkillDTO> skillsProfiencyList, Pageable pageable) {
         // Query builder. Using entitymanage unwrap and hibernate criteria builder for pagination count cus error: Already registered a copy: org.hibernate.query.sqm.tree.select.SqmSubQuery@25b07b73
         Session session = em.unwrap(Session.class);
         HibernateCriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
 
         // Create query for main query.
-        JpaCriteriaQuery<Object> criteriaQuery = criteriaBuilder.createQuery(Object.class);
+        JpaCriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
         // FROM Career Table
         Root<Career> CareerRoot = criteriaQuery.from(Career.class);
 
@@ -54,14 +54,14 @@ public class CareerSkillAssociationRepositoryImpl implements CareerSkillAssociat
             Optional<Long> skillId = skillProficiency.getSkillId().describeConstable();
             Optional<SkillLevel> profiency = Optional.ofNullable(skillProficiency.getProfiency());
             if (skillId.isPresent() && profiency.isPresent()) {
-                // Map proficiency to levels
+                // Map proficiency to levels, case(careerskill.profiency) as int
                 Expression<Integer> skillProficiencyExpression = criteriaBuilder.selectCase()
                         .when(criteriaBuilder.equal(subRoot.get("profiency"), "Beginner"), 1)
                         .when(criteriaBuilder.equal(subRoot.get("profiency"), "Intermediate"), 2)
                         .otherwise(3)
                         .as(Integer.class);
 
-                // Map input proficiency to level
+                // Map input proficiency to level, case(user's skill profiency)
                 Integer proficiencyLevel = switch (profiency.get().toString()) {
                     case "Beginner" -> 1;
                     case "Intermediate" -> 2;
@@ -82,10 +82,14 @@ public class CareerSkillAssociationRepositoryImpl implements CareerSkillAssociat
 
                 // Add the predicate for skillId and proficiency
                 Predicate skillPredicate = criteriaBuilder.equal(subRoot.get("skill").get("skillId"), skillId.get());
-                Predicate proficiencyPredicate = criteriaBuilder.lessThanOrEqualTo(skillProficiencyExpression, proficiencyLevel);
+                Predicate inclusiveCareerPredicate = criteriaBuilder.lessThanOrEqualTo(skillProficiencyExpression, proficiencyLevel); // Inclusive Career
+                Predicate potentialCareerPredicate = criteriaBuilder.greaterThanOrEqualTo(skillProficiencyExpression, proficiencyLevel); // Potential Career
+                // (case(careerskill.profiency) <= case(user's skill profiency) or case(careerskill.profiency) >= case(user's skill profiency))
+
+                Predicate proficiencyPredicate = criteriaBuilder.or(inclusiveCareerPredicate, potentialCareerPredicate);
 
                 // Combine predicates with AND and add to orPredicates
-                orPredicates.add(criteriaBuilder.and(skillPredicate, proficiencyPredicate));
+                orPredicates.add(criteriaBuilder.and(skillPredicate, proficiencyPredicate)); // skillId and (case()...)
             }
         }
         // Chain subquery's Ors
@@ -124,7 +128,7 @@ public class CareerSkillAssociationRepositoryImpl implements CareerSkillAssociat
                 )));
 
         // first result is offset where the record first index at. Max results is the index 0 to n
-        List<Object> careerWithSimilarityRes = em.createQuery(criteriaQuery).setFirstResult((int) pageable.getOffset()).setMaxResults(pageable.getPageSize()).getResultList();
+        List<Object[]> careerWithSimilarityRes = em.createQuery(criteriaQuery).setFirstResult((int) pageable.getOffset()).setMaxResults(pageable.getPageSize()).getResultList();
 
         // In Hibernate 6 it's no longer possible to reuse Predicates across different CriteriaQueries.
         // Have to make a method that receives your original query and returns the total count.

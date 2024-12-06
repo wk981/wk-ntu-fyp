@@ -10,5 +10,5 @@ import lombok.*;
 @NoArgsConstructor
 public class CareerWithSimilarityScoreDTO {
     Career career;
-    double similarityScore;
+    String similarityScore;
 }

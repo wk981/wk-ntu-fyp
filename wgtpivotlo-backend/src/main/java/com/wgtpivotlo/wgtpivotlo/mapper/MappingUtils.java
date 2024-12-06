@@ -1,17 +1,36 @@
 package com.wgtpivotlo.wgtpivotlo.mapper;
 
-import com.wgtpivotlo.wgtpivotlo.dto.CareerWithSkillDTO;
-import com.wgtpivotlo.wgtpivotlo.dto.SkillWithProfiencyDTO;
-import com.wgtpivotlo.wgtpivotlo.model.Career;
-import com.wgtpivotlo.wgtpivotlo.model.CareerSkills;
+import com.wgtpivotlo.wgtpivotlo.dto.*;
+import com.wgtpivotlo.wgtpivotlo.enums.SkillLevel;
+import com.wgtpivotlo.wgtpivotlo.model.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class CareerWithSkillMapper {
-    public CareerWithSkillDTO mapSkillsIntoCareer(Career career, List<CareerSkills> careerSkillsList){
+public class MappingUtils {
+    public CourseWithSkillsDTO mapSkillsIntoCourse(Course course, List<CourseSkills> courseSkillsList){
+        List<SkillDTO> skillDTOList = new ArrayList<>();
+        SkillLevel profiency = null;
+
+        for (CourseSkills courseSkills: courseSkillsList){
+            Skill currentSkill = courseSkills.getSkill();
+            SkillDTO skillDTO = new SkillDTO(currentSkill);
+            skillDTOList.add(skillDTO);
+            profiency = courseSkills.getProfiency();
+        }
+
+        CourseDTO courseDTO = new CourseDTO(course);
+        return CourseWithSkillsDTO
+                .builder()
+                .skillDTOList(skillDTOList)
+                .courseDTO(courseDTO)
+                .profiency(profiency)
+                .build();
+    }
+
+    public CareerWithSkillsDTO mapSkillsIntoCareer(Career career, List<CareerSkills> careerSkillsList){
         List<SkillWithProfiencyDTO> careerSkillWithProficiencyDTOList = new ArrayList<>();
 
         for (CareerSkills careerSkills: careerSkillsList){
@@ -27,7 +46,7 @@ public class CareerWithSkillMapper {
             careerSkillWithProficiencyDTOList.add(skillWithProfiencyDTO);
         }
 
-        return CareerWithSkillDTO
+        return CareerWithSkillsDTO
             .builder()
             .skillsWithProfiency(careerSkillWithProficiencyDTOList)
             .career_id(career.getCareerId())

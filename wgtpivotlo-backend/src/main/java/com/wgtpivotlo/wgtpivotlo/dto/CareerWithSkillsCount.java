@@ -8,7 +8,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CareerWithSkillCount {
+public class CareerWithSkillsCount {
     private long careerId;
     private String title;
     private String sector;

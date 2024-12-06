@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CourseSkillDTO {
+public class CourseWithSkillsDTO {
     private CourseDTO courseDTO;
     private List<SkillDTO> skillDTOList;
     private SkillLevel profiency;

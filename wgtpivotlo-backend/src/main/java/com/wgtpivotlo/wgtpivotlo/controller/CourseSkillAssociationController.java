@@ -1,7 +1,6 @@
 package com.wgtpivotlo.wgtpivotlo.controller;
 
-import com.wgtpivotlo.wgtpivotlo.dto.CareerSkillListDTO;
-import com.wgtpivotlo.wgtpivotlo.dto.CourseSkillDTO;
+import com.wgtpivotlo.wgtpivotlo.dto.CourseWithSkillsDTO;
 import com.wgtpivotlo.wgtpivotlo.service.CourseSkillAssociationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +21,7 @@ public class CourseSkillAssociationController {
 
     @GetMapping("/course/{course_id}")
     public ResponseEntity<?> getCareerAssiocationId(@PathVariable Long course_id){
-        Optional<CourseSkillDTO> res = courseSkillAssociationService.findByCourseId(course_id);
+        Optional<CourseWithSkillsDTO> res = courseSkillAssociationService.findByCourseId(course_id);
         return ResponseEntity.ok(res);
     }
 }

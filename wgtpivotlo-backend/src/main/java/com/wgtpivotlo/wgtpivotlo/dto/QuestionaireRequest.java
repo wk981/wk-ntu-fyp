@@ -1,0 +1,22 @@
+package com.wgtpivotlo.wgtpivotlo.dto;
+
+import com.wgtpivotlo.wgtpivotlo.enums.CareerLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
+
+@Getter
+@Setter
+@NoArgsConstructor
+public class QuestionaireRequest extends PageRequest{
+    private String sector;
+    private CareerLevel careerLevel;
+    private List<CareerSkillDTO> careerSkillDTOList;
+    public QuestionaireRequest(String sector, CareerLevel careerLevel, List<CareerSkillDTO> careerSkillDTOList){
+        this.sector = sector;
+        this.careerLevel = careerLevel;
+        this.careerSkillDTOList = careerSkillDTOList;
+    }
+}

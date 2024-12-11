@@ -9,6 +9,6 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CareerSkillWithProfiencyDTO extends SkillDTO {
+public class SkillWithProfiencyDTO extends SkillDTO {
     private SkillLevel profiency;
 }

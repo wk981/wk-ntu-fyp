@@ -22,4 +22,23 @@ public enum CareerLevel {
     public String toString() {
         return this.level;
     }
+
+    public double toWeightedDouble(){
+        return switch (level) {
+            case "Entry Level" -> 0.25;
+            case "Mid Level" -> 0.5;
+            case "Senior Level" -> 1;
+            default -> throw new IllegalArgumentException("Invalid career-level: " + level);
+        };
+    }
+
+    public int toInt(){
+        return switch (level){
+            case "Entry Level" -> 1;
+            case "Mid Level" -> 2;
+            case "Senior Level" -> 3;
+            default -> throw new IllegalArgumentException("Invalid career-level: " + level);
+        };
+    }
+
 }

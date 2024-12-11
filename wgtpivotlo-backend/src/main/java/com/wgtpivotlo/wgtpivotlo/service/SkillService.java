@@ -44,10 +44,12 @@ public class SkillService {
 
         log.info("Step1a: Making a query to get skills");
         Page<Skill> paginatedSkills = skillRepository.findAll(skillPageWithElements);
+
         if (correctedPageNumber >= paginatedSkills.getTotalPages()) {
             log.warn("Page number out of bounds");
             throw new PageItemsOutOfBoundException("Page number out of bounds");
         }
+
         log.info("Step1b: Creating skillDTO");
         List<SkillDTO> skillDTOList= paginatedSkills.getContent().stream().map(SkillDTO::new).collect(Collectors.toList());;
 

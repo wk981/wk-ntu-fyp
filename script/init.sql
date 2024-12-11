@@ -93,7 +93,7 @@ CREATE TABLE user_skill (
     id SERIAL PRIMARY KEY,
     user_id INT,
     skill_id INT,
-    skill_level INT,
+    profiency VARCHAR(20) CHECK (profiency IN ('Beginner', 'Intermediate', 'Advanced')),
     created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES _user(user_id) ON DELETE CASCADE,

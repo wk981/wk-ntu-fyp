@@ -11,11 +11,11 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 public class QuestionaireRequest extends PageRequest{
-    private String industry;
+    private String sector;
     private CareerLevel careerLevel;
     private List<CareerSkillDTO> careerSkillDTOList;
-    public QuestionaireRequest(String industry, CareerLevel careerLevel, List<CareerSkillDTO> careerSkillDTOList){
-        this.industry = industry;
+    public QuestionaireRequest(String sector, CareerLevel careerLevel, List<CareerSkillDTO> careerSkillDTOList){
+        this.sector = sector;
         this.careerLevel = careerLevel;
         this.careerSkillDTOList = careerSkillDTOList;
     }

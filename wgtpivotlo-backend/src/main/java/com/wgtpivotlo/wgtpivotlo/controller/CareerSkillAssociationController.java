@@ -1,11 +1,9 @@
 package com.wgtpivotlo.wgtpivotlo.controller;
 
-import com.wgtpivotlo.wgtpivotlo.dto.CareerWithSimilarityScoreDTO;
-import com.wgtpivotlo.wgtpivotlo.dto.CareerWithSkillsDTO;
-import com.wgtpivotlo.wgtpivotlo.dto.PageDTO;
-import com.wgtpivotlo.wgtpivotlo.dto.QuestionaireRequest;
+import com.wgtpivotlo.wgtpivotlo.dto.*;
 import com.wgtpivotlo.wgtpivotlo.service.CareerRecommendationService;
 import com.wgtpivotlo.wgtpivotlo.service.CareerSkillAssociationService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +29,18 @@ public class CareerSkillAssociationController {
     }
 
     @PostMapping("/career/recommendations")
-    public ResponseEntity<PageDTO<CareerWithSimilarityScoreDTO>> getRecommendedCareers(@RequestBody QuestionaireRequest questionaireRequest){
-        PageDTO<CareerWithSimilarityScoreDTO> res = careerRecommendationService.getRecommendedCareers(questionaireRequest.getPageNumber(), questionaireRequest.getPageSize(), questionaireRequest.getCareerSkillDTOList());
+    public ResponseEntity<PageDTO<CareerWithSimilarityScoreDTO>> getRecommendedCareers(@Valid @RequestBody CareerRecommendationRequest request){
+        PageDTO<CareerWithSimilarityScoreDTO> res =
+                careerRecommendationService
+                .getRecommendedCareers(
+                        request.getPageNumber(),
+                        request.getPageSize(),
+                        request.getCareerSkillDTOList(),
+                        request.getSector(),
+                        request.getCareerLevel(),
+                        request.getChoice()
+                );
+
         return ResponseEntity.ok(res);
     }
 

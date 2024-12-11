@@ -33,6 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             log.warn("Building a userDetails");
             UserDetailsImpl userDetails = UserDetailsImpl
                     .builder()
+                    .id(existUser.getUser_id())
                     .email(existUser.getEmail())
                     .password(existUser.getPassword())
                     .username(existUser.getUsername())

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.nio.file.AccessDeniedException;
+import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/questionaire")
@@ -25,7 +27,8 @@ public class QuestionaireController {
     }
 
     @PostMapping("/result")
-    public ResponseEntity<PageDTO<CareerWithSimilarityScoreDTO>> getResult(@RequestBody QuestionaireRequest questionaireRequest, Authentication authentication) throws AccessDeniedException {
-        return ResponseEntity.ok(questionaireService.getResult(questionaireRequest.getCareerSkillDTOList(), authentication));
+    public ResponseEntity<?> getResult(@RequestBody QuestionaireRequest questionaireRequest, Authentication authentication) throws AccessDeniedException {
+        HashMap<String, List<Object[]>> res = questionaireService.getResult(questionaireRequest, authentication);
+        return ResponseEntity.ok(res);
     }
 }

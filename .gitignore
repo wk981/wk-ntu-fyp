@@ -27,3 +27,5 @@ node_modules
 .venv/
 script/*.json
 __pycache__/
+
+.env

@@ -5,8 +5,8 @@ export function capitalizeFirstChar(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
-export const backendURL: string = import.meta.env.VITE_BACKEND_URL as string;
+export const backendURL: string = import.meta.env.VITE_BACKEND_URL as string
 
 export interface ProviderProps {
   children: ReactNode
-};
+}

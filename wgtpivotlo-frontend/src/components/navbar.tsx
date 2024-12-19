@@ -30,8 +30,8 @@ export const Navbar = () => {
           onClick={(e) => {
             e.preventDefault()
             onClick().catch((error) => {
-              console.error('Error in onClick:', error);
-            });
+              console.error('Error in onClick:', error)
+            })
           }}
           className="w-24 text-lg"
         >

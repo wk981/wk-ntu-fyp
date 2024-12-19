@@ -18,12 +18,12 @@ import { useNavigate } from 'react-router-dom'
 import { BlueAnchorLink } from '@/components/blue-anchor-link'
 
 export const LoginForm = () => {
-  const inputClassName = 'text-base font-normal';
-  const navigate = useNavigate();
-  const { loginUser } = useAuth();
+  const inputClassName = 'text-base font-normal'
+  const navigate = useNavigate()
+  const { loginUser } = useAuth()
   const form = useForm<z.infer<typeof loginFormSchema>>({
     resolver: zodResolver(loginFormSchema),
-  });
+  })
 
   const onSubmit = async (values: z.infer<typeof loginFormSchema>) => {
     try {
@@ -33,17 +33,16 @@ export const LoginForm = () => {
         await navigate('/')
       }
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-
   }
 
   return (
     <Form {...form}>
       <form
         onSubmit={(e) => {
-          e.preventDefault();
-          form.handleSubmit(onSubmit);
+          e.preventDefault()
+          form.handleSubmit(onSubmit)
         }}
         className="w-full flex flex-col gap-16 justify-stretch"
       >

@@ -35,24 +35,20 @@ export const RegisterForm = () => {
       }
       const status = await registerUser(body)
       if (status) {
-        toast('Registered Successfully');
-        await navigate('/auth/login');
+        toast('Registered Successfully')
+        await navigate('/auth/login')
       }
-      
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-
   }
   return (
     <Form {...form}>
       <form
-        onSubmit={
-          (e) => {
-            e.preventDefault();
-            form.handleSubmit(onSubmit);
-          }
-        }
+        onSubmit={(e) => {
+          e.preventDefault()
+          form.handleSubmit(onSubmit)
+        }}
         className="w-full flex flex-col gap-16 justify-stretch"
       >
         <div className="flex flex-col gap-3">

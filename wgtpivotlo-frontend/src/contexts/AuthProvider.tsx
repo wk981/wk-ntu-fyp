@@ -49,7 +49,7 @@ const AuthProvider = ({ children }: ProviderProps) => {
       await loginMutation.mutateAsync(body)
 
       // Attempt to fetch user data
-      const data = await meMutation.mutateAsync();
+      const data = await meMutation.mutateAsync()
 
       // Create the logged-in user object
       const loggedInUser: User = {

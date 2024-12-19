@@ -26,11 +26,11 @@ export const loginPost = async (data: loginBody) => {
     credentials: 'include',
   })
   if (!response.ok) {
-    const errorBody = await response.json() as ErrorResponse // Parse the error response
-    const errorMessage:string = errorBody.message || 'Something went wrong' // Extract the error message
+    const errorBody = (await response.json()) as ErrorResponse // Parse the error response
+    const errorMessage: string = errorBody.message || 'Something went wrong' // Extract the error message
     throw new Error(errorMessage) // Throw a new Error with the message
   }
-  const json = response.json() as Promise<Response>;
+  const json = response.json() as Promise<Response>
   return json
 }
 
@@ -45,11 +45,11 @@ export const registerPost = async (data: registerBody) => {
       },
     })
     if (!response.ok) {
-      const errorBody:ErrorResponse = await response.json() as ErrorResponse // Parse the error response
-      const errorMessage:string = errorBody.message || 'Something went wrong' // Extract the error message
+      const errorBody: ErrorResponse = (await response.json()) as ErrorResponse // Parse the error response
+      const errorMessage: string = errorBody.message || 'Something went wrong' // Extract the error message
       throw new Error(errorMessage) // Throw a new Error with the message
     }
-    const json = response.json() as Promise<Response>;
+    const json = response.json() as Promise<Response>
     return json
   } catch (e) {
     console.log(e)
@@ -63,10 +63,10 @@ export const meGet = async () => {
     credentials: 'include',
   })
   if (!response.ok) {
-    const errorBody:ErrorResponse  = await response.json() as ErrorResponse // Parse the error response
-    const errorMessage:string = errorBody.message || 'Something went wrong' // Extract the error message
+    const errorBody: ErrorResponse = (await response.json()) as ErrorResponse // Parse the error response
+    const errorMessage: string = errorBody.message || 'Something went wrong' // Extract the error message
     throw new Error(errorMessage) // Throw a new Error with the message
   }
-  const json = response.json() as Promise<User>;
+  const json = response.json() as Promise<User>
   return json
 }

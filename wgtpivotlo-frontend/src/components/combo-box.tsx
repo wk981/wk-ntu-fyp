@@ -20,7 +20,7 @@ import { ComboBoxProps } from '@/features/questionaire/types'
 
 export const ComboBox = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends Path<TFieldValues> = Path<TFieldValues>
+  TName extends Path<TFieldValues> = Path<TFieldValues>,
 >({
   data,
   value,

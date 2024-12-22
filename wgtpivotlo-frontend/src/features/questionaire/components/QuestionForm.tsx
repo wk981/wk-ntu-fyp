@@ -1,10 +1,17 @@
-import { ComboBox } from "@/components/combo-box";
-import { MultiSelectComboBox } from "@/components/multi-select-combo-box";
-import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { ComboBox } from '@/components/combo-box'
+import { MultiSelectComboBox } from '@/components/multi-select-combo-box'
+import { Button } from '@/components/ui/button'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 const mockData = [
   {
@@ -23,11 +30,13 @@ const mockData = [
 
 const FormSchema = z.object({
   careerLevel: z.string({
-    required_error: "Please select an option.",
+    required_error: 'Please select an option.',
   }),
-  skills: z.array(z.string({
-    required_error: "Please select at least one skill"
-  })),
+  skills: z.array(
+    z.string({
+      required_error: 'Please select at least one skill',
+    })
+  ),
 })
 
 export const QuestionForm = () => {
@@ -44,7 +53,7 @@ export const QuestionForm = () => {
             <FormItem>
               <FormLabel>Q1</FormLabel>
               <FormControl>
-                <ComboBox {...field} data={mockData} setValue={form.setValue}/>
+                <ComboBox {...field} data={mockData} setValue={form.setValue} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -57,13 +66,18 @@ export const QuestionForm = () => {
             <FormItem>
               <FormLabel>Q2</FormLabel>
               <FormControl>
-                <MultiSelectComboBox {...field} data={mockData} setValue={form.setValue} showValues={false}/>
+                <MultiSelectComboBox
+                  {...field}
+                  data={mockData}
+                  setValue={form.setValue}
+                  showValues={false}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
-      <Button type="submit">Submit</Button>
+        <Button type="submit">Submit</Button>
       </form>
     </Form>
   )

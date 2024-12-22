@@ -17,27 +17,33 @@ import { Button } from './ui/button'
 import { Check, ChevronsUpDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useState } from 'react'
-import { ControllerRenderProps, FieldValues, Path, PathValue, UseFormSetValue } from 'react-hook-form'
+import {
+  ControllerRenderProps,
+  FieldValues,
+  Path,
+  PathValue,
+  UseFormSetValue,
+} from 'react-hook-form'
 import { DataProps } from '@/features/questionaire/types'
 
 interface MultiComboBoxProps<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends Path<TFieldValues> = Path<TFieldValues>
+  TName extends Path<TFieldValues> = Path<TFieldValues>,
 > extends ControllerRenderProps<TFieldValues, TName> {
   data: DataProps[]
   setValue: UseFormSetValue<TFieldValues> // Corrected type
-  showValues: boolean;
+  showValues: boolean
 }
 
-export const MultiSelectComboBox =<
+export const MultiSelectComboBox = <
   TFieldValues extends FieldValues = FieldValues,
-  TName extends Path<TFieldValues> = Path<TFieldValues>
-> ({
+  TName extends Path<TFieldValues> = Path<TFieldValues>,
+>({
   data,
   value,
   setValue,
   name,
-  showValues
+  showValues,
 }: MultiComboBoxProps<TFieldValues, TName>) => {
   const [open, setOpen] = useState(false)
 
@@ -47,12 +53,12 @@ export const MultiSelectComboBox =<
       setValue(
         name,
         value.filter((item: any) => item !== val) // TypeScript knows `item` is a string
-      );
+      )
     } else {
       // Add the value to the array
-      setValue(name, [...value, val] as PathValue<TFieldValues, TName>);
+      setValue(name, [...value, val] as PathValue<TFieldValues, TName>)
     }
-  };
+  }
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

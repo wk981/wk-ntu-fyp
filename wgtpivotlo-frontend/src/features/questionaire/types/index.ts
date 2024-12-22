@@ -1,4 +1,9 @@
-import { ControllerRenderProps, FieldValues, Path, UseFormSetValue } from "react-hook-form"
+import {
+  ControllerRenderProps,
+  FieldValues,
+  Path,
+  UseFormSetValue,
+} from 'react-hook-form'
 
 export interface Skills {
   skillId: number
@@ -39,7 +44,7 @@ export interface DataProps {
 
 export interface ComboBoxProps<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends Path<TFieldValues> = Path<TFieldValues>
+  TName extends Path<TFieldValues> = Path<TFieldValues>,
 > extends ControllerRenderProps<TFieldValues, TName> {
   data: DataProps[]
   setValue: UseFormSetValue<TFieldValues> // Corrected type

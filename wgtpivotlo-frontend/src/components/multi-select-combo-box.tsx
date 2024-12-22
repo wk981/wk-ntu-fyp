@@ -24,11 +24,16 @@ interface DataProps {
 interface MultiComboBoxProps {
   data: DataProps[]
   value: string[]
-  setValue: React.Dispatch<React.SetStateAction<string[]>>;
+  setValue: React.Dispatch<React.SetStateAction<string[]>>
   showValues: boolean
 }
 
-export const MultiSelectComboBox = ({data, value, setValue, showValues}:MultiComboBoxProps) => {
+export const MultiSelectComboBox = ({
+  data,
+  value,
+  setValue,
+  showValues,
+}: MultiComboBoxProps) => {
   const [open, setOpen] = useState(false)
 
   const handleSetValue = (val: string) => {
@@ -49,24 +54,22 @@ export const MultiSelectComboBox = ({data, value, setValue, showValues}:MultiCom
           aria-expanded={open}
           className="w-[200px] justify-between"
         >
-        {showValues === true ? 
-          <div className="flex gap-2 justify-start">
-            {value?.length
-              ? value.map((val, i) => (
-                  <div
-                    key={i}
-                    className="px-2 py-1 rounded-xl border bg-slate-200 text-xs font-medium"
-                  >
-                    {
-                      data.find((d) => d.value === val)
-                        ?.label
-                    }
-                  </div>
-                ))
-              : 'Select an option'}
-          </div>
-          : "Select an option"
-        }
+          {showValues === true ? (
+            <div className="flex gap-2 justify-start">
+              {value?.length
+                ? value.map((val, i) => (
+                    <div
+                      key={i}
+                      className="px-2 py-1 rounded-xl border bg-slate-200 text-xs font-medium"
+                    >
+                      {data.find((d) => d.value === val)?.label}
+                    </div>
+                  ))
+                : 'Select an option'}
+            </div>
+          ) : (
+            'Select an option'
+          )}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -87,9 +90,7 @@ export const MultiSelectComboBox = ({data, value, setValue, showValues}:MultiCom
                   <Check
                     className={cn(
                       'mr-2 h-4 w-4',
-                      value.includes(d.value)
-                        ? 'opacity-100'
-                        : 'opacity-0'
+                      value.includes(d.value) ? 'opacity-100' : 'opacity-0'
                     )}
                   />
                   {d.label}

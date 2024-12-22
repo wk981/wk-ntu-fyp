@@ -6,9 +6,9 @@ export interface Skills {
   profiency: string
 }
 
-export interface SkillsAbstract{
-  skillId: number,
-  profiency: string,
+export interface SkillsAbstract {
+  skillId: number
+  profiency: string
 }
 
 interface Career {

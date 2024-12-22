@@ -1,7 +1,7 @@
 import { Navbar } from '@/components/navbar'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import { Login } from './routes/auth/login'
-import { Register } from './routes/auth/register'
+import { Login } from './routes/auth/Login'
+import { Register } from './routes/auth/Register'
 import { Landing } from './routes/Landing'
 
 export const AppRouter = () => {

@@ -1,5 +1,5 @@
 import { useAuth } from '@/features/auth/hook/useAuth'
-import { Avatar, AvatarFallback, AvatarImage } from '@radix-ui/react-avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Link } from 'react-router-dom'
 
 export const Profile = () => {

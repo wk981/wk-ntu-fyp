@@ -1,3 +1,9 @@
+import { SelectWithTextInput } from '@/components/select-with-text-input'
+
 export const Landing = () => {
-  return <div>Landing Page</div>
+  return (
+    <div>
+      <SelectWithTextInput />
+    </div>
+  )
 }

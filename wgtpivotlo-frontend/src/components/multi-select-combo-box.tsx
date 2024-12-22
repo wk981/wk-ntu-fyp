@@ -1,3 +1,5 @@
+/* eslint-disable */
+// Enable eslint when developing this as it has any types.
 import {
   Command,
   CommandEmpty,
@@ -15,35 +17,42 @@ import { Button } from './ui/button'
 import { Check, ChevronsUpDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useState } from 'react'
+import { ControllerRenderProps, FieldValues, Path, PathValue, UseFormSetValue } from 'react-hook-form'
+import { DataProps } from '@/features/questionaire/types'
 
-interface DataProps {
-  label: string
-  value: string
-}
-
-interface MultiComboBoxProps {
+interface MultiComboBoxProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends Path<TFieldValues> = Path<TFieldValues>
+> extends ControllerRenderProps<TFieldValues, TName> {
   data: DataProps[]
-  value: string[]
-  setValue: React.Dispatch<React.SetStateAction<string[]>>
-  showValues: boolean
+  setValue: UseFormSetValue<TFieldValues> // Corrected type
+  showValues: boolean;
 }
 
-export const MultiSelectComboBox = ({
+export const MultiSelectComboBox =<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends Path<TFieldValues> = Path<TFieldValues>
+> ({
   data,
   value,
   setValue,
-  showValues,
-}: MultiComboBoxProps) => {
+  name,
+  showValues
+}: MultiComboBoxProps<TFieldValues, TName>) => {
   const [open, setOpen] = useState(false)
 
   const handleSetValue = (val: string) => {
     if (value.includes(val)) {
-      value.splice(value.indexOf(val), 1)
-      setValue(value.filter((item) => item !== val))
+      // Remove the value if it already exists
+      setValue(
+        name,
+        value.filter((item: any) => item !== val) // TypeScript knows `item` is a string
+      );
     } else {
-      setValue((prevValue) => [...prevValue, val])
+      // Add the value to the array
+      setValue(name, [...value, val] as PathValue<TFieldValues, TName>);
     }
-  }
+  };
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -57,7 +66,7 @@ export const MultiSelectComboBox = ({
           {showValues === true ? (
             <div className="flex gap-2 justify-start">
               {value?.length
-                ? value.map((val, i) => (
+                ? value.map((val: any, i: any) => (
                     <div
                       key={i}
                       className="px-2 py-1 rounded-xl border bg-slate-200 text-xs font-medium"
@@ -75,8 +84,8 @@ export const MultiSelectComboBox = ({
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Search framework..." />
-          <CommandEmpty>No framework found.</CommandEmpty>
+          <CommandInput placeholder="Search" />
+          <CommandEmpty>No data found.</CommandEmpty>
           <CommandGroup>
             <CommandList>
               {data.map((d) => (

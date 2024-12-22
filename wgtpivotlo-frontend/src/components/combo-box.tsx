@@ -15,19 +15,18 @@ import { Button } from './ui/button'
 import { Check, ChevronsUpDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useState } from 'react'
+import { FieldValues, Path } from 'react-hook-form'
+import { ComboBoxProps } from '@/features/questionaire/types'
 
-interface DataProps {
-  label: string
-  value: string
-}
-
-interface ComboBoxProps {
-  data: DataProps[]
-  value: string
-  setValue: React.Dispatch<React.SetStateAction<string>>
-}
-
-export function ComboBox({ data, value, setValue }: ComboBoxProps) {
+export const ComboBox = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends Path<TFieldValues> = Path<TFieldValues>
+>({
+  data,
+  value,
+  setValue,
+  name,
+}: ComboBoxProps<TFieldValues, TName>) => {
   const [open, setOpen] = useState(false)
 
   return (
@@ -56,8 +55,9 @@ export function ComboBox({ data, value, setValue }: ComboBoxProps) {
                   key={d.value}
                   value={d.value}
                   onSelect={(currentValue) => {
-                    setValue(currentValue === value ? '' : currentValue)
                     setOpen(false)
+                    setValue(name, currentValue as any)
+                    console.log(name, currentValue)
                   }}
                 >
                   <Check

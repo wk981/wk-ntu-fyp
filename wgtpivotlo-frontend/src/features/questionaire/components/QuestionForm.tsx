@@ -51,7 +51,10 @@ export const QuestionForm = () => {
           name="careerLevel"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Q1</FormLabel>
+              <FormLabel>
+                Q1. Which industry do you prefer to work in?Industry Preferences
+                (Select one)
+              </FormLabel>
               <FormControl>
                 <ComboBox {...field} data={mockData} setValue={form.setValue} />
               </FormControl>
@@ -64,7 +67,30 @@ export const QuestionForm = () => {
           name="skills"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Q2</FormLabel>
+              <FormLabel>
+                Q2. What role are you aiming for? (Select One)
+              </FormLabel>
+              <FormControl>
+                <MultiSelectComboBox
+                  {...field}
+                  data={mockData}
+                  setValue={form.setValue}
+                  showValues={false}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="skills"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                Q3. Which of the following skills do you possess? (Select all
+                that apply)
+              </FormLabel>
               <FormControl>
                 <MultiSelectComboBox
                   {...field}

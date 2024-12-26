@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -38,6 +39,11 @@ public class SkillController {
     @PostMapping("/")
     public ResponseEntity<String> createNewSkill(){
         return ResponseEntity.status(201).body("Created");
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Skill>> findSkill(@RequestParam String q){
+        return ResponseEntity.ok(skillService.findSkill(q));
     }
 
 }

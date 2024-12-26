@@ -1,12 +1,10 @@
 package com.wgtpivotlo.wgtpivotlo.service;
 
 import com.wgtpivotlo.wgtpivotlo.dto.CareerSkillDTO;
-import com.wgtpivotlo.wgtpivotlo.dto.CareerWithSimilarityScoreDTO;
-import com.wgtpivotlo.wgtpivotlo.dto.PageDTO;
 import com.wgtpivotlo.wgtpivotlo.dto.QuestionaireRequest;
-import com.wgtpivotlo.wgtpivotlo.enums.CareerLevel;
 import com.wgtpivotlo.wgtpivotlo.errors.exceptions.ResourceNotFoundException;
 import com.wgtpivotlo.wgtpivotlo.model.UserSkills;
+import com.wgtpivotlo.wgtpivotlo.repository.CareerRepository;
 import com.wgtpivotlo.wgtpivotlo.repository.CareerSkillAssociationRepository;
 import com.wgtpivotlo.wgtpivotlo.repository.UserSkillsRepository;
 import com.wgtpivotlo.wgtpivotlo.security.UserDetailsImpl;
@@ -25,11 +23,17 @@ import java.util.Optional;
 public class QuestionaireService {
     private final CareerSkillAssociationRepository careerSkillAssociationRepository;
     private final UserSkillsRepository userSkillsRepository;
+    private final CareerRepository careerRepository;
 
     @Autowired
-    public QuestionaireService(CareerSkillAssociationRepository careerSkillAssociationRepository, UserSkillsRepository userSkillsRepository) {
+    public QuestionaireService(CareerSkillAssociationRepository careerSkillAssociationRepository, UserSkillsRepository userSkillsRepository, CareerRepository careerRepository) {
         this.careerSkillAssociationRepository = careerSkillAssociationRepository;
         this.userSkillsRepository = userSkillsRepository;
+        this.careerRepository = careerRepository;
+    }
+
+    public List<String> getSectors(){
+        return careerRepository.findAllCareer();
     }
 
     @Transactional

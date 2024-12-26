@@ -66,4 +66,8 @@ public class SkillService {
             return skill;
         }
     }
+
+    public List<Skill> findSkill(String q){
+        return skillRepository.findByNameContainingIgnoreCase(q.toLowerCase());
+    }
 }

@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { Login } from './routes/auth/Login'
 import { Register } from './routes/auth/Register'
 import { Landing } from './routes/Landing'
+import { QuestionaireProvider } from '@/features/questionaire/contexts/QuestionaireProvider'
+import { Questions } from './routes/questionaire/Questions'
 
 export const AppRouter = () => {
   return (
@@ -10,14 +12,19 @@ export const AppRouter = () => {
       <Navbar />
 
       <Routes>
-        <Route path="/" element={<Landing />} />
+        <Route
+          path="/"
+          element={
+            <QuestionaireProvider>
+              <Landing />
+            </QuestionaireProvider>
+          }
+        />
         <Route path="auth">
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
         </Route>
-        {/* <Route path='questionaire'>
-            <Route path='home' element = {}/>
-        </Route> */}
+        <Route path="questionaire" element={<Questions />} />
       </Routes>
     </Router>
   )

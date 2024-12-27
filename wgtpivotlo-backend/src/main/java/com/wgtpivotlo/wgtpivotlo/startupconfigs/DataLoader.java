@@ -28,14 +28,14 @@ public class DataLoader implements CommandLineRunner {
     public void run(String... args) throws Exception {
         User adminUser = User.builder()
                 .username("admin")
-                .password(passwordEncoder.encode("admin_password")) // Encoding the password
+                .password(passwordEncoder.encode("Admin@2024")) // Encoding the password
                 .email("admin@example.com")
                 .role(Role.ADMIN)
                 .build();
 
         User normalUser = User.builder()
                 .username("user")
-                .password(passwordEncoder.encode("password")) // Encoding the password
+                .password(passwordEncoder.encode("User#1234")) // Encoding the password
                 .email("user@example.com")
                 .role(Role.USER)
                 .build();

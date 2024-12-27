@@ -45,8 +45,7 @@ export const RegisterForm = () => {
   return (
     <Form {...form}>
       <form
-        onSubmit={(e) => {
-          e.preventDefault()
+        onSubmit={() => {
           form.handleSubmit(onSubmit)
         }}
         className="w-full flex flex-col gap-16 justify-stretch"

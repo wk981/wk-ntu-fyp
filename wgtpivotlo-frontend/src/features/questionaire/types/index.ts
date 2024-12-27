@@ -46,6 +46,7 @@ export interface ComboBoxProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends Path<TFieldValues> = Path<TFieldValues>,
 > extends ControllerRenderProps<TFieldValues, TName> {
-  data: DataProps[]
-  setValue: UseFormSetValue<TFieldValues> // Corrected type
+  data: DataProps[] | undefined // Array of options for the ComboBox
+  setValue: UseFormSetValue<TFieldValues> // Corrected typing for setValue
+  isLoading: boolean
 }

@@ -26,6 +26,7 @@ const QuestionaireProvider = ({ children }: ProviderProps) => {
       }))
       return res as DataProps[]
     },
+    retry: false,
   })
 
   const value = { userSkillsList, setUserSkillsList, sectorsQuery }

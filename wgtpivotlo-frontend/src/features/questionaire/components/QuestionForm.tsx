@@ -14,6 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { useQuestionaire } from '../hook/useQuestionaire'
+import { useSkills } from '@/features/skills/hook/useSkills'
 
 const mockData = [
   {
@@ -49,19 +50,15 @@ export const QuestionForm = () => {
     resolver: zodResolver(FormSchema),
   })
 
-  // const { q, fetchSkill } = useSkills()
+  const { skillsQuery, setQ, skillsData } = useSkills()
   const { sectorsQuery } = useQuestionaire()
 
-  // const commandOnChangeCapture = async (e: React.FormEvent<HTMLInputElement>) => {
-  //   e.preventDefault()
-  //   try{
-  //     await fetchSkill(e.currentTarget.value);
-  //   }
-  //   catch(error){
-  //     console.log(error);
-  //   }
-
-  // }
+  const handleCommandOnChangeCapture = (
+    e: React.FormEvent<HTMLInputElement>
+  ) => {
+    const query = e.currentTarget.value
+    setQ(query)
+  }
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log(data)
@@ -128,10 +125,12 @@ export const QuestionForm = () => {
                 <MultiComboBox
                   {...field}
                   value={field.value}
-                  data={mockData}
+                  data={skillsData}
                   setValue={form.setValue}
                   showValues={false}
-                  // commandOnChangeCapture={commandOnChangeCapture}
+                  commandOnChangeCapture={handleCommandOnChangeCapture}
+                  isLoading={skillsQuery.isLoading}
+                  isSuccess={skillsQuery.isSuccess}
                 />
               </FormControl>
               <FormMessage />

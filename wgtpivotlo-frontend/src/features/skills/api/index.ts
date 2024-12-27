@@ -3,7 +3,7 @@ import { ErrorResponse } from '@/types'
 import { backendURL } from '@/utils'
 
 export const getSkill = async (q: string) => {
-  const url = backendURL + `/api/v1/questionaire/search?q=${q}`
+  const url = backendURL + `/api/v1/skill/search?q=${q}`
   const response = await fetch(url)
 
   if (!response.ok) {

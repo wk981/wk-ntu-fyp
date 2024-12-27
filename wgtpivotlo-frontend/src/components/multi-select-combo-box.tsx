@@ -16,7 +16,7 @@ import {
 import { Button } from './ui/button'
 import { Check, ChevronsUpDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { forwardRef } from 'react'
+import { forwardRef, useEffect } from 'react'
 import {
   ControllerRenderProps,
   FieldValues,
@@ -26,15 +26,18 @@ import {
 } from 'react-hook-form'
 import { DataProps } from '@/features/questionaire/types'
 import { FormControl } from './ui/form'
+import { capitalizeFirstChar } from '@/utils'
 
 interface MultiComboBoxProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends Path<TFieldValues> = Path<TFieldValues>,
 > extends ControllerRenderProps<TFieldValues, TName> {
-  data: DataProps[]
+  data: DataProps[] | undefined
   setValue: UseFormSetValue<TFieldValues> // Corrected type
   showValues: boolean
   commandOnChangeCapture?: React.FormEventHandler<HTMLInputElement>
+  isLoading: boolean
+  isSuccess: boolean
 }
 
 export const MultiComboBox = forwardRef<
@@ -42,7 +45,16 @@ export const MultiComboBox = forwardRef<
   MultiComboBoxProps<any, any>
 >(
   (
-    { data, value, setValue, name, showValues, commandOnChangeCapture },
+    {
+      data,
+      value,
+      setValue,
+      name,
+      showValues,
+      commandOnChangeCapture,
+      isLoading,
+      isSuccess,
+    },
     ref
   ) => {
     const handleSetValue = (val: string) => {
@@ -55,10 +67,13 @@ export const MultiComboBox = forwardRef<
       } else if (!value) {
         setValue(name, [val])
       } else {
-        // Add the value to the array
         setValue(name, [...value, val] as PathValue<any, any>)
       }
     }
+
+    useEffect(() => {
+      console.log('Data updated:', data)
+    }, [data])
 
     return (
       <Popover>
@@ -73,15 +88,15 @@ export const MultiComboBox = forwardRef<
               )}
               ref={ref}
             >
-              {showValues === true ? (
+              {showValues ? (
                 <div className="flex gap-2 justify-start">
                   {value?.length
-                    ? value.map((val: any, i: any) => (
+                    ? value.map((val: any) => (
                         <div
-                          key={i}
+                          key={val}
                           className="px-2 py-1 rounded-xl border bg-slate-200 text-xs font-medium"
                         >
-                          {data.find((d) => d.value === val)?.label}
+                          {data?.find((d) => d.value === val)?.label}
                         </div>
                       ))
                     : 'Select an option'}
@@ -94,7 +109,7 @@ export const MultiComboBox = forwardRef<
           </FormControl>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
-          <Command>
+          <Command shouldFilter={false}>
             <CommandInput
               placeholder="Search"
               onChangeCapture={(e) => {
@@ -103,32 +118,37 @@ export const MultiComboBox = forwardRef<
                 }
               }}
             />
-            <CommandEmpty>No data found.</CommandEmpty>
-            <CommandGroup>
-              {data && (
-                <CommandList>
-                  {data.map((d) => (
+            <CommandList>
+              <CommandEmpty>No data found.</CommandEmpty>
+              <CommandGroup>
+                {data?.map((d, index) => {
+                  // Log the current item
+                  console.log('Current item:', d)
+
+                  return (
                     <CommandItem
-                      key={d.value}
+                      key={index}
                       value={d.value}
-                      onSelect={() => {
-                        handleSetValue(d.value)
+                      onSelect={(currentValue) => {
+                        console.log(
+                          `name: ${name}, currentValue: ${currentValue}`
+                        )
+                        console.log('Selected item:', d) // Log the selected item
+                        handleSetValue(currentValue)
                       }}
                     >
-                      {d.label}
+                      {capitalizeFirstChar(d.label)}
                       <Check
                         className={cn(
                           'mr-2 h-4 w-4',
-                          value?.includes(d?.value)
-                            ? 'opacity-100'
-                            : 'opacity-0'
+                          value === d.value ? 'opacity-100' : 'opacity-0'
                         )}
                       />
                     </CommandItem>
-                  ))}
-                </CommandList>
-              )}
-            </CommandGroup>
+                  )
+                })}
+              </CommandGroup>
+            </CommandList>
           </Command>
         </PopoverContent>
       </Popover>

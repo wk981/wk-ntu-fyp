@@ -17,6 +17,7 @@ import { cn } from '@/lib/utils'
 import { forwardRef } from 'react'
 import { ComboBoxProps } from '@/features/questionaire/types'
 import { FormControl } from './ui/form'
+import { capitalizeFirstChar } from '@/utils'
 
 export const ComboBox = forwardRef<HTMLButtonElement, ComboBoxProps<any, any>>(
   ({ data, value, setValue, name, isLoading }, ref) => {
@@ -40,7 +41,7 @@ export const ComboBox = forwardRef<HTMLButtonElement, ComboBoxProps<any, any>>(
                   : value && data
                     ? data.find((d) => d.value === value)?.label
                     : 'Select an option'}
-                <ChevronsUpDown className="opacity-50" />
+                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
             </FormControl>
           </PopoverTrigger>
@@ -62,7 +63,7 @@ export const ComboBox = forwardRef<HTMLButtonElement, ComboBoxProps<any, any>>(
                           setValue(String(name), String(currentValue))
                         }}
                       >
-                        {d.label}
+                        {capitalizeFirstChar(d.label)}
                         <Check
                           className={cn(
                             'mr-2 h-4 w-4',

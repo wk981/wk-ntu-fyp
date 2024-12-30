@@ -9,39 +9,31 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-// import { useSkills } from '@/features/skills/hook/useSkills'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { useQuestionaire } from '../hook/useQuestionaire'
 import { useSkills } from '@/features/skills/hook/useSkills'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { useEffect, useState } from 'react'
 
 const mockData = [
-  {
-    label: 'Entry Level',
-    value: 'Entry Level',
-  },
-  {
-    label: 'Mid Level',
-    value: 'Mid Level',
-  },
-  {
-    label: 'Senior Level',
-    value: 'Senior Level',
-  },
+  { label: 'Entry Level', value: 'Entry Level' },
+  { label: 'Mid Level', value: 'Mid Level' },
+  { label: 'Senior Level', value: 'Senior Level' },
 ]
 
 const FormSchema = z.object({
-  careerLevel: z.string({
-    required_error: 'Please select an option.',
-  }),
-  sector: z.string({
-    required_error: 'Please select an option.',
-  }),
+  careerLevel: z.string({ required_error: 'Please select an option.' }),
+  sector: z.string({ required_error: 'Please select an option.' }),
   skills: z.array(
-    z.string({
-      required_error: 'Please select at least one skill',
-    })
+    z.array(z.string({ required_error: 'Please select at least one skill' }))
   ),
 })
 
@@ -50,25 +42,59 @@ export const QuestionForm = () => {
     resolver: zodResolver(FormSchema),
   })
 
+  const [selectedSkill, setSelectedSkill] = useState<
+    { skillId: number; profiency: string }[]
+  >([])
+
   const { skillsQuery, setQ, skillsData } = useSkills()
   const { sectorsQuery } = useQuestionaire()
+  const skillsArray = form.watch('skills')
+
+  useEffect(() => {
+    // Initialize `selectedSkill` when `skillsArray` changes
+    if (skillsArray) {
+      const initializedSkills = skillsArray.map((skill) => ({
+        skillId: Number(skill[0]),
+        profiency: 'Beginner', // Default proficiency
+      }))
+      setSelectedSkill(initializedSkills)
+    }
+  }, [skillsArray])
+
+  const handleSelect = (skillId: number, profiency: string) => {
+    setSelectedSkill((prev) =>
+      prev.map((s) => (s.skillId === skillId ? { ...s, profiency } : s))
+    )
+  }
+
+  const handleRemove = (skillId: number) => {
+    form.setValue(
+      'skills',
+      skillsArray.filter((skill) => Number(skill[0]) !== skillId)
+    )
+  }
 
   const handleCommandOnChangeCapture = (
     e: React.FormEvent<HTMLInputElement>
   ) => {
-    const query = e.currentTarget.value
-    setQ(query)
+    setQ(e.currentTarget.value)
   }
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data)
+    console.log('Form Data:', data)
+    console.log('Selected Skills:', selectedSkill)
   }
 
   return (
     <Form {...form}>
       <form
-        onSubmit={() => {
-          form.handleSubmit(onSubmit)
+        onSubmit={(e) => {
+          e.preventDefault() // Prevent page refresh
+          form
+            .handleSubmit(onSubmit)()
+            .catch((error) => {
+              console.error('Form submission error:', error)
+            })
         }}
         className="space-y-6"
       >
@@ -111,7 +137,6 @@ export const QuestionForm = () => {
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="skills"
@@ -124,7 +149,6 @@ export const QuestionForm = () => {
               <FormControl>
                 <MultiComboBox
                   {...field}
-                  value={field.value}
                   data={skillsData}
                   setValue={form.setValue}
                   showValues={false}
@@ -137,6 +161,38 @@ export const QuestionForm = () => {
             </FormItem>
           )}
         />
+        <div>
+          {skillsArray &&
+            skillsArray.map((skill, index) => (
+              <div key={index} className="flex items-center space-x-4">
+                <label>{skill[1]}</label>
+                <Select
+                  onValueChange={(value) =>
+                    handleSelect(Number(skill[0]), value)
+                  }
+                  defaultValue="Beginner"
+                >
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Select your proficiency" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Beginner" defaultChecked>
+                      Beginner
+                    </SelectItem>
+                    <SelectItem value="Intermediate">Intermediate</SelectItem>
+                    <SelectItem value="Advanced">Advanced</SelectItem>
+                  </SelectContent>
+                </Select>
+                <button
+                  type="button"
+                  className="text-red"
+                  onClick={() => handleRemove(Number(skill[0]))}
+                >
+                  x
+                </button>
+              </div>
+            ))}
+        </div>
         <Button type="submit">Submit</Button>
       </form>
     </Form>

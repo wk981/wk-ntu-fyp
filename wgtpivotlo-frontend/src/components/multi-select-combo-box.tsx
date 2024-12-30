@@ -16,7 +16,7 @@ import {
 import { Button } from './ui/button'
 import { Check, ChevronsUpDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { forwardRef, useEffect } from 'react'
+import { forwardRef, useEffect, useRef } from 'react'
 import {
   ControllerRenderProps,
   FieldValues,
@@ -57,23 +57,27 @@ export const MultiComboBox = forwardRef<
     },
     ref
   ) => {
-    const handleSetValue = (val: string) => {
-      console.log(`value :${value}. name: ${name}. val: ${val}`)
-      if (value && value.includes(val)) {
-        setValue(
-          name,
-          value.filter((item: any) => item !== val)
+    const handleSetValue = (val: string, label: string) => {
+      if (value && Array.isArray(value)) {
+        const existingItemIndex = value.findIndex(
+          (item: any) => Array.isArray(item) && item[0] === val
         )
-      } else if (!value) {
-        setValue(name, [val])
+
+        if (existingItemIndex !== -1) {
+          // If the value already exists, remove it
+          setValue(
+            name,
+            value.filter((item: any) => Array.isArray(item) && item[0] !== val)
+          )
+        } else {
+          // If the value doesn't exist, add the new [val, label] pair
+          setValue(name, [...value, [val, label]] as PathValue<any, any>)
+        }
       } else {
-        setValue(name, [...value, val] as PathValue<any, any>)
+        // If no value exists yet, initialize with the [val, label] pair
+        setValue(name, [[val, label]])
       }
     }
-
-    useEffect(() => {
-      console.log('Data updated:', data)
-    }, [data])
 
     return (
       <Popover>
@@ -102,7 +106,7 @@ export const MultiComboBox = forwardRef<
                     : 'Select an option'}
                 </div>
               ) : (
-                'Select an option'
+                value?.length + ' selected'
               )}
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
@@ -121,32 +125,31 @@ export const MultiComboBox = forwardRef<
             <CommandList>
               <CommandEmpty>No data found.</CommandEmpty>
               <CommandGroup>
-                {data?.map((d, index) => {
-                  // Log the current item
-                  console.log('Current item:', d)
-
-                  return (
-                    <CommandItem
-                      key={index}
-                      value={d.value}
-                      onSelect={(currentValue) => {
-                        console.log(
-                          `name: ${name}, currentValue: ${currentValue}`
-                        )
-                        console.log('Selected item:', d) // Log the selected item
-                        handleSetValue(currentValue)
-                      }}
-                    >
-                      {capitalizeFirstChar(d.label)}
-                      <Check
-                        className={cn(
-                          'mr-2 h-4 w-4',
-                          value === d.value ? 'opacity-100' : 'opacity-0'
-                        )}
-                      />
-                    </CommandItem>
-                  )
-                })}
+                {isSuccess &&
+                  data?.map((d, index) => {
+                    return (
+                      <CommandItem
+                        key={index}
+                        value={d.value}
+                        onSelect={(currentValue) => {
+                          handleSetValue(currentValue, d.label)
+                        }}
+                      >
+                        {capitalizeFirstChar(d.label)}
+                        <Check
+                          className={cn(
+                            'mr-2 h-4 w-4',
+                            value?.some(
+                              (item: any) =>
+                                Array.isArray(item) && item[0] === d.value
+                            )
+                              ? 'opacity-100'
+                              : 'opacity-0'
+                          )}
+                        />
+                      </CommandItem>
+                    )
+                  })}
               </CommandGroup>
             </CommandList>
           </Command>

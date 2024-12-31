@@ -22,11 +22,13 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useEffect, useState } from 'react'
+import { capitalizeEveryFirstChar } from '@/utils'
+import { RedCross } from '@/components/red-cross'
 
 const mockData = [
-  { label: 'Entry Level', value: 'Entry Level' },
-  { label: 'Mid Level', value: 'Mid Level' },
-  { label: 'Senior Level', value: 'Senior Level' },
+  { label: 'entry level', value: 'entry level' },
+  { label: 'mid level', value: 'mid level' },
+  { label: 'senior Level', value: 'senior level' },
 ]
 
 const FormSchema = z.object({
@@ -46,7 +48,7 @@ export const QuestionForm = () => {
     { skillId: number; profiency: string }[]
   >([])
 
-  const { skillsQuery, setQ, skillsData } = useSkills()
+  const { skillsQuery, handleCommandOnChangeCapture, skillsData } = useSkills()
   const { sectorsQuery } = useQuestionaire()
   const skillsArray = form.watch('skills')
 
@@ -74,15 +76,15 @@ export const QuestionForm = () => {
     )
   }
 
-  const handleCommandOnChangeCapture = (
-    e: React.FormEvent<HTMLInputElement>
-  ) => {
-    setQ(e.currentTarget.value)
-  }
-
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log('Form Data:', data)
-    console.log('Selected Skills:', selectedSkill)
+    const body = {
+      "sector": data.sector.toLowerCase(),
+      "careerLevel": data.careerLevel,
+      "careerSkillDTOList":selectedSkill,
+      "pageNumber": 1,
+      "pageSize": 15
+    };
+    console.log(body);
   }
 
   return (
@@ -164,32 +166,34 @@ export const QuestionForm = () => {
         <div>
           {skillsArray &&
             skillsArray.map((skill, index) => (
-              <div key={index} className="flex items-center space-x-4">
-                <label>{skill[1]}</label>
-                <Select
-                  onValueChange={(value) =>
-                    handleSelect(Number(skill[0]), value)
-                  }
-                  defaultValue="Beginner"
-                >
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Select your proficiency" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Beginner" defaultChecked>
-                      Beginner
-                    </SelectItem>
-                    <SelectItem value="Intermediate">Intermediate</SelectItem>
-                    <SelectItem value="Advanced">Advanced</SelectItem>
-                  </SelectContent>
-                </Select>
-                <button
-                  type="button"
-                  className="text-red"
-                  onClick={() => handleRemove(Number(skill[0]))}
-                >
-                  x
-                </button>
+              <div key={index} className='mt-2'>
+                <label>{capitalizeEveryFirstChar(skill[1])}</label>
+                <div className="flex items-center space-x-4 mt-1">
+                  <Select
+                    onValueChange={(value) =>
+                      handleSelect(Number(skill[0]), value)
+                    }
+                    defaultValue="Beginner"
+                  >
+                    <SelectTrigger className="w-[180px] bg-white">
+                      <SelectValue placeholder="Select your proficiency" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Beginner" defaultChecked>
+                        Beginner
+                      </SelectItem>
+                      <SelectItem value="Intermediate">Intermediate</SelectItem>
+                      <SelectItem value="Advanced">Advanced</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <button
+                    type="button"
+                    className="text-red"
+                    onClick={() => handleRemove(Number(skill[0]))}
+                  >
+                    <RedCross size={24} className="hover:opacity-50 transition-opacity cursor-pointer" />
+                  </button>
+                </div>
               </div>
             ))}
         </div>

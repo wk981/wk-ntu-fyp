@@ -12,19 +12,19 @@ export const AppRouter = () => {
       <Navbar />
 
       <Routes>
-        <Route
-          path="/"
-          element={
-            <QuestionaireProvider>
-              <Landing />
-            </QuestionaireProvider>
-          }
-        />
+        <Route path="/" element={<Landing />} />
         <Route path="auth">
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
         </Route>
-        <Route path="questionaire" element={<Questions />} />
+        <Route
+          path="questionaire"
+          element={
+            <QuestionaireProvider>
+              <Questions />
+            </QuestionaireProvider>
+          }
+        />
       </Routes>
     </Router>
   )

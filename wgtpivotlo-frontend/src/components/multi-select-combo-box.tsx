@@ -16,7 +16,7 @@ import {
 import { Button } from './ui/button'
 import { Check, ChevronsUpDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { forwardRef, useEffect, useRef } from 'react'
+import { forwardRef } from 'react'
 import {
   ControllerRenderProps,
   FieldValues,
@@ -26,11 +26,11 @@ import {
 } from 'react-hook-form'
 import { DataProps } from '@/features/questionaire/types'
 import { FormControl } from './ui/form'
-import { capitalizeFirstChar } from '@/utils'
+import { capitalizeEveryFirstChar} from '@/utils'
 
 interface MultiComboBoxProps<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends Path<TFieldValues> = Path<TFieldValues>,
+  TName extends Path<TFieldValues> = Path<TFieldValues>
 > extends ControllerRenderProps<TFieldValues, TName> {
   data: DataProps[] | undefined
   setValue: UseFormSetValue<TFieldValues> // Corrected type
@@ -57,6 +57,7 @@ export const MultiComboBox = forwardRef<
     },
     ref
   ) => {
+    
     const handleSetValue = (val: string, label: string) => {
       if (value && Array.isArray(value)) {
         const existingItemIndex = value.findIndex(
@@ -87,12 +88,15 @@ export const MultiComboBox = forwardRef<
               variant="outline"
               role="combobox"
               className={cn(
-                'w-[200px] justify-between',
+                'w-[250px] min-full justify-between overflow-visible break-normal',
                 !value && 'text-muted-foreground'
               )}
               ref={ref}
+              disabled={isLoading}
             >
-              {showValues ? (
+              {isLoading ? (
+                'Fetching Data'
+              ) : showValues ? (
                 <div className="flex gap-2 justify-start">
                   {value?.length
                     ? value.map((val: any) => (
@@ -100,19 +104,19 @@ export const MultiComboBox = forwardRef<
                           key={val}
                           className="px-2 py-1 rounded-xl border bg-slate-200 text-xs font-medium"
                         >
-                          {data?.find((d) => d.value === val)?.label}
+                          {capitalizeEveryFirstChar(data?.find((d) => d.value === value.toLowerCase())?.label || '')}
                         </div>
                       ))
                     : 'Select an option'}
                 </div>
               ) : (
-                value?.length + ' selected'
+                (value?.length | 0) + ' Selected'
               )}
               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
             </Button>
           </FormControl>
         </PopoverTrigger>
-        <PopoverContent className="w-[200px] p-0">
+        <PopoverContent className="w-[250px] p-0">
           <Command shouldFilter={false}>
             <CommandInput
               placeholder="Search"
@@ -130,12 +134,12 @@ export const MultiComboBox = forwardRef<
                     return (
                       <CommandItem
                         key={index}
-                        value={d.value}
+                        value={capitalizeEveryFirstChar(d.value)}
                         onSelect={(currentValue) => {
                           handleSetValue(currentValue, d.label)
                         }}
                       >
-                        {capitalizeFirstChar(d.label)}
+                        {capitalizeEveryFirstChar(d.label)}
                         <Check
                           className={cn(
                             'mr-2 h-4 w-4',

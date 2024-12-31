@@ -24,6 +24,7 @@ import {
 import { useEffect, useState } from 'react'
 import { capitalizeEveryFirstChar } from '@/utils'
 import { RedCross } from '@/components/red-cross'
+import { useNavigate } from 'react-router-dom'
 
 const mockData = [
   { label: 'entry level', value: 'entry level' },
@@ -49,7 +50,8 @@ export const QuestionForm = () => {
   >([])
 
   const { skillsQuery, handleCommandOnChangeCapture, skillsData } = useSkills()
-  const { sectorsQuery } = useQuestionaire()
+  const { sectorsQuery, sendQuestionaire } = useQuestionaire()
+  const navigate = useNavigate()
   const skillsArray = form.watch('skills')
 
   useEffect(() => {
@@ -76,15 +78,20 @@ export const QuestionForm = () => {
     )
   }
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    const body = {
-      sector: data.sector.toLowerCase(),
-      careerLevel: data.careerLevel,
-      careerSkillDTOList: selectedSkill,
-      pageNumber: 1,
-      pageSize: 15,
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
+    try {
+      const body = {
+        sector: data.sector.toLowerCase(),
+        careerLevel: data.careerLevel,
+        careerSkillDTOList: selectedSkill,
+        pageNumber: 1,
+        pageSize: 5,
+      }
+      await sendQuestionaire(body)
+      await navigate('/result')
+    } catch (error) {
+      console.log(error)
     }
-    console.log(body)
   }
 
   return (

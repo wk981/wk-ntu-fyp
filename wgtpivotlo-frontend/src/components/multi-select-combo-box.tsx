@@ -26,11 +26,11 @@ import {
 } from 'react-hook-form'
 import { DataProps } from '@/features/questionaire/types'
 import { FormControl } from './ui/form'
-import { capitalizeEveryFirstChar} from '@/utils'
+import { capitalizeEveryFirstChar } from '@/utils'
 
 interface MultiComboBoxProps<
   TFieldValues extends FieldValues = FieldValues,
-  TName extends Path<TFieldValues> = Path<TFieldValues>
+  TName extends Path<TFieldValues> = Path<TFieldValues>,
 > extends ControllerRenderProps<TFieldValues, TName> {
   data: DataProps[] | undefined
   setValue: UseFormSetValue<TFieldValues> // Corrected type
@@ -57,7 +57,6 @@ export const MultiComboBox = forwardRef<
     },
     ref
   ) => {
-    
     const handleSetValue = (val: string, label: string) => {
       if (value && Array.isArray(value)) {
         const existingItemIndex = value.findIndex(
@@ -104,7 +103,10 @@ export const MultiComboBox = forwardRef<
                           key={val}
                           className="px-2 py-1 rounded-xl border bg-slate-200 text-xs font-medium"
                         >
-                          {capitalizeEveryFirstChar(data?.find((d) => d.value === value.toLowerCase())?.label || '')}
+                          {capitalizeEveryFirstChar(
+                            data?.find((d) => d.value === value.toLowerCase())
+                              ?.label || ''
+                          )}
                         </div>
                       ))
                     : 'Select an option'}

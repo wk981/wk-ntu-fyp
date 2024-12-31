@@ -1,7 +1,3 @@
 export const Landing = () => {
-  return (
-    <div className="mt-32">
-      Landing
-    </div>
-  )
+  return <div className="mt-32">Landing</div>
 }

@@ -5,10 +5,10 @@ import { DataProps } from '@/features/questionaire/types'
 import useDebounce from '@/hook/useDebounce'
 
 export const useSkills = () => {
-  const [q, setQ] = useState<string>('');
-  const [skillsData, setSkillsData] = useState<DataProps[]>([]);
-  const [input, setInput] = useState<string>(''); // for debouncing
-  const debouncedValue = useDebounce(input,500);
+  const [q, setQ] = useState<string>('')
+  const [skillsData, setSkillsData] = useState<DataProps[]>([])
+  const [input, setInput] = useState<string>('') // for debouncing
+  const debouncedValue = useDebounce(input, 500)
 
   const skillsQuery = useQuery({
     enabled: q !== '', // Only run the query if `q` is not empty
@@ -31,18 +31,20 @@ export const useSkills = () => {
     if (skillsQuery.data) {
       setSkillsData(skillsQuery.data)
     }
-  }, [skillsQuery.data]);
+  }, [skillsQuery.data])
 
-  useEffect(()=>{
-    if(debouncedValue){
-      setQ(debouncedValue);
+  useEffect(() => {
+    if (debouncedValue) {
+      setQ(debouncedValue)
     }
-  },[debouncedValue]);
+  }, [debouncedValue])
 
-  const handleCommandOnChangeCapture = (e: React.FormEvent<HTMLInputElement>) => {
-    const value = e.currentTarget.value;
-    setInput(value); // Update the inputValue immediately
-  };
+  const handleCommandOnChangeCapture = (
+    e: React.FormEvent<HTMLInputElement>
+  ) => {
+    const value = e.currentTarget.value
+    setInput(value) // Update the inputValue immediately
+  }
 
   return { q, setQ, skillsQuery, skillsData, handleCommandOnChangeCapture }
 }

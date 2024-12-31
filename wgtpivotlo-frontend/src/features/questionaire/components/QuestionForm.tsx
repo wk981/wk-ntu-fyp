@@ -78,13 +78,13 @@ export const QuestionForm = () => {
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     const body = {
-      "sector": data.sector.toLowerCase(),
-      "careerLevel": data.careerLevel,
-      "careerSkillDTOList":selectedSkill,
-      "pageNumber": 1,
-      "pageSize": 15
-    };
-    console.log(body);
+      sector: data.sector.toLowerCase(),
+      careerLevel: data.careerLevel,
+      careerSkillDTOList: selectedSkill,
+      pageNumber: 1,
+      pageSize: 15,
+    }
+    console.log(body)
   }
 
   return (
@@ -166,7 +166,7 @@ export const QuestionForm = () => {
         <div>
           {skillsArray &&
             skillsArray.map((skill, index) => (
-              <div key={index} className='mt-2'>
+              <div key={index} className="mt-2">
                 <label>{capitalizeEveryFirstChar(skill[1])}</label>
                 <div className="flex items-center space-x-4 mt-1">
                   <Select
@@ -191,7 +191,10 @@ export const QuestionForm = () => {
                     className="text-red"
                     onClick={() => handleRemove(Number(skill[0]))}
                   >
-                    <RedCross size={24} className="hover:opacity-50 transition-opacity cursor-pointer" />
+                    <RedCross
+                      size={24}
+                      className="hover:opacity-50 transition-opacity cursor-pointer"
+                    />
                   </button>
                 </div>
               </div>

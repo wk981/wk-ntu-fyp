@@ -41,7 +41,10 @@ export const ComboBox = forwardRef<HTMLButtonElement, ComboBoxProps<any, any>>(
                 {isLoading
                   ? 'Fetching Data'
                   : value && data
-                    ? capitalizeEveryFirstChar(data.find((d) => d.value === value.toLowerCase())?.label || '')
+                    ? capitalizeEveryFirstChar(
+                        data.find((d) => d.value === value.toLowerCase())
+                          ?.label || ''
+                      )
                     : 'Select an option'}
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
@@ -60,13 +63,15 @@ export const ComboBox = forwardRef<HTMLButtonElement, ComboBoxProps<any, any>>(
                         value={capitalizeEveryFirstChar(d.value)}
                         onSelect={(currentValue) => {
                           setValue(String(name), String(currentValue))
-                        }} 
+                        }}
                       >
-                          {capitalizeEveryFirstChar(d.label)}
+                        {capitalizeEveryFirstChar(d.label)}
                         <Check
                           className={cn(
                             'mr-2 h-4 w-4',
-                            value === capitalizeEveryFirstChar(d.value) ? 'opacity-100' : 'opacity-0'
+                            value === capitalizeEveryFirstChar(d.value)
+                              ? 'opacity-100'
+                              : 'opacity-0'
                           )}
                         />
                       </CommandItem>

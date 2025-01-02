@@ -88,7 +88,7 @@ export const QuestionForm = () => {
         pageSize: 5,
       }
       await sendQuestionaire(body)
-      await navigate('/result')
+      await navigate('/questionaire/result')
     } catch (error) {
       console.log(error)
     }
@@ -109,7 +109,7 @@ export const QuestionForm = () => {
       >
         <FormField
           control={form.control}
-          name="careerLevel"
+          name="sector"
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>
@@ -128,7 +128,7 @@ export const QuestionForm = () => {
         />
         <FormField
           control={form.control}
-          name="sector"
+          name="careerLevel"
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>

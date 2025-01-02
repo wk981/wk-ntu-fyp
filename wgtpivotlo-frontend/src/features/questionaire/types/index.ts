@@ -18,23 +18,21 @@ export interface SkillsAbstract {
   profiency: string
 }
 
-interface Career {
+export interface Career {
+  created_on: string // ISO string for date
+  updated_on: string // ISO string for date
   careerId: number
   title: string
   sector: string
   responsibility: string
   careerLevel: string
-  pic_url: string
-}
-
-interface CareerWithSimilarityScore extends Career {
-  averageWeightage: number
+  pic_url: string | null
 }
 
 export interface CareerRecommendationResponse {
-  directMaches: CareerWithSimilarityScore[]
-  pathwayMatches: CareerWithSimilarityScore[]
-  aspirationMatches: CareerWithSimilarityScore[]
+  directMaches: [Career, number][]
+  pathwayMatches: [Career, number][]
+  aspirationMatches: [Career, number][]
 }
 
 export interface DataProps {

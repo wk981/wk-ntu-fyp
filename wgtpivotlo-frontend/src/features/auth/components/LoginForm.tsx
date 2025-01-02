@@ -27,6 +27,7 @@ export const LoginForm = () => {
 
   const onSubmit = async (values: z.infer<typeof loginFormSchema>) => {
     try {
+      console.log(values)
       const status = await loginUser(values)
       if (status) {
         toast('Logged In Successfully')
@@ -42,7 +43,11 @@ export const LoginForm = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault()
-          form.handleSubmit(onSubmit)
+          form
+            .handleSubmit(onSubmit)()
+            .catch((error) => {
+              console.error('Form submission error:', error)
+            })
         }}
         className="w-full flex flex-col gap-16 justify-stretch"
       >

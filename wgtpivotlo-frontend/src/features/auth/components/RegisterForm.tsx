@@ -47,7 +47,11 @@ export const RegisterForm = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault()
-          form.handleSubmit(onSubmit)
+          form
+            .handleSubmit(onSubmit)()
+            .catch((error) => {
+              console.error('Form submission error:', error)
+            })
         }}
         className="w-full flex flex-col gap-16 justify-stretch"
       >

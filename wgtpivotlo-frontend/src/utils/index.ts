@@ -5,6 +5,22 @@ export function capitalizeFirstChar(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
+export function capitalizeEveryFirstChar(str: string): string {
+  const strArray = str.split(' ')
+  let res = ''
+  for (let i = 0; i < strArray.length; i++) {
+    // Corrected loop condition
+    if (strArray[i]) {
+      // Check for empty strings (e.g., multiple spaces)
+      res += strArray[i][0].toUpperCase() + strArray[i].slice(1).toLowerCase()
+    }
+    if (i < strArray.length - 1) {
+      res += ' ' // Add a space between words except for the last word
+    }
+  }
+  return res
+}
+
 export const backendURL: string = import.meta.env.VITE_BACKEND_URL as string
 
 export interface ProviderProps {

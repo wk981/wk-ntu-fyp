@@ -1,16 +1,11 @@
 package com.wgtpivotlo.wgtpivotlo.controller;
 
-import com.wgtpivotlo.wgtpivotlo.dto.CareerWithSimilarityScoreDTO;
-import com.wgtpivotlo.wgtpivotlo.dto.PageDTO;
 import com.wgtpivotlo.wgtpivotlo.dto.QuestionaireRequest;
 import com.wgtpivotlo.wgtpivotlo.service.QuestionaireService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
@@ -24,6 +19,11 @@ public class QuestionaireController {
     @Autowired
     public QuestionaireController(QuestionaireService questionaireService) {
         this.questionaireService = questionaireService;
+    }
+
+    @GetMapping("/sectors")
+    public ResponseEntity<List<String>> getSectors(){
+        return ResponseEntity.ok(questionaireService.getSectors());
     }
 
     @PostMapping("/result")

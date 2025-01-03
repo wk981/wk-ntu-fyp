@@ -1,20 +1,15 @@
 import { createContext, useState } from 'react'
 import { ProviderProps } from '@/utils'
-import { CareerRecommendationResponse, DataProps, Skills } from '../types'
-import {
-  useMutation,
-  UseMutationResult,
-  useQuery,
-  UseQueryResult,
-} from '@tanstack/react-query'
-import { getAllSectors, ResultBody, resultPost } from '../api'
+import { CareerRecommendationResponse, Skills } from '../types'
+import { useMutation, UseMutationResult } from '@tanstack/react-query'
+import { ResultBody, resultPost } from '../api'
 import { toast } from 'react-toastify'
 import { Response } from '@/types'
 
 interface SkillsContext {
   userSkillsList: Skills[]
   setUserSkillsList: React.Dispatch<React.SetStateAction<Skills[]>>
-  sectorsQuery: UseQueryResult<DataProps[], Error>
+
   resultPostMutation: UseMutationResult<
     void | CareerRecommendationResponse,
     Error,
@@ -30,20 +25,6 @@ const QuestionaireContext = createContext<SkillsContext | undefined>(undefined)
 const QuestionaireProvider = ({ children }: ProviderProps) => {
   const [userSkillsList, setUserSkillsList] = useState<Skills[]>([])
   const [results, setResults] = useState<CareerRecommendationResponse>()
-  // const [sector, setSector] = useState<string[]>([]);
-
-  const sectorsQuery = useQuery({
-    queryKey: ['sector'],
-    queryFn: () => getAllSectors(),
-    select: (data) => {
-      const res = data.map((d) => ({
-        label: d,
-        value: d,
-      }))
-      return res as DataProps[]
-    },
-    retry: false,
-  })
 
   const resultPostMutation = useMutation({
     mutationFn: (
@@ -69,7 +50,6 @@ const QuestionaireProvider = ({ children }: ProviderProps) => {
   const value = {
     userSkillsList,
     setUserSkillsList,
-    sectorsQuery,
     resultPostMutation,
     sendQuestionaire,
     results,

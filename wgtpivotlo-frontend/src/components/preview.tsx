@@ -31,7 +31,8 @@ const PreviewList = ({ data }: PreviewListProps) => {
   return (
     <ScrollArea className="w-full pb-4">
       <div className="flex flex-col gap-4 md:flex-row items-center">
-        {Array.isArray(data) && data.map((d) => <PreviewItem item={d} />)}
+        {Array.isArray(data) &&
+          data.map((d, index) => <PreviewItem key={index} item={d} />)}
       </div>
       <ScrollBar orientation="horizontal" />
     </ScrollArea>

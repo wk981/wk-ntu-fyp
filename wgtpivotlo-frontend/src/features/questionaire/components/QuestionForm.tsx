@@ -25,6 +25,7 @@ import { useEffect, useState } from 'react'
 import { capitalizeEveryFirstChar } from '@/utils'
 import { RedCross } from '@/components/red-cross'
 import { useNavigate } from 'react-router-dom'
+import { useCareers } from '@/features/careers/hooks/useCareers'
 
 const mockData = [
   { label: 'entry level', value: 'entry level' },
@@ -50,7 +51,8 @@ export const QuestionForm = () => {
   >([])
 
   const { skillsQuery, handleCommandOnChangeCapture, skillsData } = useSkills()
-  const { sectorsQuery, sendQuestionaire } = useQuestionaire()
+  const { sendQuestionaire } = useQuestionaire()
+  const { sectorsQuery } = useCareers()
   const navigate = useNavigate()
   const skillsArray = form.watch('skills')
 

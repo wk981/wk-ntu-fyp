@@ -44,8 +44,8 @@ public class CareerRecommendationService {
     }
 
     public PageDTO<CareerWithSimilarityScoreDTO> getRecommendedCareers(CareerRecommendationDTO request, Authentication authentication){
-//        // Paging
-//        int correctedPageNumber = (request.getPageNumber() > 0) ? request.getPageNumber() - 1 : 0;
+        // Paging
+        int correctedPageNumber = (request.getPageNumber() > 0) ? request.getPageNumber() - 1 : 0;
 
         // totalPage is n, pageNumber must be from 0 to n
         if (request.getPageNumber() < 0){
@@ -53,7 +53,7 @@ public class CareerRecommendationService {
             throw new PageItemsOutOfBoundException("Page number out of bounds");
         }
 
-        Pageable pageable = PageRequest.of(request.getPageNumber(), request.getPageSize());
+        Pageable pageable = PageRequest.of(correctedPageNumber, request.getPageSize());
 
         // get userId
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
@@ -76,10 +76,10 @@ public class CareerRecommendationService {
             throw new ResourceNotFoundException("No career found");
         }
 
-//        if (correctedPageNumber >= careerRecommendation.get().getTotalPages()) {
-//            log.warn("Page number out of bounds");
-//            throw new PageItemsOutOfBoundException("Page number out of bounds");
-//        }
+        if (correctedPageNumber >= careerRecommendation.get().getTotalPages()) {
+            log.warn("Page number out of bounds");
+            throw new PageItemsOutOfBoundException("Page number out of bounds");
+        }
 
         log.info("Step1b: Cleaning up data");
         List<Object[]> careersWithSimilarityScorePageList = careerRecommendation.get().getContent();

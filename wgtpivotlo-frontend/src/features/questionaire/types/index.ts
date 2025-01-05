@@ -1,3 +1,4 @@
+import { CareerWithSimilarityScoreDTO } from '@/features/careers/types'
 import {
   ControllerRenderProps,
   FieldValues,
@@ -30,9 +31,9 @@ export interface Career {
 }
 
 export interface CareerRecommendationResponse {
-  directMaches: [Career, number][]
-  pathwayMatches: [Career, number][]
-  aspirationMatches: [Career, number][]
+  directMaches: CareerWithSimilarityScoreDTO[]
+  pathwayMatches: CareerWithSimilarityScoreDTO[]
+  aspirationMatches: CareerWithSimilarityScoreDTO[]
 }
 
 export interface DataProps {

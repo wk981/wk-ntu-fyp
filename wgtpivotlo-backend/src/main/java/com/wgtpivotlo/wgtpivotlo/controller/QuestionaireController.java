@@ -1,6 +1,7 @@
 package com.wgtpivotlo.wgtpivotlo.controller;
 
 import com.wgtpivotlo.wgtpivotlo.dto.CareerRecommendationDTO;
+import com.wgtpivotlo.wgtpivotlo.dto.CareerWithSimilarityScoreDTO;
 import com.wgtpivotlo.wgtpivotlo.dto.QuestionaireRequest;
 import com.wgtpivotlo.wgtpivotlo.service.CareerRecommendationService;
 import com.wgtpivotlo.wgtpivotlo.service.QuestionaireService;
@@ -30,7 +31,7 @@ public class QuestionaireController {
 
     @PostMapping("/result")
     public ResponseEntity<?> getResult(@RequestBody QuestionaireRequest questionaireRequest, Authentication authentication) throws AccessDeniedException {
-        HashMap<String, List<Object[]>> res = questionaireService.getResult(questionaireRequest, authentication);
+        HashMap<String, List<CareerWithSimilarityScoreDTO>> res = questionaireService.getResult(questionaireRequest, authentication);
         return ResponseEntity.ok(res);
     }
 }

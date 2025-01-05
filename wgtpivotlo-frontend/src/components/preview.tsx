@@ -1,4 +1,3 @@
-import { Career } from '@/features/questionaire/types'
 import { Badge } from './ui/badge'
 import { Progress } from './ui/progress'
 import { capitalizeEveryFirstChar, capitalizeFirstChar } from '@/utils'
@@ -15,27 +14,67 @@ import {
 import { Button } from './ui/button'
 import { useCareers } from '@/features/careers/hooks/useCareers'
 import { LoadingSpinner } from './loading-spinner'
+import { useSearchParams } from 'react-router-dom'
+import { CareerWithSimilarityScoreDTO } from '@/features/careers/types'
+import { ArrowLeft } from 'lucide-react'
 
 interface PreviewProps extends PreviewListProps {
-  title: string
+  category: string
+  onClick: (category: string) => Promise<void>
+  back?: boolean
+  seeMore?: boolean
 }
 
 interface PreviewListProps {
-  data: [Career, number][]
+  data: CareerWithSimilarityScoreDTO[]
 }
 
 interface PreviewItemProps {
-  item: [Career, number]
+  item: CareerWithSimilarityScoreDTO
 }
 
 interface PreviewDialogProps {
   careerId: number
 }
 
-export const Preview = ({ title, data }: PreviewProps) => {
+const previewTitleMap: { [key: string]: string } = {
+  Aspiration: 'Career Matches Based on Aspirations',
+  Pathway: 'Career Pathway Recommendations',
+  Direct: 'Direct Career Suggestions',
+}
+
+export const Preview = ({
+  category,
+  data,
+  onClick,
+  back = false,
+  seeMore = true,
+}: PreviewProps) => {
+  const [, setSearchParams] = useSearchParams()
+  // eslint-disable-next-line no-unused-vars
+  const clearAllParams = () => {
+    setSearchParams({})
+  }
   return (
     <div className="w-full">
-      <h1 className="text-lg font-bold mb-2">{title}</h1>
+      <div className="flex justify-between items-center">
+        {back && (
+          <Button onClick={() => clearAllParams()}>
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+        )}
+        <h1 className="text-lg font-bold mb-2">{previewTitleMap[category]}</h1>
+        {seeMore && (
+          <p
+            className="cursor-pointer text-blue-anchor"
+            onClick={() => {
+              onClick(category).catch((error) => console.log(error))
+            }}
+          >
+            See More
+          </p>
+        )}
+      </div>
       <PreviewList data={data} />
     </div>
   )
@@ -54,8 +93,8 @@ const PreviewList = ({ data }: PreviewListProps) => {
 }
 
 const PreviewItem = ({ item }: PreviewItemProps) => {
-  const [career, similarity] = item
-  const similarityScore = Math.ceil(similarity * 100)
+  const career = item.career
+  const similarityScore = Number(item.similarityScore) * 100
 
   return (
     <Card className="w-[332px] min-h-[360px] flex flex-col">

@@ -52,7 +52,8 @@ export const QuestionForm = () => {
   >([])
 
   const { skillsQuery, handleCommandOnChangeCapture, skillsData } = useSkills()
-  const { resultPostMutation, setResults } = useQuestionaire()
+  const { resultPostMutation, setResults, setQuestionaireFormResults } =
+    useQuestionaire()
   const { sectorsQuery } = useSectors()
   const navigate = useNavigate()
   const skillsArray = form.watch('skills')
@@ -90,6 +91,7 @@ export const QuestionForm = () => {
         pageNumber: 1,
         pageSize: 5,
       }
+      setQuestionaireFormResults(body)
       const response = await resultPostMutation.mutateAsync(body)
       if (response) {
         setResults(response)

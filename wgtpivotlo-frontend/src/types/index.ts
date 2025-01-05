@@ -21,3 +21,8 @@ export interface QueryKeyInterface {
   pageParam?: unknown
   direction?: unknown
 }
+
+export interface PageResponse {
+  totalPage: number
+  pageNumber: number
+}

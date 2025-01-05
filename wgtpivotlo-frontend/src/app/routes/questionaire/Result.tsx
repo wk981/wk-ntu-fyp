@@ -1,11 +1,22 @@
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { Preview } from '@/components/preview'
 import { useQuestionaire } from '@/features/questionaire/hook/useQuestionaire'
 
 export const Result = () => {
-  const { results } = useQuestionaire()
+  const {
+    results,
+    choiceCareerRecommendationPostMutation,
+    fetchChoiceCareerRecommendation,
+  } = useQuestionaire()
   const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const categorySearchParams = searchParams.get('category')
+  const onClick = async (category: string) => {
+    setSearchParams({ category: category.toLowerCase() })
+    await fetchChoiceCareerRecommendation(category)
+  }
 
   useEffect(() => {
     if (!results) {
@@ -19,21 +30,37 @@ export const Result = () => {
 
   return (
     <div className="m-auto max-w-[1280px] space-y-7 p-4">
-      {results && (
+      {results && (categorySearchParams === '' || !categorySearchParams) ? (
         <>
           <Preview
-            title={'Career Matches Based on Aspirations'}
-            data={results.aspirationMatches}
+            category={'Aspiration'}
+            data={results?.aspirationMatches}
+            onClick={onClick}
           />
           <Preview
-            title={'Career Pathway Recommendations'}
+            category={'Pathway'}
             data={results.pathwayMatches}
+            onClick={onClick}
           />
           <Preview
-            title={'Direct Career Suggestions'}
+            category={'Pathway'}
             data={results.directMaches} // Fixed typo from "directMaches"
+            onClick={onClick}
           />
         </>
+      ) : (
+        categorySearchParams &&
+        choiceCareerRecommendationPostMutation.data && (
+          <>
+            <Preview
+              category={categorySearchParams}
+              data={choiceCareerRecommendationPostMutation.data.data}
+              onClick={onClick}
+              seeMore={false}
+              back={true}
+            />
+          </>
+        )
       )}
     </div>
   )

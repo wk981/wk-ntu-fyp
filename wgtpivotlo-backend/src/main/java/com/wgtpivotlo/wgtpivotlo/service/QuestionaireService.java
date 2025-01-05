@@ -49,7 +49,7 @@ public class QuestionaireService {
         long userId = userDetails.getId();
 
         // save user skill into userSkillsTable
-        Optional<UserSkills> existingUserSkills = userSkillsRepository.findByUserId(userId);
+        Optional<List<UserSkills>> existingUserSkills = userSkillsRepository.findByUserId(userId);
         if (existingUserSkills.isPresent()){
             // remove and overwrite
             userSkillsRepository.deleteByUserId(userId);

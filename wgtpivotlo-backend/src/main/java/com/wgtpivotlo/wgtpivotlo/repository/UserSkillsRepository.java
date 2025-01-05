@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -18,7 +19,7 @@ public interface UserSkillsRepository extends JpaRepository<UserSkills, Long> {
     void deleteByUserId(@Param("userId") Long userId);
 
     @Query(value="SELECT us.* FROM user_skill us WHERE us.user_id = :userId",nativeQuery = true)
-    Optional<UserSkills> findByUserId(@Param("userId") Long userId);
+    Optional<List<UserSkills>> findByUserId(@Param("userId") Long userId);
 
     @Modifying
     @Query(value="INSERT INTO user_skill (user_id, skill_id, profiency) VALUES (:userId, :skillId, :profiency)", nativeQuery = true)

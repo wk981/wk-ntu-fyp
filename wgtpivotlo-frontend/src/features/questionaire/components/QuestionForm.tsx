@@ -25,7 +25,8 @@ import { useEffect, useState } from 'react'
 import { capitalizeEveryFirstChar } from '@/utils'
 import { RedCross } from '@/components/red-cross'
 import { useNavigate } from 'react-router-dom'
-import { useCareers } from '@/features/careers/hooks/useCareers'
+import { LoadingSpinner } from '@/components/loading-spinner'
+import { useSectors } from '@/features/careers/hooks/useSectors'
 
 const mockData = [
   { label: 'entry level', value: 'entry level' },
@@ -51,8 +52,8 @@ export const QuestionForm = () => {
   >([])
 
   const { skillsQuery, handleCommandOnChangeCapture, skillsData } = useSkills()
-  const { sendQuestionaire } = useQuestionaire()
-  const { sectorsQuery } = useCareers()
+  const { resultPostMutation, setResults } = useQuestionaire()
+  const { sectorsQuery } = useSectors()
   const navigate = useNavigate()
   const skillsArray = form.watch('skills')
 
@@ -89,8 +90,11 @@ export const QuestionForm = () => {
         pageNumber: 1,
         pageSize: 5,
       }
-      await sendQuestionaire(body)
-      await navigate('/questionaire/result')
+      const response = await resultPostMutation.mutateAsync(body)
+      if (response) {
+        setResults(response)
+        await navigate('/questionaire/result')
+      }
     } catch (error) {
       console.log(error)
     }
@@ -98,6 +102,7 @@ export const QuestionForm = () => {
 
   return (
     <Form {...form}>
+      {resultPostMutation.isPending && <LoadingSpinner />}
       <form
         onSubmit={(e) => {
           e.preventDefault() // Prevent page refresh

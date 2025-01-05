@@ -5,6 +5,16 @@ import { capitalizeEveryFirstChar, capitalizeFirstChar } from '@/utils'
 import stockItemImg from '@/assets/stock-item.png'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 import { ScrollArea, ScrollBar } from './ui/scroll-area'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from './ui/dialog'
+import { Button } from './ui/button'
+import { useCareers } from '@/features/careers/hooks/useCareers'
+import { LoadingSpinner } from './loading-spinner'
 
 interface PreviewProps extends PreviewListProps {
   title: string
@@ -16,6 +26,10 @@ interface PreviewListProps {
 
 interface PreviewItemProps {
   item: [Career, number]
+}
+
+interface PreviewDialogProps {
+  careerId: number
 }
 
 export const Preview = ({ title, data }: PreviewProps) => {
@@ -77,8 +91,61 @@ const PreviewItem = ({ item }: PreviewItemProps) => {
               {career.careerLevel}
             </Badge>
           </div>
+          <PreviewDialog careerId={career.careerId} />
         </CardContent>
       </div>
     </Card>
   )
+}
+
+const PreviewDialog = ({ careerId }: PreviewDialogProps) => {
+  const { careerQuery, careerWithSkills } = useCareers(careerId)
+  if (careerQuery.isLoading) {
+    return <LoadingSpinner />
+  }
+  if (careerQuery.isSuccess && careerWithSkills !== undefined) {
+    return (
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button className="mt-4 w-full">Learn More</Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold leading-6">
+              {capitalizeEveryFirstChar(careerWithSkills.title)}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Badge className="rounded-full col-span-2 flex justify-center cursor-default">
+                {capitalizeEveryFirstChar(careerWithSkills.sector)}
+              </Badge>
+              <Badge
+                variant="outline"
+                className="rounded-full col-span-2 flex justify-center cursor-default"
+              >
+                {careerWithSkills?.careerLevel}
+              </Badge>
+            </div>
+            <div>
+              <h2 className="font-medium mb-1">Responsibility</h2>
+              <p className="text-sm">
+                {capitalizeEveryFirstChar(careerWithSkills?.responsibility)}
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-1">Key Skills</h3>
+              <ul className="list-disc list-inside text-sm">
+                {careerWithSkills?.skillsWithProfiency.map((skill, index) => (
+                  <li key={index}>
+                    {capitalizeEveryFirstChar(skill.name)}, {skill.profiency}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    )
+  }
 }

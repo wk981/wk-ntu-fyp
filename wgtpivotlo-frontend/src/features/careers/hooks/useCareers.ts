@@ -1,22 +1,23 @@
-import { getAllSectors } from '@/features/questionaire/api'
-import { DataProps } from '@/features/questionaire/types'
 import { useQuery } from '@tanstack/react-query'
+import { getCareer } from '../api'
+import { CareerWithSkills } from '../types'
+import { useEffect, useState } from 'react'
 
-// sectorsQuery: UseQueryResult<DataProps[], Error>
+export const useCareers = (careerId: number) => {
+  const [careerWithSkills, setCareerWithSkills] = useState<
+    CareerWithSkills | undefined
+  >()
 
-export const useCareers = () => {
-  const sectorsQuery = useQuery({
-    queryKey: ['sector'],
-    queryFn: () => getAllSectors(),
-    select: (data) => {
-      const res = data.map((d) => ({
-        label: d,
-        value: d,
-      }))
-      return res as DataProps[]
-    },
-    retry: false,
+  const careerQuery = useQuery({
+    queryKey: ['career', careerId],
+    queryFn: () => getCareer(careerId),
   })
 
-  return { sectorsQuery }
+  useEffect(() => {
+    if (careerQuery.isSuccess) {
+      setCareerWithSkills(careerQuery.data)
+    }
+  }, [careerQuery])
+
+  return { careerQuery, careerWithSkills }
 }

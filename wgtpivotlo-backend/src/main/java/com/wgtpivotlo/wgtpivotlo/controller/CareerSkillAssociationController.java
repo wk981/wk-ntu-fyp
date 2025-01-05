@@ -6,8 +6,12 @@ import com.wgtpivotlo.wgtpivotlo.service.CareerSkillAssociationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -29,18 +33,8 @@ public class CareerSkillAssociationController {
     }
 
     @PostMapping("/career/recommendations")
-    public ResponseEntity<PageDTO<CareerWithSimilarityScoreDTO>> getRecommendedCareers(@Valid @RequestBody CareerRecommendationRequest request){
-        PageDTO<CareerWithSimilarityScoreDTO> res =
-                careerRecommendationService
-                .getRecommendedCareers(
-                        request.getPageNumber(),
-                        request.getPageSize(),
-                        request.getCareerSkillDTOList(),
-                        request.getSector(),
-                        request.getCareerLevel(),
-                        request.getChoice()
-                );
-
+    public ResponseEntity<PageDTO<CareerWithSimilarityScoreDTO>> getMoreTypedResult(@RequestBody CareerRecommendationDTO request, Authentication authentication) throws AccessDeniedException {
+        PageDTO<CareerWithSimilarityScoreDTO> res = careerRecommendationService.getRecommendedCareers(request, authentication);
         return ResponseEntity.ok(res);
     }
 

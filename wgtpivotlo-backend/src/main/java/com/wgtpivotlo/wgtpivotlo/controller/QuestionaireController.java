@@ -1,6 +1,8 @@
 package com.wgtpivotlo.wgtpivotlo.controller;
 
+import com.wgtpivotlo.wgtpivotlo.dto.CareerRecommendationDTO;
 import com.wgtpivotlo.wgtpivotlo.dto.QuestionaireRequest;
+import com.wgtpivotlo.wgtpivotlo.service.CareerRecommendationService;
 import com.wgtpivotlo.wgtpivotlo.service.QuestionaireService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

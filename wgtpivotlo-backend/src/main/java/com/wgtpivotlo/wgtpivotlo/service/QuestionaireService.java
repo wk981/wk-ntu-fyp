@@ -65,4 +65,5 @@ public class QuestionaireService {
         return mixedCareersResult.orElseThrow(() -> new ResourceNotFoundException("No career found"));
 
     }
+
 }

@@ -16,9 +16,9 @@ export interface ChoiceCareerRecommendationResponse extends PageResponse {
 }
 
 export const categoryMap: { [key: string]: string } = {
-  Aspiration: 'ASPIRATION',
-  Pathway: 'PATHWAY',
-  Direct: 'DIRECT_MATCH',
+  aspiration: 'ASPIRATION',
+  pathway: 'PATHWAY',
+  direct: 'DIRECT_MATCH',
 }
 
 type CategoryType = (typeof categoryMap)[keyof typeof categoryMap]

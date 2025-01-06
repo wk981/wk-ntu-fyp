@@ -23,10 +23,12 @@ interface PreviewProps extends PreviewListProps {
   onClick: (category: string) => Promise<void>
   back?: boolean
   seeMore?: boolean
+  layout?: 'flex' | 'grid'
 }
 
 interface PreviewListProps {
   data: CareerWithSimilarityScoreDTO[]
+  layout?: 'flex' | 'grid'
 }
 
 interface PreviewItemProps {
@@ -38,9 +40,9 @@ interface PreviewDialogProps {
 }
 
 const previewTitleMap: { [key: string]: string } = {
-  Aspiration: 'Career Matches Based on Aspirations',
-  Pathway: 'Career Pathway Recommendations',
-  Direct: 'Direct Career Suggestions',
+  aspiration: 'Career Matches Based on Aspirations',
+  pathway: 'Career Pathway Recommendations',
+  direct: 'Direct Career Suggestions',
 }
 
 export const Preview = ({
@@ -49,6 +51,7 @@ export const Preview = ({
   onClick,
   back = false,
   seeMore = true,
+  layout = 'flex',
 }: PreviewProps) => {
   const [, setSearchParams] = useSearchParams()
   // eslint-disable-next-line no-unused-vars
@@ -57,16 +60,22 @@ export const Preview = ({
   }
   return (
     <div className="w-full">
-      <div className="flex justify-between items-center">
+      <div
+        className={`flex ${seeMore ? 'justify-between' : 'gap-16'} items-center`}
+      >
         {back && (
-          <Button onClick={() => clearAllParams()}>
+          <Button
+            onClick={() => clearAllParams()}
+            aria-label="Go back"
+            className="shrink-0"
+          >
             <ArrowLeft className="h-4 w-4" />
           </Button>
         )}
         <h1 className="text-lg font-bold mb-2">{previewTitleMap[category]}</h1>
         {seeMore && (
           <p
-            className="cursor-pointer text-blue-anchor"
+            className="cursor-pointer text-blue-anchor hover:text-blue-800 transition-colors"
             onClick={() => {
               onClick(category).catch((error) => console.log(error))
             }}
@@ -75,15 +84,17 @@ export const Preview = ({
           </p>
         )}
       </div>
-      <PreviewList data={data} />
+      <PreviewList data={data} layout={layout} />
     </div>
   )
 }
 
-const PreviewList = ({ data }: PreviewListProps) => {
+const PreviewList = ({ data, layout = 'flex' }: PreviewListProps) => {
   return (
     <ScrollArea className="w-full pb-4">
-      <div className="flex flex-col gap-4 md:flex-row items-center">
+      <div
+        className={`${layout === 'flex' ? 'flex flex-col md:flex-row items-center gap-4' : 'grid grid-cols-[repeat(auto-fit,minmax(332px,332px))] items-center justify-center'} gap-4 `}
+      >
         {Array.isArray(data) &&
           data.map((d, index) => <PreviewItem key={index} item={d} />)}
       </div>

@@ -33,17 +33,17 @@ export const Result = () => {
       {results && (categorySearchParams === '' || !categorySearchParams) ? (
         <>
           <Preview
-            category={'Aspiration'}
+            category={'aspiration'}
             data={results?.aspirationMatches}
             onClick={onClick}
           />
           <Preview
-            category={'Pathway'}
+            category={'pathway'}
             data={results.pathwayMatches}
             onClick={onClick}
           />
           <Preview
-            category={'Pathway'}
+            category={'direct'}
             data={results.directMaches} // Fixed typo from "directMaches"
             onClick={onClick}
           />
@@ -58,6 +58,7 @@ export const Result = () => {
               onClick={onClick}
               seeMore={false}
               back={true}
+              layout="grid"
             />
           </>
         )

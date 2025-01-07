@@ -1,83 +1,49 @@
 /* eslint-disable */
 // Enable eslint when developing this as it has any types.
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from '@/components/ui/command'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
-import { Button } from './ui/button'
-import { Check, ChevronsUpDown } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { forwardRef } from 'react'
-import {
-  ControllerRenderProps,
-  FieldValues,
-  Path,
-  PathValue,
-  UseFormSetValue,
-} from 'react-hook-form'
-import { DataProps } from '@/features/questionaire/types'
-import { FormControl } from './ui/form'
-import { capitalizeEveryFirstChar } from '@/utils'
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Button } from './ui/button';
+import { Check, ChevronsUpDown } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { forwardRef } from 'react';
+import { ControllerRenderProps, FieldValues, Path, PathValue, UseFormSetValue } from 'react-hook-form';
+import { DataProps } from '@/features/questionaire/types';
+import { FormControl } from './ui/form';
+import { capitalizeEveryFirstChar } from '@/utils';
 
 interface MultiComboBoxProps<
   TFieldValues extends FieldValues = FieldValues,
   TName extends Path<TFieldValues> = Path<TFieldValues>,
 > extends ControllerRenderProps<TFieldValues, TName> {
-  data: DataProps[] | undefined
-  setValue: UseFormSetValue<TFieldValues> // Corrected type
-  showValues: boolean
-  commandOnChangeCapture?: React.FormEventHandler<HTMLInputElement>
-  isLoading: boolean
-  isSuccess: boolean
+  data: DataProps[] | undefined;
+  setValue: UseFormSetValue<TFieldValues>; // Corrected type
+  showValues: boolean;
+  commandOnChangeCapture?: React.FormEventHandler<HTMLInputElement>;
+  isLoading: boolean;
+  isSuccess: boolean;
 }
 
-export const MultiComboBox = forwardRef<
-  HTMLButtonElement,
-  MultiComboBoxProps<any, any>
->(
-  (
-    {
-      data,
-      value,
-      setValue,
-      name,
-      showValues,
-      commandOnChangeCapture,
-      isLoading,
-      isSuccess,
-    },
-    ref
-  ) => {
+export const MultiComboBox = forwardRef<HTMLButtonElement, MultiComboBoxProps<any, any>>(
+  ({ data, value, setValue, name, showValues, commandOnChangeCapture, isLoading, isSuccess }, ref) => {
     const handleSetValue = (val: string, label: string) => {
       if (value && Array.isArray(value)) {
-        const existingItemIndex = value.findIndex(
-          (item: any) => Array.isArray(item) && item[0] === val
-        )
+        const existingItemIndex = value.findIndex((item: any) => Array.isArray(item) && item[0] === val);
 
         if (existingItemIndex !== -1) {
           // If the value already exists, remove it
           setValue(
             name,
             value.filter((item: any) => Array.isArray(item) && item[0] !== val)
-          )
+          );
         } else {
           // If the value doesn't exist, add the new [val, label] pair
-          setValue(name, [...value, [val, label]] as PathValue<any, any>)
+          setValue(name, [...value, [val, label]] as PathValue<any, any>);
         }
       } else {
         // If no value exists yet, initialize with the [val, label] pair
-        setValue(name, [[val, label]])
+        setValue(name, [[val, label]]);
       }
-    }
+    };
 
     return (
       <Popover>
@@ -99,14 +65,8 @@ export const MultiComboBox = forwardRef<
                 <div className="flex gap-2 justify-start">
                   {value?.length
                     ? value.map((val: any) => (
-                        <div
-                          key={val}
-                          className="px-2 py-1 rounded-xl border bg-slate-200 text-xs font-medium"
-                        >
-                          {capitalizeEveryFirstChar(
-                            data?.find((d) => d.value === value.toLowerCase())
-                              ?.label || ''
-                          )}
+                        <div key={val} className="px-2 py-1 rounded-xl border bg-slate-200 text-xs font-medium">
+                          {capitalizeEveryFirstChar(data?.find((d) => d.value === value.toLowerCase())?.label || '')}
                         </div>
                       ))
                     : 'Select an option'}
@@ -124,7 +84,7 @@ export const MultiComboBox = forwardRef<
               placeholder="Search"
               onChangeCapture={(e) => {
                 if (commandOnChangeCapture) {
-                  commandOnChangeCapture(e)
+                  commandOnChangeCapture(e);
                 }
               }}
             />
@@ -138,29 +98,26 @@ export const MultiComboBox = forwardRef<
                         key={index}
                         value={capitalizeEveryFirstChar(d.value)}
                         onSelect={(currentValue) => {
-                          handleSetValue(currentValue, d.label)
+                          handleSetValue(currentValue, d.label);
                         }}
                       >
                         {capitalizeEveryFirstChar(d.label)}
                         <Check
                           className={cn(
                             'mr-2 h-4 w-4',
-                            value?.some(
-                              (item: any) =>
-                                Array.isArray(item) && item[0] === d.value
-                            )
+                            value?.some((item: any) => Array.isArray(item) && item[0] === d.value)
                               ? 'opacity-100'
                               : 'opacity-0'
                           )}
                         />
                       </CommandItem>
-                    )
+                    );
                   })}
               </CommandGroup>
             </CommandList>
           </Command>
         </PopoverContent>
       </Popover>
-    )
+    );
   }
-)
+);

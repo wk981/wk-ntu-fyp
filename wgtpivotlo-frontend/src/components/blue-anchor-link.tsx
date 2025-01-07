@@ -1,9 +1,9 @@
-import { capitalizeFirstChar } from '@/utils'
-import { Link, To } from 'react-router-dom'
+import { capitalizeFirstChar } from '@/utils';
+import { Link, To } from 'react-router-dom';
 
 interface NavbarItemType {
-  name: string
-  toPath: To
+  name: string;
+  toPath: To;
 }
 
 export const BlueAnchorLink = ({ name, toPath }: NavbarItemType) => {
@@ -11,5 +11,5 @@ export const BlueAnchorLink = ({ name, toPath }: NavbarItemType) => {
     <Link to={toPath}>
       <p className="text-blue-anchor">{capitalizeFirstChar(name)}</p>
     </Link>
-  )
-}
+  );
+};

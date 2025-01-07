@@ -1,25 +1,14 @@
 /* eslint-disable */
 // Enable eslint when developing this as it has any types.
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from '@/components/ui/command'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
-import { Button } from './ui/button'
-import { Check, ChevronsUpDown } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { forwardRef } from 'react'
-import { ComboBoxProps } from '@/features/questionaire/types'
-import { FormControl } from './ui/form'
-import { capitalizeEveryFirstChar } from '@/utils'
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Button } from './ui/button';
+import { Check, ChevronsUpDown } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { forwardRef } from 'react';
+import { ComboBoxProps } from '@/features/questionaire/types';
+import { FormControl } from './ui/form';
+import { capitalizeEveryFirstChar } from '@/utils';
 
 export const ComboBox = forwardRef<HTMLButtonElement, ComboBoxProps<any, any>>(
   ({ data, value, setValue, name, isLoading }, ref) => {
@@ -41,10 +30,7 @@ export const ComboBox = forwardRef<HTMLButtonElement, ComboBoxProps<any, any>>(
                 {isLoading
                   ? 'Fetching Data'
                   : value && data
-                    ? capitalizeEveryFirstChar(
-                        data.find((d) => d.value === value.toLowerCase())
-                          ?.label || ''
-                      )
+                    ? capitalizeEveryFirstChar(data.find((d) => d.value === value.toLowerCase())?.label || '')
                     : 'Select an option'}
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
@@ -62,16 +48,14 @@ export const ComboBox = forwardRef<HTMLButtonElement, ComboBoxProps<any, any>>(
                         key={d.value}
                         value={capitalizeEveryFirstChar(d.value)}
                         onSelect={(currentValue) => {
-                          setValue(String(name), String(currentValue))
+                          setValue(String(name), String(currentValue));
                         }}
                       >
                         {capitalizeEveryFirstChar(d.label)}
                         <Check
                           className={cn(
                             'mr-2 h-4 w-4',
-                            value === capitalizeEveryFirstChar(d.value)
-                              ? 'opacity-100'
-                              : 'opacity-0'
+                            value === capitalizeEveryFirstChar(d.value) ? 'opacity-100' : 'opacity-0'
                           )}
                         />
                       </CommandItem>
@@ -83,6 +67,6 @@ export const ComboBox = forwardRef<HTMLButtonElement, ComboBoxProps<any, any>>(
           </PopoverContent>
         </Popover>
       </>
-    )
+    );
   }
-)
+);

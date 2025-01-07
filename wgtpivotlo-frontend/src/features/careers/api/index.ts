@@ -32,7 +32,7 @@ export const choiceCareerRecommendation = async ({ data, pageNumber = 0 }: Choic
     const body = {
       ...data,
       pageNumber: pageNumber,
-      pageSize: 10,
+      pageSize: 9,
     };
     const response = await fetch(url, {
       method: 'POST',

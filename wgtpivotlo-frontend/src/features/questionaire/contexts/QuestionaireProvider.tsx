@@ -1,9 +1,10 @@
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { ProviderProps } from '@/utils';
 import { CareerRecommendationResponse, Skills } from '../types';
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import { ResultBody, resultPost } from '../api';
 import {
+  CareerWithSimilarityScoreDTO,
   categoryMap,
   ChoiceCareerRecommendationParams,
   ChoiceCareerRecommendationRequest,
@@ -25,10 +26,11 @@ interface SkillsContext {
     ChoiceCareerRecommendationParams,
     unknown
   >;
-  fetchChoiceCareerRecommendation: ({
-    category,
-    pageNumber,
-  }: FetchChoiceCareerRecommendationParams) => Promise<ChoiceCareerRecommendationResponse | undefined>;
+  fetchChoiceCareerRecommendation: ({ category, pageNumber }: FetchChoiceCareerRecommendationParams) => Promise<void>;
+  categoryResult: CareerWithSimilarityScoreDTO[] | undefined;
+  setCategoryResult: React.Dispatch<React.SetStateAction<CareerWithSimilarityScoreDTO[] | undefined>>;
+  page: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export interface FetchChoiceCareerRecommendationParams {
@@ -41,6 +43,9 @@ const QuestionaireProvider = ({ children }: ProviderProps) => {
   const [userSkillsList, setUserSkillsList] = useState<Skills[]>([]);
   const [results, setResults] = useState<CareerRecommendationResponse | undefined>(undefined);
   const [questionaireFormResults, setQuestionaireFormResults] = useState<ResultBody | undefined>();
+  const [categoryResult, setCategoryResult] = useState<CareerWithSimilarityScoreDTO[] | undefined>(undefined);
+  const [totalPage, setTotalPage] = useState<number | undefined>(undefined);
+  const [page, setPage] = useState(1);
 
   const resultPostMutation = useMutation({
     mutationFn: (data: ResultBody): Promise<CareerRecommendationResponse | void> => {
@@ -52,6 +57,12 @@ const QuestionaireProvider = ({ children }: ProviderProps) => {
     mutationFn: ({ data, pageNumber }: ChoiceCareerRecommendationParams) => {
       return choiceCareerRecommendation({ data, pageNumber });
     },
+    onError: (error) => {
+      // Do something with the error
+      console.error('Mutation error:', error);
+      // Prevent refetching
+      // Optionally reset any affected state
+    },
   });
 
   const fetchChoiceCareerRecommendation = async ({
@@ -59,6 +70,9 @@ const QuestionaireProvider = ({ children }: ProviderProps) => {
     pageNumber = 1,
   }: FetchChoiceCareerRecommendationParams) => {
     try {
+      if (totalPage && totalPage === pageNumber) {
+        return;
+      }
       if (questionaireFormResults !== undefined && category) {
         const data: ChoiceCareerRecommendationRequest = {
           careerLevel: questionaireFormResults?.careerLevel,
@@ -70,12 +84,25 @@ const QuestionaireProvider = ({ children }: ProviderProps) => {
           pageNumber: pageNumber,
         };
         const response = await choiceCareerRecommendationPostMutation.mutateAsync(body);
-        return response;
+        // console.log(response);
+        if (response) {
+          setCategoryResult((prevState) => [
+            ...(prevState || []),
+            ...(Array.isArray(response?.data) ? response.data : response?.data ? [response.data] : []),
+          ]);
+          if (!totalPage) {
+            setTotalPage(response?.totalPage);
+          }
+        }
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    console.log(categoryResult);
+  }, [categoryResult]);
 
   const value = {
     userSkillsList,
@@ -87,6 +114,10 @@ const QuestionaireProvider = ({ children }: ProviderProps) => {
     questionaireFormResults,
     setQuestionaireFormResults,
     fetchChoiceCareerRecommendation,
+    categoryResult,
+    setCategoryResult,
+    page,
+    setPage,
   };
 
   return <QuestionaireContext.Provider value={value}>{children}</QuestionaireContext.Provider>;

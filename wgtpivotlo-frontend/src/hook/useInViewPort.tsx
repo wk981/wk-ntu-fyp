@@ -1,14 +1,13 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 // Source: https://medium.com/@serifcolakel/utilizing-intersection-observer-with-custom-react-hook-in-typescript-5a27575ee154
-function useInViewPort(options?: IntersectionObserverInit) {
+function useInViewPort<T extends HTMLElement>(ref: React.RefObject<T>, options?: IntersectionObserverInit) {
   const [inViewport, setInViewport] = useState(false);
-  const targetRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
       setInViewport(entry.isIntersecting);
     }, options);
-    const currentRef = targetRef.current;
+    const currentRef = ref.current;
     if (currentRef) {
       observer.observe(currentRef);
     }
@@ -17,7 +16,7 @@ function useInViewPort(options?: IntersectionObserverInit) {
         observer.unobserve(currentRef);
       }
     };
-  }, [options, targetRef]);
-  return { inViewport, targetRef };
+  }, [options, ref]);
+  return inViewport;
 }
 export default useInViewPort;

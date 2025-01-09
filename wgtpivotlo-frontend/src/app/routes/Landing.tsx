@@ -1,3 +1,9 @@
+import { MyComponent } from '@/components/test';
+
 export const Landing = () => {
-  return <div className="mt-32">Landing</div>
-}
+  return (
+    <div className="h-screen">
+      <MyComponent />
+    </div>
+  );
+};

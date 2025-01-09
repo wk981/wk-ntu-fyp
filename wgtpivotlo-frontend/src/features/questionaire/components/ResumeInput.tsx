@@ -1,3 +1,3 @@
 export const ResumeInput = () => {
-  return <div>ResumeInput</div>
-}
+  return <div>ResumeInput</div>;
+};

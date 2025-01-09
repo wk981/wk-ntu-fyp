@@ -1,40 +1,104 @@
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Preview } from '@/components/preview'
-import { useQuestionaire } from '@/features/questionaire/hook/useQuestionaire'
+import { useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Preview } from '@/components/preview';
+import { useQuestionaire } from '@/features/questionaire/hook/useQuestionaire';
+import { FetchChoiceCareerRecommendationParams } from '@/features/questionaire/contexts/QuestionaireProvider';
 
 export const Result = () => {
-  const { results } = useQuestionaire()
-  const navigate = useNavigate()
+  const { results, fetchChoiceCareerRecommendation, categoryResult, setCategoryResult, page, setPage } =
+    useQuestionaire();
+
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const categorySearchParams = searchParams.get('category');
+
+  const onClick = (category: string) => {
+    setSearchParams({ category: category.toLowerCase() });
+    setPage(1);
+  };
+
+  const backButtonOnClick = () => {
+    setSearchParams({});
+    setPage(1);
+    setCategoryResult(undefined);
+  };
+
+  const interSectionAction = () => {
+    console.log('intersected');
+    setPage((prevPage) => prevPage + 1); // Increment the page
+  };
 
   useEffect(() => {
     if (!results) {
-      void navigate('/questionaire') // Redirect to the questionnaire page if results are undefined
+      void navigate('/questionaire'); // Redirect to the questionnaire page if results are undefined
     }
-  }, [results, navigate])
+  }, [results, navigate]);
+
+  useEffect(() => {
+    if (categorySearchParams === '' || categorySearchParams === null) {
+      setPage(1);
+      setCategoryResult(undefined);
+    }
+  }, [categorySearchParams]);
+
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      if (!categorySearchParams) return; // Exit if no category selected
+      const params: FetchChoiceCareerRecommendationParams = {
+        category: categorySearchParams,
+        pageNumber: page,
+      };
+      await fetchChoiceCareerRecommendation(params);
+    };
+
+    fetchRecommendations().catch((err) => console.log(err));
+  }, [page, categorySearchParams]); // Trigger when `page` or `categorySearchParams` changes
 
   if (!results) {
-    return null // Prevent rendering while redirecting
+    return null; // Prevent rendering while redirecting
   }
 
   return (
     <div className="m-auto max-w-[1280px] space-y-7 p-4">
-      {results && (
+      {results && (categorySearchParams === '' || !categorySearchParams) ? (
         <>
           <Preview
-            title={'Career Matches Based on Aspirations'}
-            data={results.aspirationMatches}
+            category={'aspiration'}
+            data={results?.aspirationMatches}
+            onClick={onClick}
+            backButtonOnClick={backButtonOnClick}
           />
           <Preview
-            title={'Career Pathway Recommendations'}
+            category={'pathway'}
             data={results.pathwayMatches}
+            onClick={onClick}
+            backButtonOnClick={backButtonOnClick}
           />
           <Preview
-            title={'Direct Career Suggestions'}
+            category={'direct'}
             data={results.directMaches} // Fixed typo from "directMaches"
+            onClick={onClick}
+            backButtonOnClick={backButtonOnClick}
           />
         </>
+      ) : (
+        categorySearchParams &&
+        categoryResult && (
+          <>
+            <Preview
+              category={categorySearchParams}
+              data={categoryResult}
+              onClick={onClick}
+              seeMore={false}
+              back={true}
+              layout="grid"
+              backButtonOnClick={backButtonOnClick}
+              intersectionAction={interSectionAction}
+            />
+          </>
+        )
       )}
     </div>
-  )
-}
+  );
+};

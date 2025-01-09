@@ -1,30 +1,23 @@
-import { registerFormSchema } from '../types'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { BlueAnchorLink } from '@/components/blue-anchor-link'
-import { useAuth } from '../hook/useAuth'
-import { toast } from 'react-toastify'
-import { useNavigate } from 'react-router-dom'
+import { registerFormSchema } from '../types';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { BlueAnchorLink } from '@/components/blue-anchor-link';
+import { useAuth } from '../hook/useAuth';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 export const RegisterForm = () => {
-  const inputClassName = 'text-base font-normal'
-  const navigate = useNavigate()
-  const { registerUser } = useAuth()
+  const inputClassName = 'text-base font-normal';
+  const navigate = useNavigate();
+  const { registerUser } = useAuth();
 
   const form = useForm<z.infer<typeof registerFormSchema>>({
     resolver: zodResolver(registerFormSchema),
-  })
+  });
 
   const onSubmit = async (values: z.infer<typeof registerFormSchema>) => {
     try {
@@ -32,26 +25,26 @@ export const RegisterForm = () => {
         username: values.username,
         password: values.password,
         email: values.email,
-      }
-      const status = await registerUser(body)
+      };
+      const status = await registerUser(body);
       if (status) {
-        toast('Registered Successfully')
-        await navigate('/auth/login')
+        toast('Registered Successfully');
+        await navigate('/auth/login');
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
   return (
     <Form {...form}>
       <form
         onSubmit={(e) => {
-          e.preventDefault()
+          e.preventDefault();
           form
             .handleSubmit(onSubmit)()
             .catch((error) => {
-              console.error('Form submission error:', error)
-            })
+              console.error('Form submission error:', error);
+            });
         }}
         className="w-full flex flex-col gap-16 justify-stretch"
       >
@@ -100,9 +93,7 @@ export const RegisterForm = () => {
             name="confirmPassword"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className={inputClassName}>
-                  Confirm Password:
-                </FormLabel>
+                <FormLabel className={inputClassName}>Confirm Password:</FormLabel>
                 <FormControl>
                   <Input placeholder="Confirm your password here" {...field} />
                 </FormControl>
@@ -119,5 +110,5 @@ export const RegisterForm = () => {
         </Button>
       </form>
     </Form>
-  )
-}
+  );
+};

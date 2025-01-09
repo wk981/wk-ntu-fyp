@@ -1,14 +1,14 @@
 // import { interceptor } from '@/api'
-import { AuthProvider } from '@/contexts/AuthProvider'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { AuthProvider } from '@/contexts/AuthProvider';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 // import { useEffect, useRef } from 'react'
-import { ToastContainer } from 'react-toastify'
+import { ToastContainer } from 'react-toastify';
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient();
 
 type AppProviderProps = {
-  children: React.ReactNode
-}
+  children: React.ReactNode;
+};
 
 export const AppProvider = ({ children }: AppProviderProps) => {
   // const interceptorRef = useRef(false)
@@ -27,5 +27,5 @@ export const AppProvider = ({ children }: AppProviderProps) => {
         <ToastContainer />
       </AuthProvider>
     </QueryClientProvider>
-  )
-}
+  );
+};

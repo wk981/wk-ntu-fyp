@@ -1,6 +1,6 @@
-import { getAllSectors } from '@/features/questionaire/api'
-import { DataProps } from '@/features/questionaire/types'
-import { useQuery } from '@tanstack/react-query'
+import { getAllSectors } from '@/features/questionaire/api';
+import { DataProps } from '@/features/questionaire/types';
+import { useQuery } from '@tanstack/react-query';
 
 export const useSectors = () => {
   // const [careerId, setCareerId] = useState<number|undefined>();
@@ -11,11 +11,11 @@ export const useSectors = () => {
       const res = data.map((d) => ({
         label: d,
         value: d,
-      }))
-      return res as DataProps[]
+      }));
+      return res as DataProps[];
     },
     retry: false,
-  })
+  });
 
-  return { sectorsQuery }
-}
+  return { sectorsQuery };
+};

@@ -1,10 +1,10 @@
-import { useAuth } from '@/features/auth/hook/useAuth'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Link } from 'react-router-dom'
+import { useAuth } from '@/features/auth/hook/useAuth';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Link } from 'react-router-dom';
 
 export const Profile = () => {
-  const { user } = useAuth()
-  const avatarImage = user?.pic || 'https://github.com/shadcn.png'
+  const { user } = useAuth();
+  const avatarImage = user?.pic || 'https://github.com/shadcn.png';
 
   return (
     <Link to={'profile'} className="h-12 w-12 cursor-pointer">
@@ -13,5 +13,5 @@ export const Profile = () => {
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>
     </Link>
-  )
-}
+  );
+};

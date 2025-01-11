@@ -7,6 +7,7 @@ import { ArrowLeft } from 'lucide-react';
 import useInViewPort from '@/hook/useInViewPort';
 import { useEffect, useRef } from 'react';
 import { PreviewItem } from './preview-item';
+import { usePreference } from '@/features/careers/hooks/usePreference';
 
 interface PreviewProps extends PreviewListProps {
   category: string;
@@ -39,7 +40,6 @@ export const Preview = ({
   seeMore = true,
   layout = 'flex',
 }: PreviewProps) => {
-  // eslint-disable-next-line no-unused-vars
   return (
     <div className="w-full">
       <div className={`flex ${seeMore ? 'justify-between' : 'gap-16'} items-center`}>
@@ -66,6 +66,7 @@ export const Preview = ({
 };
 
 const PreviewList = ({ data, intersectionAction, layout = 'flex' }: PreviewListProps) => {
+  const { checkedId, handleHeartButtonClick } = usePreference();
   const elementRef = useRef<HTMLDivElement>(null);
   const isIntersecting = useInViewPort(elementRef, {
     root: null, // Use the viewport as the root
@@ -91,9 +92,11 @@ const PreviewList = ({ data, intersectionAction, layout = 'flex' }: PreviewListP
         {Array.isArray(data) &&
           data.map((d, index) => (
             <PreviewItem
-              key={index}
+              key={d.career.careerId}
               item={d}
               ref={data.length === index + 1 && layout === 'grid' ? elementRef : null}
+              heartBadgeOnClick={() => handleHeartButtonClick(d.career.careerId.toString())}
+              heartBadgeCheckedId={checkedId}
             />
           ))}
       </div>

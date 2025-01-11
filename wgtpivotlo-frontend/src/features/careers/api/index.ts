@@ -1,4 +1,4 @@
-import { ErrorResponse } from '@/types';
+import { ErrorResponse, Response } from '@/types';
 import { backendURL } from '@/utils';
 import { CareerWithSkills, ChoiceCareerRecommendationParams, ChoiceCareerRecommendationResponse } from '../types';
 
@@ -52,5 +52,27 @@ export const choiceCareerRecommendation = async ({ data, pageNumber = 0 }: Choic
     return json;
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const selectPreference = async (careerId: string): Promise<Response | undefined> => {
+  try {
+    const url = backendURL + `api/v1/career-skill-association/career/preference/${careerId}`;
+    const response = await fetch(url, {
+      method: 'POST',
+      credentials: 'include',
+    });
+
+    if (!response.ok) {
+      const errorBody = (await response.json()) as ErrorResponse; // Parse the error response
+      const errorMessage = errorBody.message || 'Something went wrong'; // Extract the error message
+      throw new Error(errorMessage); // Throw a new Error with the message
+    }
+
+    const json = (await response.json()) as Response;
+    return json;
+  } catch (error) {
+    console.error('Error in selectPreference:', error);
+    throw error; // Re-throw the error so it can be handled by React Query
   }
 };

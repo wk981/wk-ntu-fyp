@@ -1,10 +1,22 @@
-import { useMutation } from '@tanstack/react-query';
-import { selectPreference } from '../api';
-import { useState } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { getPreference, selectPreference } from '../api';
+import { useEffect, useState } from 'react';
 import { ErrorResponse } from '@/types';
 
 export const usePreference = () => {
-  const [checkedId, setCheckedId] = useState<string | null>(null);
+  const getCareerPreference = useQuery({
+    queryKey: ['careerPreference'],
+    queryFn: () => getPreference(),
+  });
+
+  const [checkedId, setCheckedId] = useState<string | null | undefined>();
+
+  useEffect(() => {
+    if (getCareerPreference.data) {
+      setCheckedId(getCareerPreference.data.careerId.toString());
+    }
+  }, [getCareerPreference.data]);
+
   const preferenceMutation = useMutation({
     mutationFn: (id: string) => {
       return selectPreference(id);
@@ -17,6 +29,7 @@ export const usePreference = () => {
 
   const handleHeartButtonClick = async (id: string) => {
     try {
+      console.log('Heart button clicked');
       // Await the mutation
       await preferenceMutation.mutateAsync(id);
 
@@ -26,5 +39,5 @@ export const usePreference = () => {
       console.error('Failed to update preference:', error);
     }
   };
-  return { preferenceMutation, checkedId, handleHeartButtonClick };
+  return { preferenceMutation, getCareerPreference, checkedId, handleHeartButtonClick };
 };

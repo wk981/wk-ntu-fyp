@@ -46,4 +46,9 @@ public class CareerSkillAssociationController {
         res.put("message", "Career set successfully");
         return ResponseEntity.ok(res);
     }
+
+    @GetMapping("/career/preference")
+    public ResponseEntity<HashMap<String, Long>> getUserPreferenceCareerId(Authentication authentication) throws AccessDeniedException{
+        return ResponseEntity.ok(userService.getUserPreferenceCareer(authentication));
+    }
 }

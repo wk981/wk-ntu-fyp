@@ -7,7 +7,6 @@ import { ArrowLeft } from 'lucide-react';
 import useInViewPort from '@/hook/useInViewPort';
 import { useEffect, useRef } from 'react';
 import { PreviewItem } from './preview-item';
-import { usePreference } from '@/features/careers/hooks/usePreference';
 
 interface PreviewProps extends PreviewListProps {
   category: string;
@@ -16,12 +15,16 @@ interface PreviewProps extends PreviewListProps {
   back?: boolean;
   seeMore?: boolean;
   layout?: 'flex' | 'grid';
+  checkedId?: string | null | undefined;
+  handleHeartButtonClick?: (id: string) => Promise<void>;
 }
 
 interface PreviewListProps {
   data: CareerWithSimilarityScoreDTO[];
   intersectionAction?: () => void;
   layout?: 'flex' | 'grid';
+  checkedId?: string | null | undefined;
+  handleHeartButtonClick?: (id: string) => Promise<void>;
 }
 
 const previewTitleMap: { [key: string]: string } = {
@@ -39,6 +42,8 @@ export const Preview = ({
   back = false,
   seeMore = true,
   layout = 'flex',
+  checkedId,
+  handleHeartButtonClick,
 }: PreviewProps) => {
   return (
     <div className="w-full">
@@ -60,13 +65,24 @@ export const Preview = ({
           </p>
         )}
       </div>
-      <PreviewList data={data} layout={layout} intersectionAction={intersectionAction} />
+      <PreviewList
+        data={data}
+        layout={layout}
+        intersectionAction={intersectionAction}
+        checkedId={checkedId}
+        handleHeartButtonClick={handleHeartButtonClick}
+      />
     </div>
   );
 };
 
-const PreviewList = ({ data, intersectionAction, layout = 'flex' }: PreviewListProps) => {
-  const { checkedId, handleHeartButtonClick } = usePreference();
+const PreviewList = ({
+  data,
+  intersectionAction,
+  handleHeartButtonClick,
+  checkedId,
+  layout = 'flex',
+}: PreviewListProps) => {
   const elementRef = useRef<HTMLDivElement>(null);
   const isIntersecting = useInViewPort(elementRef, {
     root: null, // Use the viewport as the root
@@ -92,10 +108,10 @@ const PreviewList = ({ data, intersectionAction, layout = 'flex' }: PreviewListP
         {Array.isArray(data) &&
           data.map((d, index) => (
             <PreviewItem
-              key={d.career.careerId}
+              key={index}
               item={d}
               ref={data.length === index + 1 && layout === 'grid' ? elementRef : null}
-              heartBadgeOnClick={() => handleHeartButtonClick(d.career.careerId.toString())}
+              heartBadgeOnClick={handleHeartButtonClick}
               heartBadgeCheckedId={checkedId}
             />
           ))}

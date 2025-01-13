@@ -44,7 +44,11 @@ export const PreviewItem = React.forwardRef<HTMLDivElement, PreviewItemProps>(
               <HeartBadge
                 variant="secondary"
                 checked={heartBadgeCheckedId === item.career.careerId.toString()}
-                onClick={() => heartBadgeOnClick}
+                onClick={() => {
+                  heartBadgeOnClick?.(item.career.careerId.toString()).catch((err) => {
+                    console.error('Error handling heart badge click:', err);
+                  });
+                }}
                 text="Prefer"
               />
             </CardTitle>

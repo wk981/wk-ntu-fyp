@@ -10,54 +10,71 @@ import stockItemImg from '@/assets/stock-item.png';
 
 import React from 'react';
 import { Button } from './ui/button';
+import { HeartBadge } from './heart-badge';
 
 interface PreviewItemProps {
   item: CareerWithSimilarityScoreDTO;
   ref?: React.RefObject<HTMLDivElement> | null;
+  heartBadgeOnClick?: (id: string) => Promise<void>;
+  heartBadgeCheckedId?: string | null;
 }
 
 interface PreviewDialogProps {
   careerId: number;
 }
 
-export const PreviewItem = React.forwardRef<HTMLDivElement, PreviewItemProps>(({ item }, ref) => {
-  const career = item.career;
-  const similarityScore = Number(item.similarityScore) * 100;
+export const PreviewItem = React.forwardRef<HTMLDivElement, PreviewItemProps>(
+  ({ item, heartBadgeOnClick, heartBadgeCheckedId }, ref) => {
+    const career = item.career;
+    const similarityScore = Number(item.similarityScore) * 100;
 
-  return (
-    <Card className="w-[332px] min-h-[360px] flex flex-col" ref={ref}>
-      <img
-        src={stockItemImg}
-        alt={`${career.title} preview image`}
-        width={332}
-        height={200}
-        className="w-full h-[100px] object-cover rounded-t-xl"
-      />
-      <div className="flex flex-col flex-grow">
-        <CardHeader className="p-4 pb-2">
-          <CardTitle className="text-xl font-bold leading-6">{capitalizeEveryFirstChar(career.title)}</CardTitle>
-        </CardHeader>
-        <CardContent className="p-4 pt-0 flex flex-col flex-grow">
-          <div>
-            <h2 className="font-medium mb-1">Match Score</h2>
-            <Progress value={similarityScore} className="h-2" />
-            <p className="text-sm text-muted-foreground mt-1">{similarityScore}% match</p>
-          </div>
-          <p className="text-sm text-muted-foreground leading-5 mb-auto h-full">
-            {capitalizeFirstChar(career.responsibility)}
-          </p>
-          <div className="flex gap-2 flex-wrap mt-2">
-            <Badge className="rounded-full">{capitalizeEveryFirstChar(career.sector)}</Badge>
-            <Badge variant="outline" className="rounded-full">
-              {career.careerLevel}
-            </Badge>
-          </div>
-          <PreviewDialog careerId={career.careerId} />
-        </CardContent>
-      </div>
-    </Card>
-  );
-});
+    return (
+      <Card className="w-[332px] min-h-[360px] flex flex-col" ref={ref}>
+        <img
+          src={stockItemImg}
+          alt={`${career.title} preview image`}
+          width={332}
+          height={200}
+          className="w-full h-[100px] object-cover rounded-t-xl"
+        />
+        <div className="flex flex-col flex-grow">
+          <CardHeader className="p-4 pb-2">
+            <CardTitle className="text-xl font-bold leading-6 flex items-center justify-between">
+              {capitalizeEveryFirstChar(career.title)}
+              <HeartBadge
+                variant="secondary"
+                checked={heartBadgeCheckedId === item.career.careerId.toString()}
+                onClick={() => {
+                  heartBadgeOnClick?.(item.career.careerId.toString()).catch((err) => {
+                    console.error('Error handling heart badge click:', err);
+                  });
+                }}
+                text="Prefer"
+              />
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-4 pt-0 flex flex-col flex-grow">
+            <div>
+              <h2 className="font-medium mb-1">Match Score</h2>
+              <Progress value={similarityScore} className="h-2" />
+              <p className="text-sm text-muted-foreground mt-1">{similarityScore}% match</p>
+            </div>
+            <p className="text-sm text-muted-foreground leading-5 mb-auto h-full">
+              {capitalizeFirstChar(career.responsibility)}
+            </p>
+            <div className="flex gap-2 flex-wrap mt-2">
+              <Badge className="rounded-full">{capitalizeEveryFirstChar(career.sector)}</Badge>
+              <Badge variant="outline" className="rounded-full">
+                {career.careerLevel}
+              </Badge>
+            </div>
+            <PreviewDialog careerId={career.careerId} />
+          </CardContent>
+        </div>
+      </Card>
+    );
+  }
+);
 
 const PreviewDialog = ({ careerId }: PreviewDialogProps) => {
   const { careerQuery, careerWithSkills } = useCareers(careerId);

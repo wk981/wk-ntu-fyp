@@ -3,10 +3,12 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Preview } from '@/components/preview';
 import { useQuestionaire } from '@/features/questionaire/hook/useQuestionaire';
 import { FetchChoiceCareerRecommendationParams } from '@/features/questionaire/contexts/QuestionaireProvider';
+import { usePreference } from '@/features/careers/hooks/usePreference';
 
 export const Result = () => {
   const { results, fetchChoiceCareerRecommendation, categoryResult, setCategoryResult, page, setPage } =
     useQuestionaire();
+  const { checkedId, handleHeartButtonClick } = usePreference();
 
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -68,18 +70,24 @@ export const Result = () => {
             data={results?.aspirationMatches}
             onClick={onClick}
             backButtonOnClick={backButtonOnClick}
+            checkedId={checkedId}
+            handleHeartButtonClick={handleHeartButtonClick}
           />
           <Preview
             category={'pathway'}
             data={results.pathwayMatches}
             onClick={onClick}
             backButtonOnClick={backButtonOnClick}
+            checkedId={checkedId}
+            handleHeartButtonClick={handleHeartButtonClick}
           />
           <Preview
             category={'direct'}
             data={results.directMaches} // Fixed typo from "directMaches"
             onClick={onClick}
             backButtonOnClick={backButtonOnClick}
+            checkedId={checkedId}
+            handleHeartButtonClick={handleHeartButtonClick}
           />
         </>
       ) : (
@@ -95,6 +103,8 @@ export const Result = () => {
               layout="grid"
               backButtonOnClick={backButtonOnClick}
               intersectionAction={interSectionAction}
+              checkedId={checkedId}
+              handleHeartButtonClick={handleHeartButtonClick}
             />
           </>
         )

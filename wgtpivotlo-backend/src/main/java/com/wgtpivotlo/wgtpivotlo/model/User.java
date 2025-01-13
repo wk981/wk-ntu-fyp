@@ -33,5 +33,8 @@ public class User extends SuperClass{
     @Column(name="role")
     private Role role;
 
+    @Column(name="career_id", nullable = true)
+    private Long careerId;
+
     private String pic;
 }

@@ -1,9 +1,9 @@
-import { loginBody, loginPost, meGet, registerBody, registerPost } from '@/features/auth/api';
+import { loginBody, loginPost, logoutPost, meGet, registerBody, registerPost } from '@/features/auth/api';
 import { User } from '@/features/auth/types';
 import { Response } from '@/types';
 import { ProviderProps } from '@/utils';
-import { useMutation } from '@tanstack/react-query';
-import { createContext, useState } from 'react';
+import { useMutation, UseMutationResult } from '@tanstack/react-query';
+import { createContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 export interface AuthContextInterface {
@@ -11,6 +11,9 @@ export interface AuthContextInterface {
   isLoggedIn: boolean;
   loginUser: (body: loginBody) => Promise<boolean>;
   registerUser: (body: registerBody) => Promise<boolean>;
+  logoutUser: () => Promise<void>;
+  logoutMutation: UseMutationResult<void, Error, void, unknown>;
+  meMutation: UseMutationResult<User, Error, void, unknown>;
 }
 
 const AuthContext = createContext<AuthContextInterface | undefined>(undefined);
@@ -20,8 +23,24 @@ const AuthProvider = ({ children }: ProviderProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   const meMutation = useMutation({
-    mutationFn: () => {
-      return meGet();
+    mutationFn: meGet, // Directly reference `meGet`
+    onError: (error: Error) => {
+      console.error('Mutation error:', error.message);
+      toast(error.message || 'An error occurred'); // Show error message
+    },
+    onSuccess: (data) => {
+      // Create the logged-in user object
+      const loggedInUser: User = {
+        id: data?.id,
+        email: data?.email,
+        username: data?.username,
+        pic: data?.pic,
+        role: data?.role,
+      };
+
+      // Update state with user data
+      setUser(loggedInUser);
+      setIsLoggedIn(true);
     },
   });
 
@@ -37,27 +56,19 @@ const AuthProvider = ({ children }: ProviderProps) => {
     },
   });
 
+  const logoutMutation = useMutation({
+    mutationFn: () => {
+      return logoutPost();
+    },
+  });
+
   const loginUser = async (body: loginBody): Promise<boolean> => {
     try {
       // Attempt the login mutation
       await loginMutation.mutateAsync(body);
 
       // Attempt to fetch user data
-      const data = await meMutation.mutateAsync();
-
-      // Create the logged-in user object
-      const loggedInUser: User = {
-        id: data?.id,
-        email: data?.email,
-        username: data?.username,
-        pic: data?.pic,
-        role: data?.role,
-      };
-
-      // Update state with user data
-      setUser(loggedInUser);
-      setIsLoggedIn(true);
-
+      await meMutation.mutateAsync();
       // Return true on success
       return true;
     } catch (error) {
@@ -81,7 +92,22 @@ const AuthProvider = ({ children }: ProviderProps) => {
       return false;
     }
   };
-  const value = { user, isLoggedIn, loginUser, registerUser };
+
+  const logoutUser = async () => {
+    try {
+      await logoutMutation.mutateAsync();
+      setUser(undefined);
+      setIsLoggedIn(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    meMutation.mutate();
+  }, []);
+
+  const value = { user, isLoggedIn, loginUser, registerUser, logoutUser, logoutMutation, meMutation };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

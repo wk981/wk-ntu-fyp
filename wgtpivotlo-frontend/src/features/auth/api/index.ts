@@ -65,7 +65,7 @@ export const meGet = async () => {
   if (!response.ok) {
     const errorBody: ErrorResponse = (await response.json()) as ErrorResponse; // Parse the error response
     const errorMessage: string = errorBody.message || 'Something went wrong'; // Extract the error message
-    throw new Error(errorMessage); // Throw a new Error with the message
+    throw Error(errorMessage); // Throw a new Error with the message
   }
   const json = response.json() as Promise<User>;
   return json;

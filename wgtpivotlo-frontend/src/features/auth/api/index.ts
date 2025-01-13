@@ -70,3 +70,16 @@ export const meGet = async () => {
   const json = response.json() as Promise<User>;
   return json;
 };
+
+export const logoutPost = async () => {
+  const url = backendURL + '/logout';
+  const response = await fetch(url, {
+    method: 'POST',
+    credentials: 'include',
+  });
+  if (!response.ok) {
+    const errorBody: ErrorResponse = (await response.json()) as ErrorResponse; // Parse the error response
+    const errorMessage: string = errorBody.message || 'Something went wrong'; // Extract the error message
+    throw new Error(errorMessage); // Throw a new Error with the message
+  }
+};

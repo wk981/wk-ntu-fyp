@@ -20,7 +20,6 @@ export const LoginForm = () => {
 
   const onSubmit = async (values: z.infer<typeof loginFormSchema>) => {
     try {
-      console.log(values);
       const status = await loginUser(values);
       if (status) {
         toast('Logged In Successfully');

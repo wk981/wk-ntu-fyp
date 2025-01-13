@@ -1,8 +1,8 @@
-import { loginBody, loginPost, meGet, registerBody, registerPost } from '@/features/auth/api';
+import { loginBody, loginPost, logoutPost, meGet, registerBody, registerPost } from '@/features/auth/api';
 import { User } from '@/features/auth/types';
 import { Response } from '@/types';
 import { ProviderProps } from '@/utils';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import { createContext, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -11,6 +11,8 @@ export interface AuthContextInterface {
   isLoggedIn: boolean;
   loginUser: (body: loginBody) => Promise<boolean>;
   registerUser: (body: registerBody) => Promise<boolean>;
+  logoutUser: () => Promise<void>;
+  logoutMutation: UseMutationResult<void, Error, void, unknown>;
 }
 
 const AuthContext = createContext<AuthContextInterface | undefined>(undefined);
@@ -34,6 +36,12 @@ const AuthProvider = ({ children }: ProviderProps) => {
   const registerMutation = useMutation({
     mutationFn: (data: registerBody) => {
       return registerPost(data);
+    },
+  });
+
+  const logoutMutation = useMutation({
+    mutationFn: () => {
+      return logoutPost();
     },
   });
 
@@ -81,7 +89,17 @@ const AuthProvider = ({ children }: ProviderProps) => {
       return false;
     }
   };
-  const value = { user, isLoggedIn, loginUser, registerUser };
+
+  const logoutUser = async () => {
+    try {
+      await logoutMutation.mutateAsync();
+      setUser(undefined);
+      setIsLoggedIn(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const value = { user, isLoggedIn, loginUser, registerUser, logoutUser, logoutMutation };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

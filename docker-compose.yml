@@ -11,6 +11,7 @@ services:
       POSTGRES_DB: ${PG_DATABASE}
     volumes:
       - pgdata:/var/lib/postgresql/data
+      
   backend:
     image: ghcr.io/wk981/wk-fyp-backend:latest
     ports:
@@ -20,6 +21,13 @@ services:
       PG_PASSWORD: ${PG_PASSWORD}
       PG_DATABASE: ${PG_DATABASE}
       PG_URL: ${PG_URL}
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+
   frontend:
     image: ghcr.io/wk981/wk-fyp-frontend:latest
     ports:

@@ -1,7 +1,7 @@
 import { Navbar } from '@/components/navbar';
 import { BrowserRouter as Router, Route, Routes, Outlet } from 'react-router-dom';
-import { Login } from './routes/auth/Login';
-import { Register } from './routes/auth/Register';
+import { Login } from './routes/auth/login';
+import { Register } from './routes/auth/register';
 import { Landing } from './routes/Landing';
 import { QuestionaireProvider } from '@/features/questionaire/contexts/QuestionaireProvider';
 import { Questions } from './routes/questionaire/Questions';

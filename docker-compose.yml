@@ -20,6 +20,12 @@ services:
       PG_PASSWORD: ${PG_PASSWORD}
       PG_DATABASE: ${PG_DATABASE}
       PG_URL: ${PG_URL}
+  frontend:
+    image: ghcr.io/wk981/wk-fyp-frontend:latest
+    ports:
+      - 80:80
+    environment:
+      VITE_BACKEND_URL: ${VITE_BACKEND_URL}
 
 volumes:
   pgdata: 

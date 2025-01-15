@@ -39,11 +39,12 @@ jobs:
               mvn clean package -DskipTests=true
         - name: Publish to GHCR
           run: |
-            echo "${{secrets.GHCR_PAT}}" | docker login ghcr.io --username ${{secrets.USERNAME}} --password-stdin  
+              echo "${{secrets.GHCR_PAT}}" | docker login ghcr.io --username ${{secrets.USERNAME}} --password-stdin  
         - name: Build Docker Image
-          run: 
-            docker build . --tag ghcr.io/${{secrets.USERNAME}}/wk-fyp-backend:latest
+          run: |
+              cd wgtpivotlo-backend
+              docker build . --tag ghcr.io/${{ secrets.USERNAME }}/wk-fyp-backend:latest
         - name: Push Docker Image
           run:
-            docker push ghcr.io/${{secrets.USERNAME}}/wk-fyp-backend:latest
+              docker push ghcr.io/${{secrets.USERNAME}}/wk-fyp-backend:latest
 

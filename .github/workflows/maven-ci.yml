@@ -19,7 +19,7 @@ jobs:
             cache: maven
         - name: Perform Unit Test
           run: |
-              cd demo
+              cd wgtpivotlo-backend
               mvn clean install --batch-mode
     
     Build_and_Push_image:
@@ -35,7 +35,7 @@ jobs:
             cache: maven
         - name: Build with Maven
           run: |
-              cd demo
+              cd wgtpivotlo-backend
               mvn clean package -DskipTests=true
         - name: Publish to GHCR
           run: |

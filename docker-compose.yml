@@ -6,11 +6,26 @@ services:
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=wgtpivotlo-db
+      POSTGRES_USER: ${PG_USERNAME}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      POSTGRES_DB: ${PG_DATABASE}
     volumes:
       - pgdata:/var/lib/postgresql/data
+  backend:
+    image: ghcr.io/wk981/wk-fyp-backend:latest
+    ports:
+    - 8080:8080
+    environment:
+      PG_USERNAME: ${PG_USERNAME}
+      PG_PASSWORD: ${PG_PASSWORD}
+      PG_DATABASE: ${PG_DATABASE}
+      PG_URL: ${PG_URL}
+  frontend:
+    image: ghcr.io/wk981/wk-fyp-frontend:latest
+    ports:
+      - 80:80
+    environment:
+      VITE_BACKEND_URL: ${VITE_BACKEND_URL}
 
 volumes:
   pgdata: 

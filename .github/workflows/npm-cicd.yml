@@ -15,7 +15,7 @@ jobs:
           uses: actions/setup-node@v2
           with:
             node-version: '16'
-        - name: Npm install
+        - name: npm install
           run: |
               cd wgtpivotlo-frontend
               npm run install

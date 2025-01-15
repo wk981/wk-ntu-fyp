@@ -12,7 +12,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
   backend:
-    build: ./wgtpivotlo-backend
+    image: ghcr.io/wk981/wk-fyp-backend:latest
     ports:
     - 8080:8080
     environment:

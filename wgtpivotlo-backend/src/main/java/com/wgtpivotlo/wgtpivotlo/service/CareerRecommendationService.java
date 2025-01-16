@@ -19,7 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.AccessDeniedException;
 import java.util.*;
 
 @Slf4j
@@ -34,7 +33,7 @@ public class CareerRecommendationService {
         this.userSkillsRepository = userSkillsRepository;
     }
 
-    private Optional<Page<Object[]>> queryCareersByType(Choice type, List<CareerSkillDTO> skillsProfiencyList, CareerLevel careerLevel, Pageable pageable, Optional<String> sector){
+    private Optional<Page<Object[]>> queryCareersByType(Choice type, List<SkillIdWithProfiencyDTO> skillsProfiencyList, CareerLevel careerLevel, Pageable pageable, Optional<String> sector){
         return switch (type) {
             case DIRECT_MATCH -> careerSkillAssociationRepository.findDirectMatches(skillsProfiencyList,careerLevel,pageable,sector);
             case ASPIRATION -> careerSkillAssociationRepository.findAspirational(skillsProfiencyList,careerLevel,pageable,sector);
@@ -65,7 +64,7 @@ public class CareerRecommendationService {
         existingUserSkills.orElseThrow(() -> new ResourceNotFoundException("No skills found"));
 
         List<UserSkills> userSkills = existingUserSkills.get();
-        List<CareerSkillDTO> skillsProfiencyList = userSkills.stream().map((userSkill -> CareerSkillDTO.builder().skillId(userSkill.getSkill().getSkillId()).profiency(userSkill.getProfiency()).build())).toList();
+        List<SkillIdWithProfiencyDTO> skillsProfiencyList = userSkills.stream().map((userSkill -> SkillIdWithProfiencyDTO.builder().skillId(userSkill.getSkill().getSkillId()).profiency(userSkill.getProfiency()).build())).toList();
 
         log.info("Step1a: Making a query to get careers with similarity score");
         // Get all the career related to skills and profiency along with similarity score.

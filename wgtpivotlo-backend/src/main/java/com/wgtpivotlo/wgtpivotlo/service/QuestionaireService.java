@@ -1,6 +1,6 @@
 package com.wgtpivotlo.wgtpivotlo.service;
 
-import com.wgtpivotlo.wgtpivotlo.dto.CareerSkillDTO;
+import com.wgtpivotlo.wgtpivotlo.dto.SkillIdWithProfiencyDTO;
 import com.wgtpivotlo.wgtpivotlo.dto.CareerWithSimilarityScoreDTO;
 import com.wgtpivotlo.wgtpivotlo.dto.QuestionaireRequest;
 import com.wgtpivotlo.wgtpivotlo.errors.exceptions.ResourceNotFoundException;
@@ -44,7 +44,7 @@ public class QuestionaireService {
             throw new AccessDeniedException("Access Denied");
         }
 
-        List<CareerSkillDTO> userSkills = questionaireRequest.getCareerSkillDTOList();
+        List<SkillIdWithProfiencyDTO> userSkills = questionaireRequest.getSkillIdWithProfiencyDTOList();
 
         // get userId
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
@@ -58,7 +58,7 @@ public class QuestionaireService {
         }
 
         // insert or overwrite
-        for(CareerSkillDTO userSkill: userSkills){
+        for(SkillIdWithProfiencyDTO userSkill: userSkills){
             userSkillsRepository.insertByUserIdAndSkillIdAndProfiency(userId, userSkill.getSkillId(), userSkill.getProfiency().toString());
         }
 

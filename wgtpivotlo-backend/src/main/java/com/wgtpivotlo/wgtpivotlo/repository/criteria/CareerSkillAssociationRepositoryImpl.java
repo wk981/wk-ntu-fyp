@@ -1,6 +1,6 @@
 package com.wgtpivotlo.wgtpivotlo.repository.criteria;
 
-import com.wgtpivotlo.wgtpivotlo.dto.CareerSkillDTO;
+import com.wgtpivotlo.wgtpivotlo.dto.SkillIdWithProfiencyDTO;
 import com.wgtpivotlo.wgtpivotlo.enums.CareerLevel;
 import com.wgtpivotlo.wgtpivotlo.enums.Choice;
 import com.wgtpivotlo.wgtpivotlo.enums.SkillLevel;
@@ -30,7 +30,7 @@ public class CareerSkillAssociationRepositoryImpl implements RecommendationCrite
     }
 
     @Override
-    public Optional<HashMap<String, List<Object[]>>> recommend(List<CareerSkillDTO> skillsProfiencyList, CareerLevel careerLevel, Pageable pageable, Optional<String> sector) {
+    public Optional<HashMap<String, List<Object[]>>> recommend(List<SkillIdWithProfiencyDTO> skillsProfiencyList, CareerLevel careerLevel, Pageable pageable, Optional<String> sector) {
         Optional<Page<Object[]>> findDirectMatchesPage = findDirectMatches(skillsProfiencyList, careerLevel,pageable,sector);
         Optional<Page<Object[]>> findPathwaysPage = findPathways(skillsProfiencyList, careerLevel,pageable,sector);
         Optional<Page<Object[]>> findAspirational = findAspirational(skillsProfiencyList, careerLevel,pageable,sector);
@@ -55,29 +55,29 @@ public class CareerSkillAssociationRepositoryImpl implements RecommendationCrite
     }
 
     @Override
-    public Optional<HashMap<String, List<Object[]>>> recommend(List<CareerSkillDTO> skillsProficiencyList, Pageable page, Optional<String> sector) {
+    public Optional<HashMap<String, Page<Object[]>>> recommend(List<SkillIdWithProfiencyDTO> skillsProficiencyList, Pageable page) {
         throw new UnsupportedOperationException("Use the recommend method with CareerLevel for CareerRecommendation.");
     }
 
     @Override
-    public Optional<Page<Object[]>> findDirectMatches(List<CareerSkillDTO> skillsProfiencyList, CareerLevel careerLevel, Pageable pageable, Optional<String> sector){
+    public Optional<Page<Object[]>> findDirectMatches(List<SkillIdWithProfiencyDTO> skillsProfiencyList, CareerLevel careerLevel, Pageable pageable, Optional<String> sector){
         return findByCareerLevel(skillsProfiencyList, careerLevel, pageable, sector, Choice.DIRECT_MATCH);
     }
 
     @Override
-    public Optional<Page<Object[]>> findPathways(List<CareerSkillDTO> skillsProfiencyList, CareerLevel careerLevel, Pageable pageable, Optional<String> sector){
+    public Optional<Page<Object[]>> findPathways(List<SkillIdWithProfiencyDTO> skillsProfiencyList, CareerLevel careerLevel, Pageable pageable, Optional<String> sector){
 
         return findByCareerLevel(skillsProfiencyList, careerLevel, pageable, sector, Choice.PATHWAY);
     }
 
     @Override
-    public Optional<Page<Object[]>> findAspirational(List<CareerSkillDTO> skillsProfiencyList, CareerLevel careerLevel, Pageable pageable, Optional<String> sector){
+    public Optional<Page<Object[]>> findAspirational(List<SkillIdWithProfiencyDTO> skillsProfiencyList, CareerLevel careerLevel, Pageable pageable, Optional<String> sector){
         return findByCareerLevel(skillsProfiencyList, careerLevel, pageable, sector, Choice.ASPIRATION);
     }
 
     // findByCareerLevel is a dynamic query. Predicate careerLevelPredicate where predicate is the condition built on a higher level.
     // NOTE: May need to refactor, look so ugly
-    private Optional<Page<Object[]>> findByCareerLevel(List<CareerSkillDTO> skillsProfiencyList, CareerLevel careerLevel, Pageable pageable, Optional<String> sector, Choice choice) {
+    private Optional<Page<Object[]>> findByCareerLevel(List<SkillIdWithProfiencyDTO> skillsProfiencyList, CareerLevel careerLevel, Pageable pageable, Optional<String> sector, Choice choice) {
         // Query builder. Using entitymanage unwrap and hibernate criteria builder for pagination count cus error: Already registered a copy: org.hibernate.query.sqm.tree.select.SqmSubQuery@25b07b73
         Session session = em.unwrap(Session.class);
         HibernateCriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
@@ -97,7 +97,7 @@ public class CareerSkillAssociationRepositoryImpl implements RecommendationCrite
         double totalWeightage = 0;
 
         // Iterate through the skillsProficiencyList
-        for (CareerSkillDTO skillProficiency : skillsProfiencyList) {
+        for (SkillIdWithProfiencyDTO skillProficiency : skillsProfiencyList) {
             Optional<Long> skillId = skillProficiency.getSkillId().describeConstable();
             Optional<SkillLevel> profiency = Optional.ofNullable(skillProficiency.getProfiency());
             if (skillId.isPresent() && profiency.isPresent()) {

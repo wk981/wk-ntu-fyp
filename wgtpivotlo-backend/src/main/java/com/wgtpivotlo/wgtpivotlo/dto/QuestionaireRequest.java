@@ -13,10 +13,10 @@ import java.util.List;
 public class QuestionaireRequest extends PageRequest{
     private String sector;
     private CareerLevel careerLevel;
-    private List<CareerSkillDTO> careerSkillDTOList;
-    public QuestionaireRequest(String sector, CareerLevel careerLevel, List<CareerSkillDTO> careerSkillDTOList){
+    private List<SkillIdWithProfiencyDTO> skillIdWithProfiencyDTOList;
+    public QuestionaireRequest(String sector, CareerLevel careerLevel, List<SkillIdWithProfiencyDTO> skillIdWithProfiencyDTOList){
         this.sector = sector;
         this.careerLevel = careerLevel;
-        this.careerSkillDTOList = careerSkillDTOList;
+        this.skillIdWithProfiencyDTOList = skillIdWithProfiencyDTOList;
     }
 }

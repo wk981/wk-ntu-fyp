@@ -32,4 +32,6 @@ public class CourseSkillAssociationController {
     public ResponseEntity<HashMap<String,String>> getLearningTimeLine(Authentication authentication) throws AccessDeniedException {
         return ResponseEntity.ok(courseRecommendationService.recommendCoursesBasedOnUserSkills(authentication));
     }
+
+    // TODO: implement paginated course data based on skill id and ascending order
 }

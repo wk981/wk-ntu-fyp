@@ -1,6 +1,10 @@
 package com.wgtpivotlo.wgtpivotlo.controller;
 
 import com.wgtpivotlo.wgtpivotlo.dto.*;
+import com.wgtpivotlo.wgtpivotlo.mapper.MappingUtils;
+import com.wgtpivotlo.wgtpivotlo.model.Career;
+import com.wgtpivotlo.wgtpivotlo.model.CareerSkills;
+import com.wgtpivotlo.wgtpivotlo.model.Skill;
 import com.wgtpivotlo.wgtpivotlo.service.CareerRecommendationService;
 import com.wgtpivotlo.wgtpivotlo.service.CareerSkillAssociationService;
 import com.wgtpivotlo.wgtpivotlo.service.UserService;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -19,12 +24,14 @@ public class CareerSkillAssociationController {
     private final CareerSkillAssociationService careerSkillAssociationService;
     private final CareerRecommendationService careerRecommendationService;
     private final UserService userService;
+    private final MappingUtils mappingUtils;
 
     @Autowired
-    public CareerSkillAssociationController(CareerSkillAssociationService careerSkillAssociationService, CareerRecommendationService careerRecommendationService, UserService userService) {
+    public CareerSkillAssociationController(CareerSkillAssociationService careerSkillAssociationService, CareerRecommendationService careerRecommendationService, UserService userService, MappingUtils mappingUtils) {
         this.careerSkillAssociationService = careerSkillAssociationService;
         this.careerRecommendationService = careerRecommendationService;
         this.userService = userService;
+        this.mappingUtils = mappingUtils;
     }
 
     @GetMapping("/career/{career_id}")
@@ -32,6 +39,7 @@ public class CareerSkillAssociationController {
         Optional<CareerWithSkillsDTO> result = careerSkillAssociationService.findByCareerId(career_id);
         return ResponseEntity.ok(result);
     }
+
 
     @PostMapping("/career/recommendations")
     public ResponseEntity<PageDTO<CareerWithSimilarityScoreDTO>> getMoreTypedResult(@RequestBody CareerRecommendationDTO request, Authentication authentication) throws AccessDeniedException {
@@ -48,7 +56,14 @@ public class CareerSkillAssociationController {
     }
 
     @GetMapping("/career/preference")
-    public ResponseEntity<HashMap<String, Long>> getUserPreferenceCareerId(Authentication authentication) throws AccessDeniedException{
-        return ResponseEntity.ok(userService.getUserPreferenceCareer(authentication));
+    public ResponseEntity<HashMap<String, Object>> getUserPreferenceCareerId(@RequestParam(required = false, defaultValue = "false") boolean includeSkills, Authentication authentication) throws AccessDeniedException{
+        HashMap<String, Object> res = new HashMap<>();
+        Career career = userService.getUserPreferenceCareer(authentication);
+        if (includeSkills){
+            List<CareerSkills> existingCareerSkillsIdList =  careerSkillAssociationService.findCareerSkillsByCareerId(career.getCareerId());
+            res.put("skills", mappingUtils.mapCareerSkillsIntoSkillDTO(existingCareerSkillsIdList));
+        }
+        res.put("career", career);
+        return ResponseEntity.ok(res);
     }
 }

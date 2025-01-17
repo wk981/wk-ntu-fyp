@@ -56,32 +56,35 @@ public class CourseRecommendationService {
         List<UserSkills> userSkillsList = existingUserSkills.get();
 
         log.info("Step 3: Get career skills");
-        List<CareerSkills> careerSkillsList = careerSkillAssociationRepository.findByCareerIdsNative(Collections.singletonList(career.getCareerId()));
-
+        Optional<List<CareerSkills>> existingCareerSkillsList = careerSkillAssociationRepository.findByCareerIdsNative(Collections.singletonList(career.getCareerId()));
+        existingCareerSkillsList.orElseThrow(() -> new ResourceNotFoundException("No skills found for that career"));
         HashMap<Long, List<SkillLevel>> skillsToLevelMap = new HashMap<>();
 
         for (UserSkills userSkills: userSkillsList){
             Skill userSkill = userSkills.getSkill();
             SkillLevel userSkillLevel = userSkills.getProfiency();
-            for(CareerSkills careerSkills: careerSkillsList){
+            for(CareerSkills careerSkills: existingCareerSkillsList.get()){
                 Skill careerSkill = careerSkills.getSkill();
                 SkillLevel careerSkillLevel = careerSkills.getProfiency();
-                List<SkillLevel> temp = new ArrayList<>();
-                if (userSkill.getSkillId() == careerSkill.getSkillId()){
-                    for (int i = userSkillLevel.toInt() + 1; i <= careerSkillLevel.toInt(); i++) {
-                        temp.add(skillLevelList.get(i - 1)); // Adjust for zero-based indexing
-                    }
-                }
-                else{
-                    for(int i = 1; i <= careerSkillLevel.toInt(); i++){
-                        temp.add(skillLevelList.get(i-1));
-                    }
-                }
+                List<SkillLevel> temp = getSkillLevelProcedure(userSkill.getSkillId(), careerSkill.getSkillId(), userSkillLevel.toInt(), careerSkillLevel.toInt());
                 skillsToLevelMap.put(careerSkill.getSkillId(),temp);
             }
         }
         HashMap<String, String> res = new HashMap<>();
         res.put("data", skillsToLevelMap.toString());
         return res;
+    }
+
+
+    private List<SkillLevel> getSkillLevelProcedure(long userSkillId,long careerSkillId, int userSkillInt, int careerSkillInt) {
+        List<SkillLevel> temp = new ArrayList<>();
+        int index = 1;
+        if (userSkillId == careerSkillId){
+            index = userSkillInt;
+        }
+        for (int i = index; i <= careerSkillInt; i++) {
+            temp.add(skillLevelList.get(i - 1)); // Adjust for zero-based indexing
+        }
+        return temp;
     }
 }

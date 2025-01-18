@@ -2,12 +2,18 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { getCoursePaginationBasedOnSkillId } from '../api';
 import { CourseDTOPaginated } from '../types';
 
-export const useCourseQueryBySkillPaginated = (skillId: number) => {
+interface UseCourseQueryBySkillPaginatedProps {
+  skillId: number;
+  careerId: number;
+}
+
+export const useCourseQueryBySkillPaginated = ({ skillId, careerId }: UseCourseQueryBySkillPaginatedProps) => {
   const { data, error, fetchNextPage, hasNextPage, isFetching, isError } = useInfiniteQuery<CourseDTOPaginated, Error>({
     queryKey: ['courses', skillId],
     queryFn: async ({ pageParam = 1 }) =>
       getCoursePaginationBasedOnSkillId({
         skillId: skillId,
+        careerId: careerId,
         pageNumber: Number(pageParam),
         pageSize: 5,
       }),

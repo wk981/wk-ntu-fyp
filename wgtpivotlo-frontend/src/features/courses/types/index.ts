@@ -3,6 +3,7 @@ import { PageRequest, PageResponse } from '@/types';
 
 export interface CoursePaginationSkillsRequest extends PageRequest {
   skillId: number;
+  careerId: number;
 }
 
 export interface CourseDTOPaginated extends PageResponse {
@@ -23,4 +24,5 @@ export interface CourseDTO {
   rating: number;
   reviews_counts: number;
   privatcourseSource: string;
+  profiency?: string;
 }

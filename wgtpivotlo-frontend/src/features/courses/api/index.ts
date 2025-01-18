@@ -17,9 +17,14 @@ export const getCourseById = async (course_id: number) => {
   return json;
 };
 
-export const getCoursePaginationBasedOnSkillId = async ({ skillId, pageNumber }: CoursePaginationSkillsRequest) => {
+export const getCoursePaginationBasedOnSkillId = async ({
+  skillId,
+  careerId,
+  pageNumber,
+}: CoursePaginationSkillsRequest) => {
   const url =
-    backendURL + `/api/v1/course-skill-association/courses?skillId=${skillId}&pageNumber=${pageNumber}&pageSize=5`;
+    backendURL +
+    `/api/v1/course-skill-association/courses/timeline?skillId=${skillId}&pageNumber=${pageNumber}&pageSize=5&careerId=${careerId}`;
   // console.log(`skillId: ${skillId}, pageNumber: ${pageNumber}`)
   const response = await fetch(url, {
     method: 'GET',

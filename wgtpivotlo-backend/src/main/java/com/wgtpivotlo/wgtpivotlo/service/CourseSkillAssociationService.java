@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -74,4 +75,5 @@ public class CourseSkillAssociationService {
         log.info("Step2: Tidying up body and pagination");
         return new PageDTO<>(paginatedCourses.getTotalPages(), pageNumber, courseDTOList);
     }
+
 }

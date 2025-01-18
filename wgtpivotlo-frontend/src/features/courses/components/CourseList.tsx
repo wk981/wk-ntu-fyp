@@ -10,14 +10,18 @@ import { ExternalLink, Star, Users } from 'lucide-react';
 
 interface CourseListInterface {
   skill: SkillDTO;
+  careerId: number;
 }
 
 interface CourseItemInterface {
   course: CourseDTO;
 }
 
-export const CourseList = ({ skill }: CourseListInterface) => {
-  const { courses, hasMoreCourses, fetchNextCourses } = useCourseQueryBySkillPaginated(skill.skillId);
+export const CourseList = ({ skill, careerId }: CourseListInterface) => {
+  const { courses, hasMoreCourses, fetchNextCourses } = useCourseQueryBySkillPaginated({
+    skillId: skill.skillId,
+    careerId: careerId,
+  });
   const elementRef = useRef<HTMLDivElement>(null);
   const isIntersecting = useInViewPort(elementRef, {
     root: null, // Use the viewport as the root
@@ -49,6 +53,7 @@ const CourseItem = React.forwardRef<HTMLDivElement, CourseItemInterface>(({ cour
           <div className="space-y-1">
             <CardTitle className="text-xl capitalize">{course.name}</CardTitle>
             <CardDescription>
+              <Badge>{course.profiency}</Badge>
               <Badge variant="secondary" className="bg-secondary/50">
                 {course.courseSource}
               </Badge>

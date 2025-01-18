@@ -1,6 +1,7 @@
 package com.wgtpivotlo.wgtpivotlo.controller;
 
 import com.wgtpivotlo.wgtpivotlo.dto.CourseDTO;
+import com.wgtpivotlo.wgtpivotlo.dto.CourseWithProfiencyDTO;
 import com.wgtpivotlo.wgtpivotlo.dto.CourseWithSkillsDTO;
 import com.wgtpivotlo.wgtpivotlo.dto.PageDTO;
 import com.wgtpivotlo.wgtpivotlo.service.CourseRecommendationService;
@@ -40,11 +41,21 @@ public class CourseSkillAssociationController {
         return ResponseEntity.ok(courseSkillAssociationService.findPaginatedCourseBySkillId(skillId, pageNumber, pageSize));
     }
 
+    @GetMapping("/courses/timeline")
+    public ResponseEntity<PageDTO<CourseWithProfiencyDTO>> getPaginatedTimelineCoursesBySkill(
+            @RequestParam(required = true) long skillId,
+            @RequestParam(required = true) long careerId,
+            @RequestParam(defaultValue = "1") @Min(1) int pageNumber,
+            @RequestParam(defaultValue = "10") @Min(1) int pageSize,
+            Authentication authentication) throws AccessDeniedException {
 
-    @PostMapping("/course/learning-timeline")
-    public ResponseEntity<HashMap<String,String>> getLearningTimeLine(Authentication authentication) throws AccessDeniedException {
-        return ResponseEntity.ok(courseRecommendationService.recommendCoursesBasedOnUserSkills(authentication));
+        return ResponseEntity.ok(courseRecommendationService.findPaginatedTimelineCourseBySkillId(skillId, careerId , pageNumber, pageSize, authentication));
     }
+
+//    @PostMapping("/course/learning-timeline")
+//    public ResponseEntity<HashMap<String,String>> getLearningTimeLine(Authentication authentication) throws AccessDeniedException {
+//        return ResponseEntity.ok(courseRecommendationService.recommendCoursesBasedOnUserSkills(authentication));
+//    }
 
 
 }

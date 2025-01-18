@@ -21,6 +21,9 @@ public interface UserSkillsRepository extends JpaRepository<UserSkills, Long> {
     @Query(value="SELECT us.* FROM user_skill us WHERE us.user_id = :userId",nativeQuery = true)
     Optional<List<UserSkills>> findByUserId(@Param("userId") Long userId);
 
+    @Query(value="SELECT us.* FROM user_skill us WHERE us.user_id = :userId AND us.skill_id = :skillId LIMIT 1",nativeQuery = true)
+    Optional<UserSkills> findByUserIdAndSkillId(@Param("userId") Long userId, @Param("skillId") Long skillId);
+
     @Modifying
     @Query(value="INSERT INTO user_skill (user_id, skill_id, profiency) VALUES (:userId, :skillId, :profiency)", nativeQuery = true)
     void insertByUserIdAndSkillIdAndProfiency(@Param("userId")Long userId, @Param("skillId") Long skillId, @Param("profiency") String profiency);

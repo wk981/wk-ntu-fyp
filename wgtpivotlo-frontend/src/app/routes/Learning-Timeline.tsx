@@ -27,7 +27,7 @@ export const LearningTimeline = () => {
           {skillsData.map((skill) => (
             <TabsContent key={skill.skillId} value={skill.skillId.toString()}>
               <h2 className="text-2xl font-bold mb-4">{capitalizeEveryFirstChar(skill.name)} Courses</h2>
-              <CourseList skill={skill} />
+              <CourseList skill={skill} careerId={data?.career?.careerId} />
             </TabsContent>
           ))}
         </Tabs>

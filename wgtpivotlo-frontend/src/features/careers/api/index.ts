@@ -105,4 +105,3 @@ export const getPreference = async (includeSkills = false): Promise<GetCareerRes
     throw error; // Re-throw the error so it can be handled by React Query
   }
 };
-

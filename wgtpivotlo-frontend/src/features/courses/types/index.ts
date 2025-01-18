@@ -5,8 +5,8 @@ export interface CoursePaginationSkillsRequest extends PageRequest {
   skillId: number;
 }
 
-export interface CourseDTOPaginated extends PageResponse{
-    data: CourseDTO[];
+export interface CourseDTOPaginated extends PageResponse {
+  data: CourseDTO[];
 }
 
 export interface CourseWithSkillsDTO {

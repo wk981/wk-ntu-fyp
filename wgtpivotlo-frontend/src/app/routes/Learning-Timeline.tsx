@@ -14,7 +14,7 @@ export const LearningTimeline = () => {
   const skillsData = data?.skills;
   if (skillsData)
     return (
-      <div className='mt-12 h-full mx-auto max-w-[1280px]'>
+      <div className="mt-12 h-full mx-auto max-w-[1280px]">
         <h1 className="text-3xl font-bold mb-6 text-primary">Learning Timeline</h1>
         <Tabs defaultValue={skillsData[0].skillId.toString()} className="w-full">
           <TabsList className="">

@@ -27,7 +27,7 @@ export const CourseList = ({ skill }: CourseListInterface) => {
 
   useEffect(() => {
     if (isIntersecting && hasMoreCourses) {
-        void fetchNextCourses(); // Call the function if it exists
+      void fetchNextCourses(); // Call the function if it exists
     }
   }, [isIntersecting]); // Add all necessary dependencies
 

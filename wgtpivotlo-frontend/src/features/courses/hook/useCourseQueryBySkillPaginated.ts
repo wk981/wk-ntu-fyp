@@ -1,20 +1,20 @@
-import { useInfiniteQuery} from "@tanstack/react-query";
-import { getCoursePaginationBasedOnSkillId } from "../api";
-import { CourseDTOPaginated } from "../types";
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { getCoursePaginationBasedOnSkillId } from '../api';
+import { CourseDTOPaginated } from '../types';
 
 export const useCourseQueryBySkillPaginated = (skillId: number) => {
-    const { data, error, fetchNextPage, hasNextPage, isFetching, isError } = useInfiniteQuery<
-    CourseDTOPaginated,
-    Error
-  >({
+  const { data, error, fetchNextPage, hasNextPage, isFetching, isError } = useInfiniteQuery<CourseDTOPaginated, Error>({
     queryKey: ['courses', skillId],
-    queryFn: async ({ pageParam = 1 }) => getCoursePaginationBasedOnSkillId({
+    queryFn: async ({ pageParam = 1 }) =>
+      getCoursePaginationBasedOnSkillId({
         skillId: skillId,
         pageNumber: Number(pageParam),
-        pageSize: 5
+        pageSize: 5,
       }),
     initialPageParam: 1,
-    getNextPageParam: (lastPage) =>  {return lastPage.pageNumber < lastPage.totalPage ? lastPage.pageNumber + 1 : undefined},
+    getNextPageParam: (lastPage) => {
+      return lastPage.pageNumber < lastPage.totalPage ? lastPage.pageNumber + 1 : undefined;
+    },
   });
 
   return {
@@ -25,4 +25,4 @@ export const useCourseQueryBySkillPaginated = (skillId: number) => {
     error: error,
     isError: isError,
   };
-}
+};

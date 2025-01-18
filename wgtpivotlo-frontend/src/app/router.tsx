@@ -33,7 +33,7 @@ export const AppRouter = () => {
             <Route index element={<Questions />} />
             <Route path="result" element={<Result />} />
           </Route>
-          <Route path='timeline' element={<LearningTimeline />}/>
+          <Route path="timeline" element={<LearningTimeline />} />
         </Route>
       </Routes>
     </Router>

@@ -1,9 +1,12 @@
 import { ErrorResponse, Response } from '@/types';
 import { backendURL } from '@/utils';
 import { CareerWithSkills, ChoiceCareerRecommendationParams, ChoiceCareerRecommendationResponse } from '../types';
+import { Career } from '@/features/questionaire/types';
+import { SkillDTO } from '@/features/skills/types';
 
 interface GetCareerResponse {
-  careerId: number;
+  career: Career;
+  skills?: SkillDTO[];
 }
 
 export const getCareer = async (careerId: number) => {
@@ -81,9 +84,9 @@ export const selectPreference = async (careerId: string): Promise<Response | und
   }
 };
 
-export const getPreference = async (): Promise<GetCareerResponse | undefined> => {
+export const getPreference = async (includeSkills = false): Promise<GetCareerResponse | undefined> => {
   try {
-    const url = backendURL + `/api/v1/career-skill-association/career/preference`;
+    const url = backendURL + `/api/v1/career-skill-association/career/preference?includeSkills=${includeSkills}`;
     const response = await fetch(url, {
       method: 'GET',
       credentials: 'include',

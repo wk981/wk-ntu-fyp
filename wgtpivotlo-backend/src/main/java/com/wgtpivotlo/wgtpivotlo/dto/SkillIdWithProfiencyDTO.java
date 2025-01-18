@@ -8,7 +8,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CareerSkillDTO {
+public class SkillIdWithProfiencyDTO {
     private Long skillId;
     private SkillLevel profiency;
 }

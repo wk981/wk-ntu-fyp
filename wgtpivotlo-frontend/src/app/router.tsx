@@ -8,6 +8,7 @@ import { Questions } from './routes/questionaire/Questions';
 import { Result } from './routes/questionaire/Result';
 import { Logout } from './routes/auth/logout';
 import PrivateRoute from '@/components/private-route';
+import { LearningTimeline } from './routes/Learning-Timeline';
 
 const QuestionaireLayout = () => (
   <QuestionaireProvider>
@@ -32,6 +33,7 @@ export const AppRouter = () => {
             <Route index element={<Questions />} />
             <Route path="result" element={<Result />} />
           </Route>
+          <Route path="timeline" element={<LearningTimeline />} />
         </Route>
       </Routes>
     </Router>

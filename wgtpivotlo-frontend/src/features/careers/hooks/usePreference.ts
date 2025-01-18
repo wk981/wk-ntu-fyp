@@ -3,17 +3,17 @@ import { getPreference, selectPreference } from '../api';
 import { useEffect, useState } from 'react';
 import { ErrorResponse } from '@/types';
 
-export const usePreference = () => {
+export const usePreference = (includeSkills = false) => {
   const getCareerPreference = useQuery({
     queryKey: ['careerPreference'],
-    queryFn: () => getPreference(),
+    queryFn: () => getPreference(includeSkills),
   });
 
   const [checkedId, setCheckedId] = useState<string | null | undefined>();
 
   useEffect(() => {
     if (getCareerPreference.data) {
-      setCheckedId(getCareerPreference.data.careerId.toString());
+      setCheckedId(getCareerPreference.data.career.careerId.toString());
     }
   }, [getCareerPreference.data]);
 

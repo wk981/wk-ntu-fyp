@@ -57,4 +57,12 @@ public class MappingUtils {
             .pic_url(career.getPic_url())
             .build();
     }
+
+    public List<SkillDTO> mapCareerSkillsIntoSkillDTO(List<CareerSkills> careerSkillsList){
+        return careerSkillsList.stream().map(careerSkills -> {
+            Skill skill = careerSkills.getSkill();
+            SkillDTO out = SkillDTO.builder().skillId(skill.getSkillId()).name(skill.getName()).pic("").build();
+            return out;
+        }).toList();
+    }
 }

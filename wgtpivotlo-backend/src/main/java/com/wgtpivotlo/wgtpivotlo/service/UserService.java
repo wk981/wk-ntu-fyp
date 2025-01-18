@@ -55,19 +55,21 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public HashMap<String, Long> getUserPreferenceCareer(Authentication authentication) throws AccessDeniedException {
+    public Career getUserPreferenceCareer( Authentication authentication) throws AccessDeniedException {
         if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
             throw new AccessDeniedException("Access Denied");
         }
-
         log.info("Step 1: Getting User");
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         long userId = userDetails.getId();
         Optional<User> existingUser = userRepository.findById(userId);
         existingUser.orElseThrow(() -> new ResourceNotFoundException("User is not found"));
 
-        HashMap<String , Long> res = new HashMap<>();
-        res.put("careerId", existingUser.get().getCareerId());
-        return res;
+        Optional<Long> existingCareerId = existingUser.get().getCareerId().describeConstable();
+        existingCareerId.orElseThrow(() -> new ResourceNotFoundException("User has set a preference career"));
+
+        Optional<Career> existingCareer = careerRepository.findById(existingCareerId.get());
+        existingCareer.orElseThrow(() -> new ResourceNotFoundException("Career is not found"));
+        return existingCareer.get();
     }
 }

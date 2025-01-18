@@ -26,8 +26,8 @@ public class CourseSkillAssociationController {
     }
 
     @GetMapping("/courses/{course_id}")
-    public ResponseEntity<?> getCourseById(@PathVariable Long course_id) {
-        Optional<CourseWithSkillsDTO> res = courseSkillAssociationService.findByCourseId(course_id);
+    public ResponseEntity<CourseWithSkillsDTO> getCourseById(@PathVariable Long course_id) {
+        CourseWithSkillsDTO res = courseSkillAssociationService.findByCourseId(course_id);
         return ResponseEntity.ok(res);
     }
 

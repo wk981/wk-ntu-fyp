@@ -41,7 +41,7 @@ public class CourseSkillAssociationService {
         this.mappingUtils = mappingUtils;
     }
 
-    public Optional<CourseWithSkillsDTO> findByCourseId(Long courseId){
+    public CourseWithSkillsDTO findByCourseId(Long courseId){
         Optional<Course> course =  courseRepository.findById(courseId);
         Optional<List<CourseSkills>> courseSkillsList = courseSkillAssociationRepository.findByCourse(course);
         CourseWithSkillsDTO courseWithSkillsDTO = null;
@@ -52,7 +52,7 @@ public class CourseSkillAssociationService {
         else{
             throw new ResourceNotFoundException("course id with " + courseId + " is not found in database");
         }
-        return Optional.ofNullable(courseWithSkillsDTO);
+        return courseWithSkillsDTO;
     }
 
     // TODO: Implement

@@ -1,6 +1,9 @@
 package com.wgtpivotlo.wgtpivotlo.service;
 
+import com.wgtpivotlo.wgtpivotlo.dto.SkillDTO;
 import com.wgtpivotlo.wgtpivotlo.enums.FileFormat;
+import com.wgtpivotlo.wgtpivotlo.model.Skill;
+import com.wgtpivotlo.wgtpivotlo.repository.SkillRepository;
 import com.wgtpivotlo.wgtpivotlo.utils.converter.MultiPartFileConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
@@ -11,6 +14,7 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
@@ -23,6 +27,12 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class FileService {
+    private final SkillRepository skillRepository;
+    @Autowired
+    public FileService(SkillRepository skillRepository) {
+        this.skillRepository = skillRepository;
+    }
+
     private static Set<String> allowedFileSet = new HashSet<>() {{
         add("application/msword");
         add("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
@@ -32,7 +42,8 @@ public class FileService {
         add("application/pdf");
     }};
 
-    public List<String> processFile(MultipartFile multiPartFile) throws IOException, InvalidFormatException {
+    // TODO: Need to improve the search
+    public Set<SkillDTO> processFile(MultipartFile multiPartFile) throws IOException, InvalidFormatException {
         String contentType = multiPartFile.getContentType();
         if(!allowedFileSet.contains(contentType)){
             throw new BadRequestException("Wrong file type. Please upload file ends with PDF, DOC or DOCX");
@@ -54,10 +65,31 @@ public class FileService {
                 .flatMap(line -> Arrays.stream(line.split(",\\s*|/\\s*|\\s+"))) // Split skills by commas, slashes, or spaces
                 .map(String::trim) // Trim whitespace
                 .filter(skill -> !skill.isEmpty()) // Remove empty entries
-                .collect(Collectors.toList());
+                .toList();
 
-        return skills;
+        // Note: For debugging
+//        HashMap<String, Skill> res = new HashMap<>();
+//
+//        for(String skill: skills){
+//            Skill query = skillRepository.findNameUsingTriageAndIgnoreCase(skill.toLowerCase().replace(" ", ""));
+//            res.put(skill, query);
+//        }
+        Set<Skill> skillSet = skills.stream()
+                .map(s ->
+                    skillRepository.findNameUsingTriageAndIgnoreCase(s.toLowerCase().replace(" ", ""))
+                )
+                .filter(Objects::nonNull) .collect(Collectors.toSet());// Remove null results
 
+        Set<SkillDTO> res = skillSet.stream()
+                .map(result -> SkillDTO.builder()
+                        .skillId(result.getSkillId())
+                        .name(result.getName())
+                        .pic(result.getPic_url())
+                        .description(result.getDescription())
+                        .build())
+                .collect(Collectors.toSet()); // Collect the results into a Set
+
+        return res;
     }
 
     private List<String> convertFileIntoStringList(MultipartFile multiPartFile) throws IOException, InvalidFormatException {

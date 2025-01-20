@@ -1,12 +1,9 @@
 package com.wgtpivotlo.wgtpivotlo.controller;
 
-import com.wgtpivotlo.wgtpivotlo.dto.CareerRecommendationDTO;
 import com.wgtpivotlo.wgtpivotlo.dto.CareerWithSimilarityScoreDTO;
 import com.wgtpivotlo.wgtpivotlo.dto.QuestionaireRequest;
-import com.wgtpivotlo.wgtpivotlo.service.CareerRecommendationService;
 import com.wgtpivotlo.wgtpivotlo.service.FileService;
 import com.wgtpivotlo.wgtpivotlo.service.QuestionaireService;
-import org.apache.coyote.BadRequestException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +41,6 @@ public class QuestionaireController {
 
     @PostMapping("/upload")
     public ResponseEntity<?> uploadFile (@RequestParam("file") MultipartFile file) throws IOException, InvalidFormatException {
-        fileService.processFile(file);
-        return ResponseEntity.ok("Good");
+        return ResponseEntity.ok(fileService.processFile(file));
     }
 }

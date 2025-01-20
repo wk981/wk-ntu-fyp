@@ -35,13 +35,25 @@ export const QuestionForm = () => {
   const [selectedSkill, setSelectedSkill] = useState<{ skillId: number; profiency: string }[]>([]);
 
   const { skillsQuery, handleCommandOnChangeCapture, skillsData } = useSkills();
-  const { resultPostMutation, setResults, setQuestionaireFormResults } = useQuestionaire();
+  const { userSkillsList, resultPostMutation, setResults, setQuestionaireFormResults, setUserSkillsList } =
+    useQuestionaire();
   const { sectorsQuery } = useSectors();
   const navigate = useNavigate();
   const skillsArray = form.watch('skills');
 
   useEffect(() => {
-    // Initialize `selectedSkill` when `skillsArray` changes
+    if (userSkillsList && userSkillsList.length > 0) {
+      // Process skills data for the form
+      const skillsArray = userSkillsList.map((userSkill) => [String(userSkill.skillId), userSkill.name]);
+
+      // Set the default value in the form
+      form.setValue('skills', skillsArray);
+    }
+  }, []);
+
+  // NOTE: Fix this and backend problem with userSkill
+  useEffect(() => {
+    // Initialize selectedSkill when skillsArray changes
     if (skillsArray) {
       const initializedSkills = skillsArray.map((skill) => ({
         skillId: Number(skill[0]),
@@ -50,6 +62,12 @@ export const QuestionForm = () => {
       setSelectedSkill(initializedSkills);
     }
   }, [skillsArray]);
+
+  useEffect(() => {
+    return () => {
+      setUserSkillsList([]); // Clear the list on unmount
+    };
+  }, []);
 
   const handleSelect = (skillId: number, profiency: string) => {
     setSelectedSkill((prev) => prev.map((s) => (s.skillId === skillId ? { ...s, profiency } : s)));

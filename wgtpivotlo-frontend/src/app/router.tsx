@@ -9,6 +9,7 @@ import { Result } from './routes/questionaire/Result';
 import { Logout } from './routes/auth/logout';
 import PrivateRoute from '@/components/private-route';
 import { LearningTimeline } from './routes/Learning-Timeline';
+import { UploadResume } from './routes/questionaire/UploadResume';
 
 const QuestionaireLayout = () => (
   <QuestionaireProvider>
@@ -30,7 +31,10 @@ export const AppRouter = () => {
         </Route>
         <Route element={<PrivateRoute />}>
           <Route path="questionaire" element={<QuestionaireLayout />}>
-            <Route index element={<Questions />} />
+            {/* Default route for "questionaire" */}
+            <Route path="resume" element={<UploadResume />} />
+            {/* Nested routes */}
+            <Route path="questions" element={<Questions />} />
             <Route path="result" element={<Result />} />
           </Route>
           <Route path="timeline" element={<LearningTimeline />} />

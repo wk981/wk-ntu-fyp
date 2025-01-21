@@ -21,18 +21,16 @@ interface NavItemDropdownProps {
 export function NavItemDropdown({ label, items }: NavItemDropdownProps) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
-        <Button variant="ghost" className="p-0 text-blue-anchor font-normal text-lg">
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="p-2 text-blue-anchor font-normal text-lg">
           {label}
           <ChevronDown className="ml-1 h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         {items.map((item) => (
-          <Link to={item.href} className="w-full  text-blue-anchor  mt-2">
-            <DropdownMenuItem key={item.href} className="cursor-pointer text-base">
-              {item.label}
-            </DropdownMenuItem>
+          <Link to={item.href} className="w-full  text-blue-anchor mt-2" key={item.href}>
+            <DropdownMenuItem className="cursor-pointer text-base">{item.label}</DropdownMenuItem>
           </Link>
         ))}
       </DropdownMenuContent>

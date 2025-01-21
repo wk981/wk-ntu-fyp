@@ -1,7 +1,6 @@
 import { LoadingSpinner } from '@/components/loading-spinner';
 import { useAuth } from '@/features/auth/hook/useAuth';
 import { useEffect, useRef } from 'react';
-import { Navigate } from 'react-router-dom';
 
 export const Logout = () => {
   const { logoutUser, logoutMutation } = useAuth();
@@ -14,6 +13,8 @@ export const Logout = () => {
       const performLogout = async () => {
         try {
           await logoutUser();
+          // Use href to navigate after logout
+          window.location.href = '/auth/login';
         } catch (error) {
           console.error('Logout failed:', error);
         }
@@ -21,11 +22,11 @@ export const Logout = () => {
       performLogout().catch((error) => console.log(error));
       ref.current = true;
     }
-  }, [logoutUser]); // Dependency array ensures this runs only once or when logoutUser changes
+  }, [logoutUser]);
 
   if (isPending) {
     return <LoadingSpinner />;
   } else {
-    return <Navigate to="/auth/login" replace />; // Redirects to "/dashboard"
+    return null;
   }
 };

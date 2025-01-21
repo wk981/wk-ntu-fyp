@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useState } from 'react';
 import { ProviderProps } from '@/utils';
 import { CareerRecommendationResponse, Skills } from '../types';
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
@@ -99,10 +99,6 @@ const QuestionaireProvider = ({ children }: ProviderProps) => {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    console.log(categoryResult);
-  }, [categoryResult]);
 
   const value = {
     userSkillsList,

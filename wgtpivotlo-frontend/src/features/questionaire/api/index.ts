@@ -6,7 +6,7 @@ import { SkillDTO } from '@/features/skills/types';
 export interface ResultBody extends PageRequest {
   sector: string;
   careerLevel: string;
-  careerSkillDTOList: {
+  skillIdWithProfiencyDTOList: {
     skillId: number;
     profiency: string;
   }[];

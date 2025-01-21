@@ -26,7 +26,6 @@ const AuthProvider = ({ children }: ProviderProps) => {
     mutationFn: meGet, // Directly reference `meGet`
     onError: (error: Error) => {
       console.error('Mutation error:', error.message);
-      toast(error.message || 'An error occurred'); // Show error message
     },
     onSuccess: (data) => {
       // Create the logged-in user object

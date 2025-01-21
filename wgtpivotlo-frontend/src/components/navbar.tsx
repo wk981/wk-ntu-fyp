@@ -27,7 +27,7 @@ export const Navbar = () => {
         <Link to={'/'}>
           <img src={HomeIcon}></img>
         </Link>
-        <BlueAnchorLink toPath={'questionaire'} name="questionaire" />
+        <BlueAnchorLink toPath={'questionaire/resume'} name="questionaire" />
         <NavItemDropdown label="Explore" items={exploreMoreItems} />
         <BlueAnchorLink toPath={'resume'} name="resume" />
       </div>

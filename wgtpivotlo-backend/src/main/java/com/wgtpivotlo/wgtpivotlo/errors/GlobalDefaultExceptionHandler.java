@@ -4,6 +4,7 @@ import com.wgtpivotlo.wgtpivotlo.errors.exceptions.PageItemsOutOfBoundException;
 import com.wgtpivotlo.wgtpivotlo.errors.exceptions.ResourceNotFoundException;
 import com.wgtpivotlo.wgtpivotlo.errors.exceptions.UserExists;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.coyote.BadRequestException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -87,6 +88,15 @@ public class GlobalDefaultExceptionHandler extends ResponseEntityExceptionHandle
     public ResponseEntity<Object> handleUserExistsException(HttpServletRequest req, UserExists ex){
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .status(HttpStatus.CONFLICT)
+                .message(ex.getMessage())
+                .build();
+        return buildResponseEntity(errorResponse);
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<Object> handleBadRequestException(HttpServletRequest req, BadRequestException ex){
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(HttpStatus.BAD_REQUEST)
                 .message(ex.getMessage())
                 .build();
         return buildResponseEntity(errorResponse);

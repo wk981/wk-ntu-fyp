@@ -21,10 +21,11 @@ interface MultiComboBoxProps<
   commandOnChangeCapture?: React.FormEventHandler<HTMLInputElement>;
   isLoading: boolean;
   isSuccess: boolean;
+  extraSetValueFn?: (currentValue: string) => void;
 }
 
 export const MultiComboBox = forwardRef<HTMLButtonElement, MultiComboBoxProps<any, any>>(
-  ({ data, value, setValue, name, showValues, commandOnChangeCapture, isLoading, isSuccess }, ref) => {
+  ({ data, value, setValue, name, showValues, commandOnChangeCapture, isLoading, isSuccess, extraSetValueFn }, ref) => {
     const handleSetValue = (val: string, label: string) => {
       if (value && Array.isArray(value)) {
         const existingItemIndex = value.findIndex((item: any) => Array.isArray(item) && item[0] === val);
@@ -99,6 +100,9 @@ export const MultiComboBox = forwardRef<HTMLButtonElement, MultiComboBoxProps<an
                         value={capitalizeEveryFirstChar(d.value)}
                         onSelect={(currentValue) => {
                           handleSetValue(currentValue, d.label);
+                          if (extraSetValueFn) {
+                            extraSetValueFn(currentValue);
+                          }
                         }}
                       >
                         {capitalizeEveryFirstChar(d.label)}

@@ -35,21 +35,30 @@ export const QuestionForm = () => {
   const [selectedSkill, setSelectedSkill] = useState<{ skillId: number; profiency: string }[]>([]);
 
   const { skillsQuery, handleCommandOnChangeCapture, skillsData } = useSkills();
-  const { resultPostMutation, setResults, setQuestionaireFormResults } = useQuestionaire();
+  const { userSkillsList, resultPostMutation, setResults, setQuestionaireFormResults, setUserSkillsList } =
+    useQuestionaire();
   const { sectorsQuery } = useSectors();
   const navigate = useNavigate();
   const skillsArray = form.watch('skills');
 
   useEffect(() => {
-    // Initialize `selectedSkill` when `skillsArray` changes
-    if (skillsArray) {
-      const initializedSkills = skillsArray.map((skill) => ({
-        skillId: Number(skill[0]),
-        profiency: 'Beginner', // Default proficiency
-      }));
-      setSelectedSkill(initializedSkills);
+    if (userSkillsList && userSkillsList.length > 0) {
+      // Process skills data for the form
+      const skillsArray = userSkillsList.map((userSkill) => [String(userSkill.skillId), userSkill.name]);
+
+      // Set the default value in the form
+      form.setValue('skills', skillsArray);
+
+      // Set select skills
+      const selectedSkillsMap = userSkillsList.map((userSkill) => {
+        return { skillId: userSkill.skillId, profiency: 'Beginner' };
+      });
+      setSelectedSkill(selectedSkillsMap);
     }
-  }, [skillsArray]);
+    return () => {
+      setUserSkillsList([]); // Clear the list on unmount
+    };
+  }, []);
 
   const handleSelect = (skillId: number, profiency: string) => {
     setSelectedSkill((prev) => prev.map((s) => (s.skillId === skillId ? { ...s, profiency } : s)));
@@ -60,6 +69,7 @@ export const QuestionForm = () => {
       'skills',
       skillsArray.filter((skill) => Number(skill[0]) !== skillId)
     );
+    setSelectedSkill((prev) => prev.filter((skill) => Number(skill.skillId) !== skillId));
   };
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
@@ -67,7 +77,7 @@ export const QuestionForm = () => {
       const body = {
         sector: data.sector.toLowerCase(),
         careerLevel: data.careerLevel,
-        careerSkillDTOList: selectedSkill,
+        skillIdWithProfiencyDTOList: selectedSkill,
         pageNumber: 1,
         pageSize: 5,
       };
@@ -82,6 +92,22 @@ export const QuestionForm = () => {
     }
   }
 
+  const multiSelectBoxExtraFn = (currentValue: string) => {
+    setSelectedSkill((prev) => {
+      // Convert the currentValue to a number
+      const skillId = Number(currentValue);
+
+      // Check if the skill is already in the array
+      const skillExists = prev.some((item) => item.skillId === skillId);
+
+      // If it exists, remove it, otherwise add it
+      if (skillExists) {
+        return prev.filter((item) => item.skillId !== skillId);
+      } else {
+        return [...prev, { skillId, profiency: 'Beginner' }];
+      }
+    });
+  };
   return (
     <Form {...form}>
       {resultPostMutation.isPending && <LoadingSpinner />}
@@ -94,7 +120,7 @@ export const QuestionForm = () => {
               console.error('Form submission error:', error);
             });
         }}
-        className="space-y-6"
+        className="space-y-6 px-7"
       >
         <FormField
           control={form.control}
@@ -140,6 +166,7 @@ export const QuestionForm = () => {
                   commandOnChangeCapture={handleCommandOnChangeCapture}
                   isLoading={skillsQuery.isLoading}
                   isSuccess={skillsQuery.isSuccess}
+                  extraSetValueFn={multiSelectBoxExtraFn}
                 />
               </FormControl>
               <FormMessage />
@@ -148,28 +175,36 @@ export const QuestionForm = () => {
         />
         <div>
           {skillsArray &&
-            skillsArray.map((skill, index) => (
-              <div key={index} className="mt-2">
-                <label>{capitalizeEveryFirstChar(skill[1])}</label>
-                <div className="flex items-center space-x-4 mt-1">
-                  <Select onValueChange={(value) => handleSelect(Number(skill[0]), value)} defaultValue="Beginner">
-                    <SelectTrigger className="w-[180px] bg-white">
-                      <SelectValue placeholder="Select your proficiency" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Beginner" defaultChecked>
-                        Beginner
-                      </SelectItem>
-                      <SelectItem value="Intermediate">Intermediate</SelectItem>
-                      <SelectItem value="Advanced">Advanced</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <button type="button" className="text-red" onClick={() => handleRemove(Number(skill[0]))}>
-                    <RedCross size={24} className="hover:opacity-50 transition-opacity cursor-pointer" />
-                  </button>
+            skillsArray.map((skill, index) => {
+              const skillId = skill[0];
+              const skillProfiency = selectedSkill.find((item) => item.skillId === Number(skillId));
+              return (
+                <div key={index} className="mt-2">
+                  <label>{capitalizeEveryFirstChar(skill[1])}</label>
+                  <div className="flex items-center space-x-4 mt-1">
+                    <Select
+                      onValueChange={(value) => handleSelect(Number(skill[0]), value)}
+                      defaultValue="Beginner"
+                      value={skillProfiency?.profiency}
+                    >
+                      <SelectTrigger className="w-[180px] bg-white">
+                        <SelectValue placeholder="Select your proficiency" />
+                      </SelectTrigger>
+                      <SelectContent defaultValue={'Beginner'}>
+                        <SelectItem value="Beginner" defaultChecked>
+                          Beginner
+                        </SelectItem>
+                        <SelectItem value="Intermediate">Intermediate</SelectItem>
+                        <SelectItem value="Advanced">Advanced</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <button type="button" className="text-red" onClick={() => handleRemove(Number(skill[0]))}>
+                      <RedCross size={24} className="hover:opacity-50 transition-opacity cursor-pointer" />
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
         </div>
         <Button type="submit">Submit</Button>
       </form>

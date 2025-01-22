@@ -4,6 +4,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
+ENV VITE_BACKEND_URL=${VITE_BACKEND_URL}
 RUN npm run build
 
 # Stage 2: Transfer static file to a container and build nginx 

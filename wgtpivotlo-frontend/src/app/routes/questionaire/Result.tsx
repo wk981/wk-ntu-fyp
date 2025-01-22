@@ -62,7 +62,7 @@ export const Result = () => {
   }
 
   return (
-    <div className="m-auto max-w-[1280px] space-y-7 p-4">
+    <div className="m-auto max-w-[1280px] space-y-7 p-4 pt-16">
       {results && (categorySearchParams === '' || !categorySearchParams) ? (
         <>
           <Preview

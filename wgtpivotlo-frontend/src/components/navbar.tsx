@@ -22,12 +22,12 @@ export const Navbar = () => {
     }
   };
   return (
-    <nav className="flex h-[60px] w-full bg-white text-lg gap-2 drop-shadow-xl items-center justify-between px-3">
+    <nav className="flex h-[60px] sticky top-0 overflow-hidden w-full bg-white text-lg gap-2 drop-shadow-xl items-center justify-between px-3 z-50">
       <div className="flex gap-6 items-center">
         <Link to={'/'}>
           <img src={HomeIcon}></img>
         </Link>
-        <BlueAnchorLink toPath={'questionaire/resume'} name="questionaire" />
+        <BlueAnchorLink toPath={'questionaire/upload'} name="questionaire" />
         <NavItemDropdown label="Explore" items={exploreMoreItems} />
         <BlueAnchorLink toPath={'resume'} name="resume" />
       </div>

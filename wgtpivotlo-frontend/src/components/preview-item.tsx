@@ -29,7 +29,7 @@ export const PreviewItem = React.forwardRef<HTMLDivElement, PreviewItemProps>(
     const similarityScore = Number(item.similarityScore) * 100;
 
     return (
-      <Card className="w-[332px] min-h-[360px] flex flex-col" ref={ref}>
+      <Card className="w-[332px] h-[410px] flex flex-col" ref={ref}>
         <img
           src={stockItemImg}
           alt={`${career.title} preview image`}

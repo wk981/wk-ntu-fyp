@@ -32,7 +32,7 @@ export const AppRouter = () => {
         <Route element={<PrivateRoute />}>
           <Route path="questionaire" element={<QuestionaireLayout />}>
             {/* Default route for "questionaire" */}
-            <Route path="resume" element={<UploadResume />} />
+            <Route path="upload" element={<UploadResume />} />
             {/* Nested routes */}
             <Route path="questions" element={<Questions />} />
             <Route path="result" element={<Result />} />

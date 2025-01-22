@@ -45,7 +45,7 @@ public class SecurityConfiguration {
                 .logoutSuccessHandler((httpServletRequest, httpServletResponse, authentication) -> {
                     httpServletResponse.setStatus(HttpServletResponse.SC_OK);
                 })
-                .logoutUrl("/logout") // URL to trigger logout
+                .logoutUrl("/api/logout") // URL to trigger logout
                 .invalidateHttpSession(true) // Invalidate session
                 .deleteCookies("JSESSIONID") // Delete session cookie
                 .permitAll()

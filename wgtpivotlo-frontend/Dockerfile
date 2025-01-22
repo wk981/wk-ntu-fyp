@@ -1,12 +1,6 @@
 # Stage 1: Build React App
-FROM node:18 as build
+FROM node:latest as build
 WORKDIR /app
-
-# Define build-time ARG
-ARG VITE_BACKEND_URL
-
-# Set the environment variable for the build
-ENV VITE_BACKEND_URL=${VITE_BACKEND_URL}
 
 # Copy dependency files and install dependencies
 COPY package*.json ./

@@ -11,7 +11,7 @@ interface GetCareerResponse {
 
 export const getCareer = async (careerId: number) => {
   try {
-    const url = backendURL + `/api/v1/career-skill-association/career/${careerId}`;
+    const url = backendURL + `/v1/career-skill-association/career/${careerId}`;
     const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -35,7 +35,7 @@ export const getCareer = async (careerId: number) => {
 
 export const choiceCareerRecommendation = async ({ data, pageNumber = 0 }: ChoiceCareerRecommendationParams) => {
   try {
-    const url = backendURL + `/api/v1/career-skill-association/career/recommendations`;
+    const url = backendURL + `/v1/career-skill-association/career/recommendations`;
     const body = {
       ...data,
       pageNumber: pageNumber,
@@ -64,7 +64,7 @@ export const choiceCareerRecommendation = async ({ data, pageNumber = 0 }: Choic
 
 export const selectPreference = async (careerId: string): Promise<Response | undefined> => {
   try {
-    const url = backendURL + `/api/v1/career-skill-association/career/preference/${careerId}`;
+    const url = backendURL + `/v1/career-skill-association/career/preference/${careerId}`;
     const response = await fetch(url, {
       method: 'POST',
       credentials: 'include',
@@ -86,7 +86,7 @@ export const selectPreference = async (careerId: string): Promise<Response | und
 
 export const getPreference = async (includeSkills = false): Promise<GetCareerResponse | undefined> => {
   try {
-    const url = backendURL + `/api/v1/career-skill-association/career/preference?includeSkills=${includeSkills}`;
+    const url = backendURL + `/v1/career-skill-association/career/preference?includeSkills=${includeSkills}`;
     const response = await fetch(url, {
       method: 'GET',
       credentials: 'include',

@@ -13,7 +13,7 @@ export interface ResultBody extends PageRequest {
 }
 
 export const getAllSectors = async () => {
-  const url = backendURL + '/api/v1/questionaire/sectors';
+  const url = backendURL + '/v1/questionaire/sectors';
   const response = await fetch(url, {
     headers: {
       'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ export const getAllSectors = async () => {
 
 export const resultPost = async (data: ResultBody): Promise<CareerRecommendationResponse | void> => {
   try {
-    const url = backendURL + '/api/v1/questionaire/result';
+    const url = backendURL + '/v1/questionaire/result';
     const body = {
       ...data,
     };
@@ -62,7 +62,7 @@ export const uploadResumePost = async (file: File) => {
   const formData = new FormData();
   formData.append('file', file);
 
-  const url = backendURL + '/api/v1/questionaire/upload';
+  const url = backendURL + '/v1/questionaire/upload';
   const response = await fetch(url, {
     method: 'POST',
     body: formData,

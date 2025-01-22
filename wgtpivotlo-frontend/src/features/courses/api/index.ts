@@ -3,7 +3,7 @@ import { backendURL } from '@/utils';
 import { CourseDTOPaginated, CoursePaginationSkillsRequest, CourseWithSkillsDTO } from '../types';
 
 export const getCourseById = async (course_id: number) => {
-  const url = backendURL + `/api/v1/course-skill-association/${course_id}`;
+  const url = backendURL + `/v1/course-skill-association/${course_id}`;
   const response = await fetch(url, {
     method: 'GET',
     credentials: 'include',
@@ -24,7 +24,7 @@ export const getCoursePaginationBasedOnSkillId = async ({
 }: CoursePaginationSkillsRequest) => {
   const url =
     backendURL +
-    `/api/v1/course-skill-association/courses/timeline?skillId=${skillId}&pageNumber=${pageNumber}&pageSize=5&careerId=${careerId}`;
+    `/v1/course-skill-association/courses/timeline?skillId=${skillId}&pageNumber=${pageNumber}&pageSize=5&careerId=${careerId}`;
   // console.log(`skillId: ${skillId}, pageNumber: ${pageNumber}`)
   const response = await fetch(url, {
     method: 'GET',

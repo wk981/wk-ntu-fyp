@@ -23,8 +23,6 @@ export function capitalizeEveryFirstChar(str: string): string {
 
 export const backendURL: string = import.meta.env.VITE_BACKEND_URL as string;
 
-console.log(backendURL);
-
 export interface ProviderProps {
   children: ReactNode;
 }

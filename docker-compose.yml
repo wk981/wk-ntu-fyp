@@ -1,7 +1,7 @@
 version: '3.9'
 services:
   postgres-db:
-    image: postgres
+    image: postgres:16
     restart: always
     ports:
       - 5432:5432
@@ -11,11 +11,15 @@ services:
       POSTGRES_DB: ${PG_DATABASE}
     volumes:
       - pgdata:/var/lib/postgresql/data
+    networks:
+      - dev
       
   backend:
     image: ghcr.io/wk981/wk-fyp-backend:latest
-    ports:
-    - 8080:8080
+    # build: ./wgtpivotlo-backend
+    tty: true
+    # ports:
+    # - 8080:8080
     environment:
       PG_USERNAME: ${PG_USERNAME}
       PG_PASSWORD: ${PG_PASSWORD}
@@ -27,13 +31,32 @@ services:
           memory: 512M
         reservations:
           memory: 256M
+    networks:
+      - dev
 
   frontend:
     image: ghcr.io/wk981/wk-fyp-frontend:latest
-    ports:
-      - 80:80
+    # build: ./wgtpivotlo-frontend
+    tty: true
+    # ports:
+    #   - 80:80
     environment:
       VITE_BACKEND_URL: ${VITE_BACKEND_URL}
+    networks:
+      - dev
+  
+  nginx:
+    image: nginx:stable-alpine
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes: 
+      - ./reverse-proxy:/etc/nginx/conf.d/
+    networks:
+      - dev
 
 volumes:
   pgdata: 
+networks:
+  dev:

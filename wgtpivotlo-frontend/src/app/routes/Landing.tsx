@@ -1,6 +1,7 @@
 import landing from '@/assets/landing.svg';
 import { HomeCard, HomeCardInterface } from '@/components/home-card';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/features/auth/hook/useAuth';
 import { useScrollToNextDiv } from '@/hook/useScrollToNextDiv';
 import { useNavigate } from 'react-router-dom';
 
@@ -24,9 +25,14 @@ const landingCardObj: HomeCardInterface[] = [
 
 export const Landing = () => {
   const { sectionsRef } = useScrollToNextDiv();
+  const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
   const handleCLick = () => {
-    void navigate('/auth/login');
+    if (isLoggedIn) {
+      void navigate('/questionaire/upload');
+    } else {
+      void navigate('/auth/login');
+    }
   };
   return (
     <div className="h-full max-w-[1280px] mx-auto">

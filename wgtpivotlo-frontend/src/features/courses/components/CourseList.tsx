@@ -36,7 +36,7 @@ export const CourseList = ({ skill, careerId }: CourseListInterface) => {
   }, [isIntersecting]); // Add all necessary dependencies
 
   return (
-    <div>
+    <div className="space-y-2">
       {courses &&
         courses.map((course, index) => (
           <CourseItem key={index} ref={courses.length === index + 1 ? elementRef : null} course={course} />

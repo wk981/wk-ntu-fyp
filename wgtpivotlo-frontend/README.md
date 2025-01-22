@@ -48,3 +48,5 @@ export default tseslint.config({
   },
 });
 ```
+
+# Don't forget to run npm run lint

@@ -39,6 +39,8 @@ jobs:
         - name: Build Docker Image
           run: |
               cd wgtpivotlo-frontend
+              touch .env
+              echo "VITE_BACKEND_URL=${{ secrets.VITE_BACKEND_URL }}" > .env
               docker build . --tag ghcr.io/${{ secrets.USERNAME }}/wk-fyp-frontend:latest
         - name: Push Docker Image
           run:

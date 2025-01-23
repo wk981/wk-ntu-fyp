@@ -9,7 +9,7 @@ interface NavbarItemType {
 export const BlueAnchorLink = ({ name, toPath }: NavbarItemType) => {
   return (
     <Link to={toPath}>
-      <p className="text-blue-anchor hover:bg-accent hover:text-accent-foreground p-2 rounded-md">
+      <p className="text-blue-anchor hover:bg-accent hover:text-accent-foreground p-2 rounded-md text-lg">
         {capitalizeFirstChar(name)}
       </p>
     </Link>

@@ -14,18 +14,22 @@ export const LearningTimeline = () => {
   const skillsData = data?.skills;
   if (skillsData)
     return (
-      <div className="mt-12 h-full mx-auto max-w-[1280px]">
-        <h1 className="text-3xl font-bold mb-6 text-primary">Learning Timeline</h1>
-        <Tabs defaultValue={skillsData[0].skillId.toString()} className="w-full">
-          <TabsList className="">
+      <div className="px-4 py-7 h-full mx-auto max-w-[1280px] min-h-[calc(100vh-65px)] overflow-hidden">
+        <h1 className="text-3xl font-bold pb-3 text-primary">Learning Timeline</h1>
+        <Tabs defaultValue={skillsData[0].skillId.toString()} className="w-full overflow-auto">
+          <TabsList className="overflow-x-auto overflow-y-hidden w-full flex justify-start">
             {skillsData.map((skill) => (
-              <TabsTrigger key={skill.skillId} value={skill.skillId.toString()}>
+              <TabsTrigger
+                key={skill.skillId}
+                value={skill.skillId.toString()}
+                className="px-3 py-1.5 text-sm font-medium transition-all"
+              >
                 {capitalizeEveryFirstChar(skill.name)}
               </TabsTrigger>
             ))}
           </TabsList>
           {skillsData.map((skill) => (
-            <TabsContent key={skill.skillId} value={skill.skillId.toString()}>
+            <TabsContent className="h-full" key={skill.skillId} value={skill.skillId.toString()}>
               <h2 className="text-2xl font-bold mb-4">{capitalizeEveryFirstChar(skill.name)} Courses</h2>
               <CourseList skill={skill} careerId={data?.career?.careerId} />
             </TabsContent>

@@ -101,8 +101,8 @@ const PreviewList = ({
       <div
         className={`${
           layout === 'flex'
-            ? 'flex flex-col md:flex-row items-center gap-4'
-            : 'grid grid-cols-[repeat(auto-fit,minmax(332px,1fr))] items-center justify-center'
+            ? 'flex flex-row items-center gap-4'
+            : 'grid grid-cols-[repeat(auto-fit,minmax(332px,1fr))] items-center justify-center flex-1 overflow-y-auto h-[calc(100vh-185px)]'
         } gap-4 `}
       >
         {Array.isArray(data) &&

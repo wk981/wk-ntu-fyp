@@ -21,7 +21,6 @@ export const AppRouter = () => {
   return (
     <Router>
       <Navbar />
-
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="auth">

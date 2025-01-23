@@ -206,7 +206,19 @@ export const QuestionForm = () => {
               );
             })}
         </div>
-        <Button type="submit">Submit</Button>
+        <div className="space-x-4">
+          <Button
+            type="button"
+            variant={'ghost'}
+            className="border bg-white"
+            onClick={() => {
+              void navigate('/questionaire/upload');
+            }}
+          >
+            Go back
+          </Button>
+          <Button type="submit">Submit</Button>
+        </div>
       </form>
     </Form>
   );

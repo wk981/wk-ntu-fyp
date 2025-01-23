@@ -80,7 +80,7 @@ export const Navbar = () => {
 
       {isMenuOpen && (
         <div className="md:hidden">
-          <div className="space-y-1 px-2 pb-3 pt-2 z-50 bg-white">
+          <div className="space-y-1 px-2 pb-3 pt-2 z-50 bg-white border ">
             <BlueAnchorLink toPath="questionaire/upload" name="Questionnaire" />
             <NavItemDropdown label="Explore" items={exploreMoreItems} />
             <BlueAnchorLink toPath="resume" name="Resume" />

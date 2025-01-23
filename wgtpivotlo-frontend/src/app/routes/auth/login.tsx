@@ -9,7 +9,7 @@ export const Login = () => {
   }
   return (
     <div className="relative min-h-[calc(100vh-65px)] overflow-auto px-4 py-12 flex justify-center">
-      <div className="border-gray-300 py-10 px-6 md:p-12 rounded-xl w-[32rem] h-96 bg-white mx-auto drop-shadow-lg">
+      <div className="border-gray-300 py-10 px-6 md:p-12 rounded-xl w-[32rem] max-h-[32rem] h-auto bg-white mx-auto drop-shadow-lg">
         <LoginForm />
       </div>
     </div>

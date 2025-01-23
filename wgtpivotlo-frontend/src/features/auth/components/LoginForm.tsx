@@ -41,9 +41,9 @@ export const LoginForm = () => {
               console.error('Form submission error:', error);
             });
         }}
-        className="w-full flex flex-col gap-16 justify-stretch"
+        className="w-full h-full flex flex-col gap-16 justify-stretch"
       >
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 flex-grow">
           <FormField
             control={form.control}
             name="username"
@@ -70,7 +70,7 @@ export const LoginForm = () => {
               </FormItem>
             )}
           />
-          <div className="w-full">
+          <div className="w-52">
             <BlueAnchorLink toPath={'/auth/register'} name="Register Here" />
           </div>
         </div>

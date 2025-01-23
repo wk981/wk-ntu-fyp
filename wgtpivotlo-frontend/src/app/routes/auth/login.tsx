@@ -8,8 +8,10 @@ export const Login = () => {
     return <Navigate to={'/'} replace />;
   }
   return (
-    <div className="border-gray-300 p-12 rounded-xl md:max-w-[32rem] max-w-full bg-white flex justify-center mx-auto mt-44">
-      <LoginForm />
+    <div className="relative min-h-[calc(100vh-65px)] overflow-auto px-4 py-12 flex justify-center">
+      <div className="border-gray-300 py-10 px-6 md:p-12 rounded-xl w-[32rem] h-96 bg-white mx-auto drop-shadow-lg">
+        <LoginForm />
+      </div>
     </div>
   );
 };

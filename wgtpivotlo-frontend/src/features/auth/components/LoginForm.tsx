@@ -70,7 +70,7 @@ export const LoginForm = () => {
               </FormItem>
             )}
           />
-          <div className="w-28">
+          <div className="w-full">
             <BlueAnchorLink toPath={'/auth/register'} name="Register Here" />
           </div>
         </div>

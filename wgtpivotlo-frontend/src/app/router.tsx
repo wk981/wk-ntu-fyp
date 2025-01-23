@@ -20,28 +20,25 @@ const QuestionaireLayout = () => (
 export const AppRouter = () => {
   return (
     <Router>
-      <div className="min-h-screen h-full w-full">
-        <Navbar />
-
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="auth">
-            <Route path="login" element={<Login />} />
-            <Route path="register" element={<Register />} />
-            <Route path="logout" element={<Logout />} />
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="auth">
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="logout" element={<Logout />} />
+        </Route>
+        <Route element={<PrivateRoute />}>
+          <Route path="questionaire" element={<QuestionaireLayout />}>
+            {/* Default route for "questionaire" */}
+            <Route path="upload" element={<UploadResume />} />
+            {/* Nested routes */}
+            <Route path="questions" element={<Questions />} />
+            <Route path="result" element={<Result />} />
           </Route>
-          <Route element={<PrivateRoute />}>
-            <Route path="questionaire" element={<QuestionaireLayout />}>
-              {/* Default route for "questionaire" */}
-              <Route path="upload" element={<UploadResume />} />
-              {/* Nested routes */}
-              <Route path="questions" element={<Questions />} />
-              <Route path="result" element={<Result />} />
-            </Route>
-            <Route path="timeline" element={<LearningTimeline />} />
-          </Route>
-        </Routes>
-      </div>
+          <Route path="timeline" element={<LearningTimeline />} />
+        </Route>
+      </Routes>
     </Router>
   );
 };

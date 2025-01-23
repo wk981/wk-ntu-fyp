@@ -76,7 +76,7 @@ export const LoginForm = () => {
         </div>
 
         <Button type="submit" size={'lg'}>
-          Submit
+          Login
         </Button>
       </form>
     </Form>

@@ -106,7 +106,7 @@ export const RegisterForm = () => {
           </div>
         </div>
         <Button type="submit" size={'lg'}>
-          Submit
+          Register
         </Button>
       </form>
     </Form>

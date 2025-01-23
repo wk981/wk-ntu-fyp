@@ -25,6 +25,7 @@ services:
       PG_PASSWORD: ${PG_PASSWORD}
       PG_DATABASE: ${PG_DATABASE}
       PG_URL: ${PG_URL}
+      VITE_BACKEND_URL: ${VITE_BACKEND_URL}
     deploy:
       resources:
         limits:

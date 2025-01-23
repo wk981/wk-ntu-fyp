@@ -46,9 +46,9 @@ export const RegisterForm = () => {
               console.error('Form submission error:', error);
             });
         }}
-        className="w-full flex flex-col gap-16 justify-stretch"
+        className="w-full h-full flex flex-col gap-16 justify-stretch"
       >
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 flex-grow">
           <FormField
             control={form.control}
             name="username"

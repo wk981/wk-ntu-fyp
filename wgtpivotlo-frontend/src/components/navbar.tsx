@@ -5,8 +5,9 @@ import { Button } from './ui/button';
 import { Profile } from './profile';
 import { Link, useNavigate } from 'react-router-dom';
 import { NavItemDropdown } from './navbar-dropdown';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import { useOnURLChange } from '@/hook/useOnURLChange';
 
 const exploreMoreItems = [
   { label: 'Career', href: '/career' },
@@ -15,6 +16,11 @@ const exploreMoreItems = [
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const closeMenu = useCallback(() => {
+    setIsMenuOpen(false);
+  }, []);
+
+  useOnURLChange({ fn: closeMenu }); // Ensure menu is close everytime url is changed
 
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();

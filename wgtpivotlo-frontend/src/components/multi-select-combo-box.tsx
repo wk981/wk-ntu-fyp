@@ -5,7 +5,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Button } from './ui/button';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { forwardRef } from 'react';
+import { forwardRef, useState } from 'react';
 import { ControllerRenderProps, FieldValues, Path, PathValue, UseFormSetValue } from 'react-hook-form';
 import { DataProps } from '@/features/questionaire/types';
 import { FormControl } from './ui/form';
@@ -26,6 +26,7 @@ interface MultiComboBoxProps<
 
 export const MultiComboBox = forwardRef<HTMLButtonElement, MultiComboBoxProps<any, any>>(
   ({ data, value, setValue, name, showValues, commandOnChangeCapture, isLoading, isSuccess, extraSetValueFn }, ref) => {
+    const [open, setOpen] = useState<boolean>(false);
     const handleSetValue = (val: string, label: string) => {
       if (value && Array.isArray(value)) {
         const existingItemIndex = value.findIndex((item: any) => Array.isArray(item) && item[0] === val);
@@ -47,14 +48,14 @@ export const MultiComboBox = forwardRef<HTMLButtonElement, MultiComboBoxProps<an
     };
 
     return (
-      <Popover>
+      <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <FormControl>
             <Button
               variant="outline"
               role="combobox"
               className={cn(
-                'w-[250px] min-full justify-between overflow-visible break-normal',
+                'w-[250px] min-full justify-between overflow-visible break-normal font-normal',
                 !value && 'text-muted-foreground'
               )}
               ref={ref}
@@ -100,6 +101,7 @@ export const MultiComboBox = forwardRef<HTMLButtonElement, MultiComboBoxProps<an
                         value={capitalizeEveryFirstChar(d.value)}
                         onSelect={(currentValue) => {
                           handleSetValue(currentValue, d.label);
+                          setOpen(false);
                           if (extraSetValueFn) {
                             extraSetValueFn(currentValue);
                           }

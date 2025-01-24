@@ -5,27 +5,29 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Button } from './ui/button';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { forwardRef } from 'react';
+import { forwardRef, useState } from 'react';
 import { ComboBoxProps } from '@/features/questionaire/types';
 import { FormControl } from './ui/form';
 import { capitalizeEveryFirstChar } from '@/utils';
 
 export const ComboBox = forwardRef<HTMLButtonElement, ComboBoxProps<any, any>>(
   ({ data, value, setValue, name, isLoading }, ref) => {
+    const [open, setOpen] = useState<boolean>(false);
     return (
       <>
-        <Popover>
+        <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <FormControl>
               <Button
                 variant="outline"
                 role="combobox"
                 className={cn(
-                  'w-[250px] min-full justify-between overflow-visible break-normal',
+                  'w-[250px] min-full justify-between overflow-visible break-normal font-normal',
                   !value && 'text-muted-foreground'
                 )}
                 ref={ref}
                 disabled={isLoading}
+                aria-expanded={open}
               >
                 {isLoading
                   ? 'Fetching Data'
@@ -49,6 +51,7 @@ export const ComboBox = forwardRef<HTMLButtonElement, ComboBoxProps<any, any>>(
                         value={capitalizeEveryFirstChar(d.value)}
                         onSelect={(currentValue) => {
                           setValue(String(name), String(currentValue));
+                          setOpen(false);
                         }}
                       >
                         {capitalizeEveryFirstChar(d.label)}

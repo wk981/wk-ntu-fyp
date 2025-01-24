@@ -10,6 +10,7 @@ import { Logout } from './routes/auth/logout';
 import PrivateRoute from '@/components/private-route';
 import { LearningTimeline } from './routes/Learning-Timeline';
 import { UploadResume } from './routes/questionaire/UploadResume';
+import { FirstTimeUserDialog } from '@/components/first-time-user-dialog';
 
 const QuestionaireLayout = () => (
   <QuestionaireProvider>
@@ -39,6 +40,7 @@ export const AppRouter = () => {
           <Route path="timeline" element={<LearningTimeline />} />
         </Route>
       </Routes>
+      <FirstTimeUserDialog />
     </Router>
   );
 };

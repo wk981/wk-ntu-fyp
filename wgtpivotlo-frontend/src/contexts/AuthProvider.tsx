@@ -35,6 +35,7 @@ const AuthProvider = ({ children }: ProviderProps) => {
         username: data?.username,
         pic: data?.pic,
         role: data?.role,
+        isCareerPreferenceSet: data?.isCareerPreferenceSet,
       };
 
       // Update state with user data

@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './ui/dialog';
 import { Button } from './ui/button';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/features/auth/hook/useAuth';
 
@@ -8,12 +8,13 @@ export const FirstTimeUserDialog = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>(false);
   const { user, isLoggedIn } = useAuth();
+  const location = useLocation();
 
   useEffect(() => {
-    if (user && isLoggedIn && !user.isCareerPreferenceSet) {
+    if (user && isLoggedIn && !user.isCareerPreferenceSet && !location.pathname.startsWith('/questionaire')) {
       setOpen(true);
     }
-  }, [user, isLoggedIn]);
+  }, [user, isLoggedIn, location.pathname]);
 
   return (
     <Dialog open={open}>

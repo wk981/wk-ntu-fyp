@@ -124,7 +124,7 @@ export const ResumeInput = () => {
           </span>
           <span className="text-xs text-gray-500">PDF, DOC, DOCX, DOTX, DOTM, or DOCM (Max 5MB)</span>
         </div>
-        <div className="space-y-2 text-sm">
+        <div className="space-y-4 text-sm">
           <Label htmlFor="file" className="text-sm font-medium">
             File
           </Label>
@@ -141,6 +141,22 @@ export const ResumeInput = () => {
               Choose File
             </Button>
             <span className="text-sm text-gray-600 truncate">{file ? file.name : 'No file uploaded'}</span>
+          </div>
+          <div className="leading-tight space-y-2 text-xs">
+            <p>
+              Download the{' '}
+              <a
+                href={'/resume-template.docx'}
+                className="text-blue-anchor"
+                download={'resume-template.docx'}
+                target="_self"
+              >
+                {' '}
+                resume template{' '}
+              </a>{' '}
+              and follow it for better results!
+            </p>
+            <p>Review the extracted skills for accuracy.</p>
           </div>
         </div>
       </CardContent>

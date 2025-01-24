@@ -7,8 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { loginFormSchema } from '../types';
 import { useAuth } from '../hook/useAuth';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
-import { BlueAnchorLink } from '@/components/blue-anchor-link';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const LoginForm = () => {
   const inputClassName = 'text-base font-normal';
@@ -41,17 +40,20 @@ export const LoginForm = () => {
               console.error('Form submission error:', error);
             });
         }}
-        className="w-full h-full flex flex-col gap-16 justify-stretch"
+        className="w-full h-full flex flex-col justify-between"
       >
-        <div className="flex flex-col gap-3 flex-grow">
+        <div className="flex flex-col gap-3 h-full flex-grow">
+          <h1 className="text-center pb-4">Login</h1>
           <FormField
             control={form.control}
             name="username"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className={inputClassName}>Username:</FormLabel>
+                <FormLabel className={inputClassName}>
+                  Username <span className="text-blue-anchor">*</span>
+                </FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter your username here" {...field} />
+                  <Input required className="bg-accent" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -62,22 +64,28 @@ export const LoginForm = () => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className={inputClassName}>Password:</FormLabel>
+                <FormLabel className={inputClassName}>
+                  Password <span className="text-blue-anchor">*</span>
+                </FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter your password here" type="password" {...field} />
+                  <Input required className="bg-accent" type="password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <div className="w-52">
-            <BlueAnchorLink toPath={'/auth/register'} name="Register Here" />
-          </div>
         </div>
-
-        <Button type="submit" size={'lg'}>
-          Login
-        </Button>
+        <div className="flex flex-col flex-grow gap-8">
+          <Button className={'h-12 text-lg flex-shrink'} type="submit" size={'lg'}>
+            Login
+          </Button>
+          <p className="text-sm text-center">
+            Don't have an account?{' '}
+            <Link to={'/auth/register'} className="text-blue-anchor hover:bg-accent">
+              Register Here!
+            </Link>
+          </p>
+        </div>
       </form>
     </Form>
   );

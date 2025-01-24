@@ -50,4 +50,5 @@ export interface User {
   username: string;
   role: string[];
   pic: string;
+  isCareerPreferenceSet: boolean;
 }

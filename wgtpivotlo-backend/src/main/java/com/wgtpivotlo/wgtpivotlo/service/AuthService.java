@@ -2,9 +2,12 @@ package com.wgtpivotlo.wgtpivotlo.service;
 
 import com.wgtpivotlo.wgtpivotlo.dto.LoginRequest;
 import com.wgtpivotlo.wgtpivotlo.dto.RegisterRequest;
+import com.wgtpivotlo.wgtpivotlo.dto.UserDTO;
+import com.wgtpivotlo.wgtpivotlo.errors.exceptions.ResourceNotFoundException;
 import com.wgtpivotlo.wgtpivotlo.errors.exceptions.UserExists;
 import com.wgtpivotlo.wgtpivotlo.model.User;
 import com.wgtpivotlo.wgtpivotlo.repository.UserRepository;
+import com.wgtpivotlo.wgtpivotlo.security.UserDetailsImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -14,13 +17,18 @@ import org.springframework.data.domain.Limit;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.wgtpivotlo.wgtpivotlo.enums.Role.USER;
 
@@ -79,6 +87,32 @@ public class AuthService {
             userRepository.save(newUser);
             log.warn("New user created");
         }
+    }
+
+    public UserDTO getUser(Authentication authentication) throws AccessDeniedException {
+        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+            throw new AccessDeniedException("Access Denied");
+        }
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
+        List<String> roles = authorities.stream().map(Object::toString).collect(Collectors.toList());
+
+        long userId = userDetails.getId();
+        Optional<User> existingUser = userRepository.findById(userId);
+        existingUser.orElseThrow(() -> new ResourceNotFoundException("User is not found"));
+        User user = existingUser.get();
+
+        Boolean isCareerPreferenceSet = user.getCareerId() != null;
+
+        return UserDTO
+                .builder()
+                .id(user.getUser_id())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .pic(user.getPic())
+                .role(roles)
+                .isCareerPreferenceSet(isCareerPreferenceSet)
+                .build();
     }
 
 }

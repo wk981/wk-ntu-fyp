@@ -5,10 +5,9 @@ import { z } from 'zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { BlueAnchorLink } from '@/components/blue-anchor-link';
 import { useAuth } from '../hook/useAuth';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const RegisterForm = () => {
   const inputClassName = 'text-base font-normal';
@@ -49,14 +48,17 @@ export const RegisterForm = () => {
         className="w-full h-full flex flex-col gap-16 justify-stretch"
       >
         <div className="flex flex-col gap-3 flex-grow">
+          <h1 className="text-center pb-4">Registration</h1>
           <FormField
             control={form.control}
             name="username"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className={inputClassName}>Username:</FormLabel>
+                <FormLabel className={inputClassName}>
+                  Username <span className="text-blue-anchor">*</span>
+                </FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter your username here" {...field} />
+                  <Input required className="bg-accent" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -67,9 +69,11 @@ export const RegisterForm = () => {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className={inputClassName}>Email:</FormLabel>
+                <FormLabel className={inputClassName}>
+                  Email <span className="text-blue-anchor">*</span>
+                </FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter your email here" {...field} />
+                  <Input required className="bg-accent" type="email" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -80,9 +84,11 @@ export const RegisterForm = () => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className={inputClassName}>Password:</FormLabel>
+                <FormLabel className={inputClassName}>
+                  Password <span className="text-blue-anchor">*</span>
+                </FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="Enter your password here" {...field} />
+                  <Input required className="bg-accent" type="password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -93,21 +99,28 @@ export const RegisterForm = () => {
             name="confirmPassword"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className={inputClassName}>Confirm Password:</FormLabel>
+                <FormLabel className={inputClassName}>
+                  Confirm Password <span className="text-blue-anchor">*</span>
+                </FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="Confirm your password here" {...field} />
+                  <Input required className="bg-accent" type="password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <div className="w-28">
-            <BlueAnchorLink toPath={'/auth/login'} name="Login Here" />
-          </div>
         </div>
-        <Button type="submit" size={'lg'}>
-          Register
-        </Button>
+        <div className="flex flex-col h-8 flex-grow gap-8">
+          <Button className={'h-12 text-lg flex-shrink'} type="submit" size={'lg'}>
+            Sign up
+          </Button>
+          <p className='text-sm text-center flex-shrink"'>
+            Already have an account?{' '}
+            <Link to={'/auth/login'} className="text-blue-anchor hover:bg-accent">
+              Sign in here!
+            </Link>
+          </p>
+        </div>
       </form>
     </Form>
   );

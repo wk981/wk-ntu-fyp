@@ -36,7 +36,7 @@ export const CourseList = ({ skill, careerId }: CourseListInterface) => {
   }, [isIntersecting]); // Add all necessary dependencies
 
   return (
-    <div className="flex-1 overflow-y-auto h-[calc(100vh-100px)]">
+    <div className="flex-1 space-y-1 overflow-y-auto h-[calc(100vh-100px)]">
       {courses &&
         courses.map((course, index) => (
           <CourseItem key={index} ref={courses.length === index + 1 ? elementRef : null} course={course} />
@@ -54,7 +54,7 @@ const CourseItem = React.forwardRef<HTMLDivElement, CourseItemInterface>(({ cour
             <CardTitle className="text-xl capitalize">{course.name}</CardTitle>
             <CardDescription>
               <Badge>{course.profiency}</Badge>
-              <Badge variant="secondary" className="bg-secondary/50">
+              <Badge variant="secondary" className="bg-secondary ml-2">
                 {course.courseSource}
               </Badge>
             </CardDescription>

@@ -26,7 +26,7 @@ interface PreviewDialogProps {
 export const PreviewItem = React.forwardRef<HTMLDivElement, PreviewItemProps>(
   ({ item, heartBadgeOnClick, heartBadgeCheckedId }, ref) => {
     const career = item.career;
-    const similarityScore = Number(item.similarityScore) * 100;
+    const similarityScore = Math.ceil(Number(item.similarityScore) * 100);
 
     return (
       <Card className="w-[332px] h-[410px] flex flex-col" ref={ref}>

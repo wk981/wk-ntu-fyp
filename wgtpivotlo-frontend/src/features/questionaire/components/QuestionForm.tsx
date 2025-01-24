@@ -127,7 +127,10 @@ export const QuestionForm = () => {
           name="sector"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>Q1. Which industry do you prefer to work in? Sector Preferences (Select one)</FormLabel>
+              <FormLabel>
+                Q1. Which industry do you prefer to work in? Sector Preferences (Select one){' '}
+                <span className="text-blue-anchor">*</span>
+              </FormLabel>
               <ComboBox
                 {...field}
                 data={sectorsQuery.data}
@@ -143,7 +146,9 @@ export const QuestionForm = () => {
           name="careerLevel"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>Q2. What role are you aiming for? (Select One)</FormLabel>
+              <FormLabel>
+                Q2. What role are you aiming for? (Select One) <span className="text-blue-anchor">*</span>
+              </FormLabel>
               <FormControl>
                 <ComboBox {...field} data={mockData} setValue={form.setValue} isLoading={false} />
               </FormControl>
@@ -156,7 +161,10 @@ export const QuestionForm = () => {
           name="skills"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>Q3. Which of the following skills do you possess? (Select all that apply)</FormLabel>
+              <FormLabel>
+                Q3. Which of the following skills do you possess? (Select all that apply){' '}
+                <span className="text-blue-anchor">*</span>
+              </FormLabel>
               <FormControl>
                 <MultiComboBox
                   {...field}
@@ -210,7 +218,7 @@ export const QuestionForm = () => {
           <Button
             type="button"
             variant={'ghost'}
-            className="border bg-white"
+            className="border"
             onClick={() => {
               void navigate('/questionaire/upload');
             }}

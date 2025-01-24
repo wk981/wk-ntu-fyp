@@ -9,7 +9,7 @@ export const Register = () => {
   }
   return (
     <div className="relative min-h-[calc(100vh-65px)] overflow-auto px-4 py-12 flex justify-center">
-      <div className="border-gray-300 pt-10 pb-4 px-6 md:p-12 rounded-xl w-[32rem] max-h-[50rem] min-h-[38rem] h-auto bg-white mx-auto drop-shadow-lg">
+      <div className="border-gray-300 pt-10 pb-4 px-6 md:p-12 rounded-xl w-[32rem] max-h-[50rem] min-h-[46rem] h-auto bg-white mx-auto drop-shadow-lg">
         <RegisterForm />
       </div>
     </div>

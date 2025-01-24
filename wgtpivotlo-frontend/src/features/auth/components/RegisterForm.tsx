@@ -45,7 +45,7 @@ export const RegisterForm = () => {
               console.error('Form submission error:', error);
             });
         }}
-        className="w-full h-full flex flex-col gap-16 justify-stretch"
+        className="w-full h-full flex flex-col gap-16 justify-between"
       >
         <div className="flex flex-col gap-3 flex-grow">
           <h1 className="text-center pb-4">Registration</h1>

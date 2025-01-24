@@ -17,7 +17,7 @@ public class User extends SuperClass{
 
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    @Column(name="user_id")
+    @Column(name="user_id", nullable = true)
     private long user_id;
 
     @Column(nullable = false)

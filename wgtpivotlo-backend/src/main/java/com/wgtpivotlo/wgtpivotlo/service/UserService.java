@@ -45,14 +45,17 @@ public class UserService {
         existingUser.orElseThrow(() -> new ResourceNotFoundException("User is not found"));
 
         User user = existingUser.get();
-        if (user.getCareerId() == careerId){
+        Optional<Long> existingCareerId = Optional.ofNullable(existingUser.get().getCareerId());
+        if (existingCareerId.isPresent() && user.getCareerId() == careerId){
             log.info("Same Career, no change");
             return;
         }
+        else{
+            log.info("Step 3: Setting career preference");
+            user.setCareerId(careerId);
+            userRepository.save(user);
+        }
 
-        log.info("Step 3: Setting career preference");
-        user.setCareerId(careerId);
-        userRepository.save(user);
     }
 
     public Career getUserPreferenceCareer( Authentication authentication) throws AccessDeniedException {
@@ -65,7 +68,7 @@ public class UserService {
         Optional<User> existingUser = userRepository.findById(userId);
         existingUser.orElseThrow(() -> new ResourceNotFoundException("User is not found"));
 
-        Optional<Long> existingCareerId = existingUser.get().getCareerId().describeConstable();
+        Optional<Long> existingCareerId = Optional.ofNullable(existingUser.get().getCareerId());
         existingCareerId.orElseThrow(() -> new ResourceNotFoundException("User has set a preference career"));
 
         Optional<Career> existingCareer = careerRepository.findById(existingCareerId.get());

@@ -21,14 +21,16 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
     @Value("${spring.cors.url}")
-    private String corsURL;
+    private String corsURLList;
 
     private final UserDetailsService userDetailsService;
 
@@ -76,9 +78,14 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsConfigurationSource() {
+        String[] parts = corsURLList.split(",");
+        List<String> corsURL = new ArrayList<>();
+        corsURL.add("http://localhost:5173");
+        Collections.addAll(corsURL, parts);
+
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5173", corsURL)); //allows React to access the API from origin on port 3000. Change accordingly
+        configuration.setAllowedOrigins(corsURL); //allows React to access the API from origin on port 3000. Change accordingly
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowCredentials(true);
         configuration.addAllowedHeader("*");

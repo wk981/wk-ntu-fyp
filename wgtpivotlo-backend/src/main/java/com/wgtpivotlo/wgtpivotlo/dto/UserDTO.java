@@ -15,4 +15,5 @@ public class UserDTO {
     private String username;
     private List<String> role;
     private String pic;
+    private Boolean isCareerPreferenceSet;
 }

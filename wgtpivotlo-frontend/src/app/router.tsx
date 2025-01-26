@@ -39,7 +39,7 @@ export const AppRouter = () => {
             <Route path="result" element={<Result />} />
           </Route>
           <Route path="timeline" element={<LearningTimeline />} />
-          <Route path="resume" element={<DownloadResume />}/>
+          <Route path="resume" element={<DownloadResume />} />
         </Route>
       </Routes>
       <FirstTimeUserDialog />

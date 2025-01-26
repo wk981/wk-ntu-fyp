@@ -3,10 +3,10 @@ import { backendURL } from '@/utils';
 import { DownloadFileType } from '../types';
 
 export const postResumeDownload = async () => {
-  const res:DownloadFileType = {
+  const res: DownloadFileType = {
     blob: undefined,
-    file: undefined
-  }
+    file: undefined,
+  };
   const url = backendURL + '/v1/resume/download';
   const response = await fetch(url, {
     headers: {

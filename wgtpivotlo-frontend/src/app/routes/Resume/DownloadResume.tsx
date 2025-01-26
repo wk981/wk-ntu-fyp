@@ -1,15 +1,18 @@
-import { useDownloadResume } from '@/features/resume/hooks/useDownloadResume'
+import { useDownloadResume } from '@/features/resume/hooks/useDownloadResume';
 
 export const DownloadResume = () => {
-    const { file, blobUrl } = useDownloadResume();
-    // const {isLoading} = downloadQuery;
+  const { file, blobUrl } = useDownloadResume();
+  // const {isLoading} = downloadQuery;
 
-    return (
-        <div>
-            DownloadResume
-            {file && blobUrl &&
-                <a href={blobUrl} download={file.name}> Download</a>
-            }
-        </div>
-    )
-}
+  return (
+    <div>
+      DownloadResume
+      {file && blobUrl && (
+        <a href={blobUrl} download={file.name}>
+          {' '}
+          Download
+        </a>
+      )}
+    </div>
+  );
+};

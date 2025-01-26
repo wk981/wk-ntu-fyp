@@ -2,8 +2,12 @@ package com.wgtpivotlo.wgtpivotlo.service;
 
 import com.wgtpivotlo.wgtpivotlo.dto.SkillDTO;
 import com.wgtpivotlo.wgtpivotlo.enums.FileFormat;
+import com.wgtpivotlo.wgtpivotlo.errors.exceptions.ResourceNotFoundException;
 import com.wgtpivotlo.wgtpivotlo.model.Skill;
+import com.wgtpivotlo.wgtpivotlo.model.UserSkills;
 import com.wgtpivotlo.wgtpivotlo.repository.SkillRepository;
+import com.wgtpivotlo.wgtpivotlo.repository.UserSkillsRepository;
+import com.wgtpivotlo.wgtpivotlo.security.UserDetailsImpl;
 import com.wgtpivotlo.wgtpivotlo.utils.converter.MultiPartFileConverter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.BadRequestException;
@@ -12,13 +16,14 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.File;
-import java.io.IOException;
+
+import java.io.*;
+import java.nio.file.AccessDeniedException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,9 +33,16 @@ import java.util.stream.Collectors;
 @Slf4j
 public class FileService {
     private final SkillRepository skillRepository;
+    private final UserSkillsRepository userSkillsRepository;
+    public static String output = "resume.docx";
     @Autowired
-    public FileService(SkillRepository skillRepository) {
+    public FileService(SkillRepository skillRepository, UserSkillsRepository userSkillsRepository) {
         this.skillRepository = skillRepository;
+        this.userSkillsRepository = userSkillsRepository;
+    }
+
+    public String getOutput() {
+        return output;
     }
 
     private static Set<String> allowedFileSet = new HashSet<>() {{
@@ -126,4 +138,56 @@ public class FileService {
         return res;
     }
 
+    public byte[] generateUserResume(Authentication authentication) throws Exception {
+        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+            throw new AccessDeniedException("Access Denied");
+        }
+        log.info("Step 1: Get user's Id");
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        long userId = userDetails.getId();
+
+        log.info("Step 2: Get user's current SkillSet");
+        Optional<List<UserSkills>> exitingUserSkillsList = userSkillsRepository.findByUserId(userId);
+        exitingUserSkillsList.orElseThrow(() -> new ResourceNotFoundException("User does not have skills"));
+
+        XWPFDocument document = generateFile(exitingUserSkillsList.get());
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        document.write(baos);
+        document.close();
+
+        return baos.toByteArray();
+
+    }
+
+    private XWPFDocument generateFile(List<UserSkills> userSkillsList) throws IOException {
+        XWPFDocument document = new XWPFDocument();
+        XWPFParagraph tmpParagraph = document.createParagraph();
+        XWPFRun tmpRun = tmpParagraph.createRun();
+        tmpRun.setText("LALALALAALALAAAA");
+        tmpRun.setFontSize(18);
+        return document;
+//        String fontFamily = "Open Sans";
+//        int defaultFontSize = 10;
+//        XWPFDocument document = new XWPFDocument();
+//
+//        XWPFParagraph title = document.createParagraph();
+//        title.setAlignment(ParagraphAlignment.CENTER);
+//
+//        log.info("Step 3a: Setting Title");
+//        XWPFRun titleRun = title.createRun();
+//        titleRun.setText("[name]");
+//        titleRun.setUnderline(UnderlinePatterns.SINGLE);
+//        titleRun.setBold(true);
+//        titleRun.setFontFamily(fontFamily);
+//        titleRun.setFontSize(defaultFontSize);
+//
+//        log.info("Step 3b: Setting Education");
+//
+//
+//        FileOutputStream out = new FileOutputStream(output);
+//        document.write(out);
+//        out.close();
+//        document.close();
+//        return document;
+    }
 }

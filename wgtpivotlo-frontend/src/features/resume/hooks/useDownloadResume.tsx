@@ -23,7 +23,7 @@ export const useDownloadResume = () => {
 
     return () => {
       if (lastBlobUrl.current) {
-        window.URL.revokeObjectURL(lastBlobUrl.current);
+        window.URL.revokeObjectURL(lastBlobUrl.current); // clear url to free up memory
         lastBlobUrl.current = null; // Clear the ref
       }
     };

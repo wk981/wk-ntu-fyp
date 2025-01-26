@@ -20,10 +20,11 @@ FROM nginx:stable-alpine
 COPY --from=build /app/dist /usr/share/nginx/html
 
 # Copy custom Nginx configuration
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf /etc/nginx/conf.d
 
 # Expose the port that Nginx will serve on
-EXPOSE 5173
+EXPOSE 80
+EXPOSE 443
 
 # Start Nginx
 CMD ["nginx", "-g", "daemon off;"]

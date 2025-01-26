@@ -39,28 +39,33 @@ services:
     image: ghcr.io/wk981/wk-fyp-frontend:latest
     # build: ./wgtpivotlo-frontend
     tty: true
-    # ports:
-    #   - 80:80
-    environment:
-      VITE_BACKEND_URL: ${VITE_BACKEND_URL}
-    networks:
-      - dev
-  
-  nginx:
-    image: nginx:stable-alpine
-    container_name: nginx
-    restart: always
     ports:
       - "80:80"
       - "443:443"
-    volumes: 
-      - ./reverse-proxy:/etc/nginx/conf.d/
-      - /etc/letsencrypt/live/server-name-replace-here/fullchain.pem:/etc/nginx/ssl/fullchain.pem
-      - /etc/letsencrypt/live/server-name-replace-here/privkey.pem:/etc/nginx/ssl/privkey.pem
+    environment:
+      VITE_BACKEND_URL: ${VITE_BACKEND_URL}
+      SERVER_NAME: ${SERVER_NAME}
     networks:
       - dev
-    environment:
-      - SERVER_NAME=${SERVER_NAME}
+    volumes: 
+      - /etc/letsencrypt/live/server-name-replace-here/fullchain.pem:/etc/nginx/ssl/fullchain.pem
+      - /etc/letsencrypt/live/server-name-replace-here/privkey.pem:/etc/nginx/ssl/privkey.pem
+
+  # nginx:
+  #   image: nginx:stable-alpine
+  #   container_name: nginx
+  #   restart: always
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes: 
+  #     - ./reverse-proxy:/etc/nginx/conf.d/
+  #     - /etc/letsencrypt/live/server-name-replace-here/fullchain.pem:/etc/nginx/ssl/fullchain.pem
+  #     - /etc/letsencrypt/live/server-name-replace-here/privkey.pem:/etc/nginx/ssl/privkey.pem
+  #   networks:
+  #     - dev
+  #   environment:
+  #     - 
 
 volumes:
   pgdata: 

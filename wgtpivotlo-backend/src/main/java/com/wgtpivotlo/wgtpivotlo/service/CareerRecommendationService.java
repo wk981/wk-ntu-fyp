@@ -6,10 +6,12 @@ import com.wgtpivotlo.wgtpivotlo.enums.Choice;
 import com.wgtpivotlo.wgtpivotlo.errors.exceptions.PageItemsOutOfBoundException;
 import com.wgtpivotlo.wgtpivotlo.errors.exceptions.ResourceNotFoundException;
 import com.wgtpivotlo.wgtpivotlo.model.Career;
+import com.wgtpivotlo.wgtpivotlo.model.CareerSkills;
+import com.wgtpivotlo.wgtpivotlo.model.User;
 import com.wgtpivotlo.wgtpivotlo.model.UserSkills;
 import com.wgtpivotlo.wgtpivotlo.repository.CareerSkillAssociationRepository;
+import com.wgtpivotlo.wgtpivotlo.repository.UserRepository;
 import com.wgtpivotlo.wgtpivotlo.repository.UserSkillsRepository;
-import com.wgtpivotlo.wgtpivotlo.repository.criteria.CareerSkillAssociationRepositoryImpl;
 import com.wgtpivotlo.wgtpivotlo.security.UserDetailsImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +28,13 @@ import java.util.*;
 public class CareerRecommendationService {
     private final CareerSkillAssociationRepository careerSkillAssociationRepository;
     private final UserSkillsRepository userSkillsRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public CareerRecommendationService(CareerSkillAssociationRepository careerSkillAssociationRepository, CareerSkillAssociationRepositoryImpl careerSkillAssociationRepositoryImpl, UserSkillsRepository userSkillsRepository) {
+    public CareerRecommendationService(CareerSkillAssociationRepository careerSkillAssociationRepository, UserSkillsRepository userSkillsRepository, UserRepository userRepository) {
         this.careerSkillAssociationRepository = careerSkillAssociationRepository;
         this.userSkillsRepository = userSkillsRepository;
+        this.userRepository = userRepository;
     }
 
     private Optional<Page<Object[]>> queryCareersByType(Choice type, List<SkillIdWithProfiencyDTO> skillsProfiencyList, CareerLevel careerLevel, Pageable pageable, Optional<String> sector){
@@ -68,20 +72,77 @@ public class CareerRecommendationService {
 
         log.info("Step1a: Making a query to get careers with similarity score");
         // Get all the career related to skills and profiency along with similarity score.
-        Optional<Page<Object[]>> careerRecommendation = queryCareersByType(request.getType(), skillsProfiencyList, request.getCareerLevel(), pageable, Optional.ofNullable(request.getSector()));
+        Optional<Page<Object[]>> careerRecommendation = queryCareersByType(request.getType(),
+                skillsProfiencyList,
+                request.getCareerLevel(),
+                pageable,
+                Optional.ofNullable(
+                        String.valueOf(request.getSector())
+                ));
+        return mapping(correctedPageNumber,request.getPageNumber(),careerRecommendation);
 
-        if (careerRecommendation.isEmpty()){
-            log.warn("No career returned");
-            throw new ResourceNotFoundException("No career found");
-        }
+    }
 
-        if (correctedPageNumber >= careerRecommendation.get().getTotalPages()) {
+    public HashMap<String, PageDTO<CareerWithSimilarityScoreDTO>> getRecommendationExploreOtherCareer(com.wgtpivotlo.wgtpivotlo.dto.PageRequest request, Authentication authentication){
+        // Paging
+        int correctedPageNumber = (request.getPageNumber() > 0) ? request.getPageNumber() - 1 : 0;
+
+        // totalPage is n, pageNumber must be from 0 to n
+        if (request.getPageNumber() < 0){
             log.warn("Page number out of bounds");
             throw new PageItemsOutOfBoundException("Page number out of bounds");
         }
 
-        log.info("Step1b: Cleaning up data");
-        List<Object[]> careersWithSimilarityScorePageList = careerRecommendation.get().getContent();
+        Pageable pageable = PageRequest.of(correctedPageNumber, request.getPageSize());
+
+        // get userId
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        long userId = userDetails.getId();
+        Optional<User> existingUser = userRepository.findById(userId);
+
+        existingUser.orElseThrow(()-> new ResourceNotFoundException("User not found"));
+        Optional<Long> existingCareerId = existingUser.get().getCareerId().describeConstable();
+        existingCareerId.orElseThrow(() -> new ResourceNotFoundException("User has not specify career"));
+
+        Optional<List<UserSkills>> existingUserSkills = userSkillsRepository.findByUserId(userId);
+        existingUserSkills.orElseThrow(() -> new ResourceNotFoundException("No skills found"));
+
+        List<UserSkills> userSkills = existingUserSkills.get();
+        List<SkillIdWithProfiencyDTO> skillsProfiencyList = userSkills.stream().map((userSkill -> SkillIdWithProfiencyDTO.builder().skillId(userSkill.getSkill().getSkillId()).profiency(userSkill.getProfiency()).build())).toList();
+
+        Optional<List<CareerSkills>> existingCareerSkills = careerSkillAssociationRepository.findByCareerIdsNative(Collections.singletonList(existingCareerId.get()));
+        List<SkillIdWithProfiencyDTO> careerSkillsList = existingCareerSkills
+                .get()
+                .stream()
+                .map((careerSkill -> SkillIdWithProfiencyDTO.builder().skillId(careerSkill.getSkill().getSkillId()).profiency(careerSkill.getProfiency()).build()))
+                .toList();
+
+        // recommend 1. similar to user's skills 2. similar to preference career's skill
+        Optional<Page<Object[]>> userSkillsRecommend = careerSkillAssociationRepository.recommend(skillsProfiencyList, pageable);
+        Optional<Page<Object[]>> careerSkillsRecommend = careerSkillAssociationRepository.recommend(careerSkillsList, pageable);
+
+        PageDTO<CareerWithSimilarityScoreDTO> userSkillsRecommendationMapping = mapping(correctedPageNumber, request.getPageNumber(), userSkillsRecommend);
+        PageDTO<CareerWithSimilarityScoreDTO> careerSkillsRecommendationMapping = mapping(correctedPageNumber, request.getPageNumber(), careerSkillsRecommend);
+
+        HashMap<String, PageDTO<CareerWithSimilarityScoreDTO>> res = new HashMap<>();
+        res.put("user", userSkillsRecommendationMapping);
+        res.put("career", careerSkillsRecommendationMapping);
+
+        return res;
+    }
+
+    private PageDTO<CareerWithSimilarityScoreDTO> mapping(int correctedPageNumber, int pageNumber, Optional<Page<Object[]>> result){
+        if (result.isEmpty()){
+            log.warn("No career returned");
+            throw new ResourceNotFoundException("No career found");
+        }
+
+        if (correctedPageNumber >= result.get().getTotalPages()) {
+            log.warn("Page number out of bounds");
+            throw new PageItemsOutOfBoundException("Page number out of bounds");
+        }
+        log.info("Cleaning up data");
+        List<Object[]> careersWithSimilarityScorePageList = result.get().getContent();
         List<CareerWithSimilarityScoreDTO> careerWithSimilarityScoreDTOList = careersWithSimilarityScorePageList
                 .stream()
                 .map((Object[] objects)-> {
@@ -95,7 +156,7 @@ public class CareerRecommendationService {
                         }
                 ).toList();
 
-        return new PageDTO<>(careerRecommendation.get().getTotalPages(), request.getPageNumber(), careerWithSimilarityScoreDTOList);
-
+        return new PageDTO<>(result.get().getTotalPages(), pageNumber, careerWithSimilarityScoreDTOList);
     }
+
 }

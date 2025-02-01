@@ -17,7 +17,7 @@ public interface RecommendationCriteria{
             Optional<String> sector
     );
 
-    Optional<HashMap<String, Page<Object[]>>> recommend(
+    Optional<Page<Object[]>> recommend(
             List<SkillIdWithProfiencyDTO> skillsProficiencyList,
             Pageable page
     );

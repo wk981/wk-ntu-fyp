@@ -4,10 +4,12 @@ import com.wgtpivotlo.wgtpivotlo.dto.SkillIdWithProfiencyDTO;
 import com.wgtpivotlo.wgtpivotlo.enums.CareerLevel;
 import com.wgtpivotlo.wgtpivotlo.enums.Choice;
 import com.wgtpivotlo.wgtpivotlo.enums.SkillLevel;
+import com.wgtpivotlo.wgtpivotlo.errors.exceptions.ResourceNotFoundException;
 import com.wgtpivotlo.wgtpivotlo.model.Career;
 import com.wgtpivotlo.wgtpivotlo.model.CareerSkills;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
+import org.apache.coyote.BadRequestException;
 import org.hibernate.Session;
 import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import org.hibernate.query.criteria.JpaCriteriaQuery;
@@ -43,6 +45,11 @@ public class CareerSkillAssociationRepositoryImpl implements RecommendationCrite
         return Optional.of(res);
     }
 
+    @Override
+    public Optional<Page<Object[]>> recommend(List<SkillIdWithProfiencyDTO> skillsProficiencyList, Pageable page) {
+        return queryV2(skillsProficiencyList, page);
+    }
+
     private void helperRecommend(List<Object[]> list, Set<Object[]> visited, String key, HashMap<String, List<Object[]>> res){
         List<Object[]> temp = new ArrayList<>();
         for (Object[] object: list){
@@ -54,30 +61,27 @@ public class CareerSkillAssociationRepositoryImpl implements RecommendationCrite
         res.put(key, temp);
     }
 
-    @Override
-    public Optional<HashMap<String, Page<Object[]>>> recommend(List<SkillIdWithProfiencyDTO> skillsProficiencyList, Pageable page) {
-        throw new UnsupportedOperationException("Use the recommend method with CareerLevel for CareerRecommendation.");
-    }
 
     @Override
     public Optional<Page<Object[]>> findDirectMatches(List<SkillIdWithProfiencyDTO> skillsProfiencyList, CareerLevel careerLevel, Pageable pageable, Optional<String> sector){
-        return findByCareerLevel(skillsProfiencyList, careerLevel, pageable, sector, Choice.DIRECT_MATCH);
+        return queryV1(skillsProfiencyList, careerLevel, pageable, sector, Choice.DIRECT_MATCH);
     }
 
     @Override
     public Optional<Page<Object[]>> findPathways(List<SkillIdWithProfiencyDTO> skillsProfiencyList, CareerLevel careerLevel, Pageable pageable, Optional<String> sector){
 
-        return findByCareerLevel(skillsProfiencyList, careerLevel, pageable, sector, Choice.PATHWAY);
+        return queryV1(skillsProfiencyList, careerLevel, pageable, sector, Choice.PATHWAY);
     }
 
     @Override
     public Optional<Page<Object[]>> findAspirational(List<SkillIdWithProfiencyDTO> skillsProfiencyList, CareerLevel careerLevel, Pageable pageable, Optional<String> sector){
-        return findByCareerLevel(skillsProfiencyList, careerLevel, pageable, sector, Choice.ASPIRATION);
+        return queryV1(skillsProfiencyList, careerLevel, pageable, sector, Choice.ASPIRATION);
     }
 
-    // findByCareerLevel is a dynamic query. Predicate careerLevelPredicate where predicate is the condition built on a higher level.
+    // Version 1 for querying career based on user's skills, profiency and careerLevel choice
+    // Predicate careerLevelPredicate where predicate is the condition built on a higher level.
     // NOTE: May need to refactor, look so ugly
-    private Optional<Page<Object[]>> findByCareerLevel(List<SkillIdWithProfiencyDTO> skillsProfiencyList, CareerLevel careerLevel, Pageable pageable, Optional<String> sector, Choice choice) {
+    private Optional<Page<Object[]>> queryV1(List<SkillIdWithProfiencyDTO> skillsProfiencyList, CareerLevel careerLevel, Pageable pageable, Optional<String> sector, Choice choice) {
         // Query builder. Using entitymanage unwrap and hibernate criteria builder for pagination count cus error: Already registered a copy: org.hibernate.query.sqm.tree.select.SqmSubQuery@25b07b73
         Session session = em.unwrap(Session.class);
         HibernateCriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
@@ -174,6 +178,7 @@ public class CareerSkillAssociationRepositoryImpl implements RecommendationCrite
             case ASPIRATION -> criteriaBuilder.greaterThanOrEqualTo(careerLevelExpress, careerLevel.toInt());
             case DIRECT_MATCH -> criteriaBuilder.equal(careerLevelExpress, careerLevel.toInt());
             case PATHWAY -> criteriaBuilder.lessThanOrEqualTo(careerLevelExpress, careerLevel.toInt());
+            default -> throw new IllegalArgumentException("Invalid Choice");
         };
 
         // Complete mainquery
@@ -204,6 +209,103 @@ public class CareerSkillAssociationRepositoryImpl implements RecommendationCrite
         if (careerWithSimilarityRes.isEmpty()){
             return Optional.empty();
         }
+        return Optional.of(new PageImpl<>(careerWithSimilarityRes, pageable, count));
+    }
+
+    // Version 2 for querying career based on skills and profiencies only.
+    private Optional<Page<Object[]>> queryV2(List<SkillIdWithProfiencyDTO> skillsProfiencyList, Pageable pageable){
+        Session session = em.unwrap(Session.class);
+        HibernateCriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+
+        // Create query for main query.
+        JpaCriteriaQuery<Object[]> criteriaQuery = criteriaBuilder.createQuery(Object[].class);
+        Root<Career> CareerRoot = criteriaQuery.from(Career.class);
+
+        JpaSubQuery<Long> subQuery = criteriaQuery.subquery(Long.class);
+        Root<CareerSkills> subRoot = subQuery.from(CareerSkills.class);
+
+        List<Predicate> orPredicates = new ArrayList<>();
+        double totalWeightage = 0;
+
+        CriteriaBuilder.In<Long> inClause = criteriaBuilder.in(subRoot.get("skill").get("skillId"));
+
+        // Iterate through the skillsProficiencyList
+        for (SkillIdWithProfiencyDTO skillProficiency : skillsProfiencyList) {
+            Optional<Long> skillId = skillProficiency.getSkillId().describeConstable();
+            Optional<SkillLevel> profiency = Optional.ofNullable(skillProficiency.getProfiency());
+            if (skillId.isPresent() && profiency.isPresent()) {
+                // Map proficiency to levels, case(careerskill.profiency) as int
+                Expression<Integer> skillProficiencyExpression = criteriaBuilder.selectCase()
+                        .when(criteriaBuilder.equal(subRoot.get("profiency"), "Beginner"), 1)
+                        .when(criteriaBuilder.equal(subRoot.get("profiency"), "Intermediate"), 2)
+                        .otherwise(3)
+                        .as(Integer.class);
+
+                // Map input proficiency to level, case(user's skill profiency)
+                Integer proficiencyLevel = profiency.get().toInt();
+
+                // Map input profiency into weighatage
+                double proficiencyWeightage = profiency.get().toWeightedDouble();
+
+                // Calculate weighted score
+                totalWeightage += proficiencyWeightage;
+
+                // Add the predicate for skillId and proficiency
+                Predicate skillPredicate = criteriaBuilder.equal(subRoot.get("skill").get("skillId"), skillId.get());
+                Predicate inclusiveCareerPredicate = criteriaBuilder.lessThanOrEqualTo(skillProficiencyExpression, proficiencyLevel); // Inclusive Career
+                Predicate potentialCareerPredicate = criteriaBuilder.greaterThanOrEqualTo(skillProficiencyExpression, proficiencyLevel); // Potential Career
+                // (case(careerskill.profiency) <= case(user's skill profiency) or case(careerskill.profiency) >= case(user's skill profiency))
+
+                Predicate proficiencyPredicate = criteriaBuilder.or(inclusiveCareerPredicate, potentialCareerPredicate);
+
+                // Combine predicates with AND and add to orPredicates
+                orPredicates.add(criteriaBuilder.and(skillPredicate, proficiencyPredicate)); // skillId and (case()...)
+
+                inClause.value(skillId.get());
+            }
+        }
+
+        // Chain subquery's Ors
+        Predicate finalPredicate = criteriaBuilder.or(orPredicates.toArray(new Predicate[0]));
+
+        // Complete subquery
+        subQuery
+                .select(subRoot.get("career").get("careerId"))
+                .where(criteriaBuilder.and(finalPredicate, inClause));
+
+        Root<CareerSkills> careerSkillsRoot = criteriaQuery.from(CareerSkills.class);
+        Predicate joinCondition = criteriaBuilder.equal(CareerRoot.get("careerId"), careerSkillsRoot.get("career").get("careerId"));
+
+        Expression<Double> similarityScore = criteriaBuilder.quot(
+                totalWeightage, // Total weightage (numerator)
+                criteriaBuilder.count(careerSkillsRoot.get("skill").get("skillId")) // Count of skills (denominator)
+        ).asDouble();
+
+
+        // Complete mainquery
+        criteriaQuery
+                .multiselect(
+                        CareerRoot, // Select the entire Career entity
+                        similarityScore.alias("averageWeightage")
+                )
+                .where(criteriaBuilder
+                        .and(
+                                joinCondition,
+                                criteriaBuilder
+                                        .in(CareerRoot.get("careerId"))
+                                        .value(subQuery)
+                        ))
+                .groupBy(CareerRoot.get("careerId"))
+                .orderBy(criteriaBuilder.desc(similarityScore));
+
+        // first result is offset where the record first index at. Max results is the index 0 to n
+        List<Object[]> careerWithSimilarityRes = em.createQuery(criteriaQuery).setFirstResult((int) pageable.getOffset()).setMaxResults(pageable.getPageSize()).getResultList();
+        Long count = session.createQuery(criteriaQuery.createCountQuery()).getSingleResult();
+
+        if (careerWithSimilarityRes.isEmpty()){
+            return Optional.empty();
+        }
+
         return Optional.of(new PageImpl<>(careerWithSimilarityRes, pageable, count));
     }
 }

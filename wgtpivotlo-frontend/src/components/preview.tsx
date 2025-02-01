@@ -31,6 +31,8 @@ const previewTitleMap: { [key: string]: string } = {
   aspiration: 'Career Matches Based on Aspirations',
   pathway: 'Career Pathway Recommendations',
   direct: 'Direct Career Suggestions',
+  user: 'Career Matches Based On Your Skills',
+  career: 'Career Matches Based on Your Preferred Career',
 };
 
 export const Preview = ({

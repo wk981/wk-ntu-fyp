@@ -1,36 +1,81 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { ChoiceCareerRecommendationRequest, ChoiceCareerRecommendationResponse } from '../types';
+import { useMutation } from '@tanstack/react-query';
+import {
+  CareerWithSimilarityScoreDTO,
+  categoryMap,
+  ChoiceCareerRecommendationParams,
+  ChoiceCareerRecommendationRequest,
+} from '../types';
 import { choiceCareerRecommendation } from '../api';
+import { useState } from 'react';
+import { FetchChoiceCareerRecommendationParams } from '@/features/questionaire/contexts/QuestionaireProvider';
 
-export const useRecommendationCategory = (search_query: ChoiceCareerRecommendationRequest) => {
-  const { data, error, fetchNextPage, hasNextPage, isFetching, isError } = useInfiniteQuery<
-    ChoiceCareerRecommendationResponse,
-    Error
-  >({
-    queryKey: ['recommendedCategory', search_query],
-    queryFn: async ({ pageParam = 1 }) => {
-      const response = await choiceCareerRecommendation({
-        data: search_query,
-        pageNumber: Number(pageParam),
-      });
+export const useRecommendationCategory = () => {
+  const [categoryResult, setCategoryResult] = useState<CareerWithSimilarityScoreDTO[] | undefined>(undefined);
+  const [totalPage, setTotalPage] = useState<number | undefined>(undefined);
+  const [page, setPage] = useState<number>(1);
 
-      // Ensure the response is valid
-      if (!response) {
-        throw new Error('Failed to fetch data');
-      }
-
-      return response; // Now guaranteed to match ChoiceCareerRecommendationResponse
+  const choiceCareerRecommendationPostMutation = useMutation({
+    mutationFn: ({ data, pageNumber }: ChoiceCareerRecommendationParams) => {
+      return choiceCareerRecommendation({ data, pageNumber });
     },
-    initialPageParam: 1, // Match the default `pageParam` value in `queryFn`
-    getNextPageParam: (lastPage) => lastPage.pageNumber + 1 || null, // Ensure null is returned when no next page
+    onError: (error) => {
+      // Do something with the error
+      console.error('Mutation error:', error);
+      // Prevent refetching
+      // Optionally reset any affected state
+    },
   });
 
+  const fetchChoiceCareerRecommendation = async ({
+    category,
+    pageNumber = 1,
+    questionaireFormResults,
+  }: FetchChoiceCareerRecommendationParams) => {
+    try {
+      if (totalPage && totalPage === pageNumber) {
+        return;
+      }
+      const data: ChoiceCareerRecommendationRequest = {
+        type: categoryMap[category],
+      };
+
+      if (category && categoryMap[category]) {
+        data.type = categoryMap[category];
+      }
+
+      if (questionaireFormResults !== undefined && category) {
+        data.careerLevel = questionaireFormResults?.careerLevel;
+        data.sector = questionaireFormResults?.sector;
+      }
+
+      const body = {
+        data: data,
+        pageNumber: pageNumber,
+      };
+      const response = await choiceCareerRecommendationPostMutation.mutateAsync(body);
+
+      if (response) {
+        setCategoryResult((prevState) => [
+          ...(prevState || []),
+          ...(Array.isArray(response?.data) ? response.data : response?.data ? [response.data] : []),
+        ]);
+        if (!totalPage) {
+          setTotalPage(response?.totalPage);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return {
-    recommendedCareers: data?.pages.flatMap((page) => page.data), // Flatten pages into a single list of recommended careers
-    fetchNextRecommendedCareers: fetchNextPage, // Trigger fetching the next page of careers
-    hasMoreRecommendedCareers: hasNextPage, // Indicates if there are more pages to fetch
-    isFetchingRecommendedCareers: isFetching, // Indicates if data is currently being fetched
-    error: error,
-    isError: isError,
+    categoryResult,
+    setCategoryResult,
+    totalPage,
+    setTotalPage,
+    page,
+    setPage,
+    choiceCareerRecommendationPostMutation,
+    fetchChoiceCareerRecommendation,
   };
 };

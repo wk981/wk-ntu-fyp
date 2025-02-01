@@ -1,26 +1,28 @@
-import { useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { LoadingSpinner } from '@/components/loading-spinner';
 import { Preview } from '@/components/preview';
-import { useQuestionaire } from '@/features/questionaire/hook/useQuestionaire';
-import { FetchChoiceCareerRecommendationParams } from '@/features/questionaire/contexts/QuestionaireProvider';
+import { useExploreCareer } from '@/features/careers/hooks/useExploreCareer';
 import { usePreference } from '@/features/careers/hooks/usePreference';
+import { useRecommendationCategory } from '@/features/careers/hooks/useRecommendationCategory';
+import { FetchChoiceCareerRecommendationParams } from '@/features/questionaire/contexts/QuestionaireProvider';
+import { useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
-export const Result = () => {
+export const ExploreCareer = () => {
+  const { data, isLoading: isExploringLoading } = useExploreCareer();
+
+  const { checkedId, handleHeartButtonClick } = usePreference();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const categorySearchParams = searchParams.get('category');
   const {
-    results,
-    fetchChoiceCareerRecommendation,
     categoryResult,
     setCategoryResult,
     page,
     setPage,
-    questionaireFormResults,
-  } = useQuestionaire();
-  const { checkedId, handleHeartButtonClick } = usePreference();
-
-  const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const categorySearchParams = searchParams.get('category');
+    choiceCareerRecommendationPostMutation,
+    fetchChoiceCareerRecommendation,
+  } = useRecommendationCategory();
+  const { isPending: isChoiceLoading } = choiceCareerRecommendationPostMutation;
 
   const onClick = (category: string) => {
     setSearchParams({ category: category.toLowerCase() });
@@ -39,12 +41,6 @@ export const Result = () => {
   };
 
   useEffect(() => {
-    if (!results) {
-      void navigate('/questionaire/upload'); // Redirect to the questionnaire page if results are undefined
-    }
-  }, [results, navigate]);
-
-  useEffect(() => {
     if (categorySearchParams === '' || categorySearchParams === null) {
       setPage(1);
       setCategoryResult(undefined);
@@ -57,7 +53,6 @@ export const Result = () => {
       const params: FetchChoiceCareerRecommendationParams = {
         category: categorySearchParams,
         pageNumber: page,
-        questionaireFormResults: questionaireFormResults,
       };
       await fetchChoiceCareerRecommendation(params);
     };
@@ -65,33 +60,25 @@ export const Result = () => {
     fetchRecommendations().catch((err) => console.log(err));
   }, [page, categorySearchParams]); // Trigger when `page` or `categorySearchParams` changes
 
-  if (!results) {
+  if (!data) {
     return null; // Prevent rendering while redirecting
   }
 
   return (
     <div className="m-auto max-w-[1280px] min-h-[calc(100vh-65px)] overflow-auto space-y-7 p-4">
-      {results && (categorySearchParams === '' || !categorySearchParams) ? (
+      {data && (categorySearchParams === '' || !categorySearchParams) ? (
         <>
           <Preview
-            category={'aspiration'}
-            data={results?.aspirationMatches}
+            category={'user'}
+            data={data?.user.data}
             onClick={onClick}
             backButtonOnClick={backButtonOnClick}
             checkedId={checkedId}
             handleHeartButtonClick={handleHeartButtonClick}
           />
           <Preview
-            category={'pathway'}
-            data={results.pathwayMatches}
-            onClick={onClick}
-            backButtonOnClick={backButtonOnClick}
-            checkedId={checkedId}
-            handleHeartButtonClick={handleHeartButtonClick}
-          />
-          <Preview
-            category={'direct'}
-            data={results.directMaches} // Fixed typo from "directMaches"
+            category={'career'}
+            data={data?.career.data}
             onClick={onClick}
             backButtonOnClick={backButtonOnClick}
             checkedId={checkedId}
@@ -117,6 +104,7 @@ export const Result = () => {
           </>
         )
       )}
+      {(isExploringLoading || isChoiceLoading) && <LoadingSpinner />}
     </div>
   );
 };

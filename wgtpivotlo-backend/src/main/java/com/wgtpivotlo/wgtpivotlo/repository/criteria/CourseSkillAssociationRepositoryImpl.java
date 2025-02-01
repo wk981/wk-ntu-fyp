@@ -30,7 +30,7 @@ public class CourseSkillAssociationRepositoryImpl implements RecommendationCrite
     }
 
     @Override
-    public Optional<HashMap<String, Page<Object[]>>> recommend(List<SkillIdWithProfiencyDTO> skillsProficiencyList, Pageable page) {
+    public Optional<Page<Object[]>> recommend(List<SkillIdWithProfiencyDTO> skillsProficiencyList, Pageable page) {
         return Optional.empty();
     }
 

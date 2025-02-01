@@ -47,6 +47,11 @@ public class CareerSkillAssociationController {
         return ResponseEntity.ok(res);
     }
 
+    @PostMapping("/career/recommendation-exploration")
+    public ResponseEntity<HashMap<String, PageDTO<CareerWithSimilarityScoreDTO>>> getRecommendationExploreOtherCareer(@RequestBody  PageRequest request, Authentication authentication){
+        return ResponseEntity.ok(careerRecommendationService.getRecommendationExploreOtherCareer(request, authentication));
+    }
+
     @PostMapping("/career/preference/{career_id}")
     public ResponseEntity<HashMap<String, String>> setCareerPreference(@PathVariable long career_id, Authentication authentication) throws AccessDeniedException{
         userService.setCareerPreference(career_id, authentication);

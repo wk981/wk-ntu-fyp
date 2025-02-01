@@ -19,17 +19,24 @@ export const categoryMap: { [key: string]: string } = {
   aspiration: 'ASPIRATION',
   pathway: 'PATHWAY',
   direct: 'DIRECT_MATCH',
+  user: 'USER',
+  career: 'CAREER',
 };
 
 type CategoryType = (typeof categoryMap)[keyof typeof categoryMap];
 
 export interface ChoiceCareerRecommendationRequest {
   type: CategoryType;
-  sector: string;
-  careerLevel: string;
+  sector?: string;
+  careerLevel?: string;
 }
 
 export interface ChoiceCareerRecommendationParams {
   data: ChoiceCareerRecommendationRequest;
   pageNumber: number;
+}
+
+export interface ExploreCareerResponse {
+  career: ChoiceCareerRecommendationResponse;
+  user: ChoiceCareerRecommendationResponse;
 }

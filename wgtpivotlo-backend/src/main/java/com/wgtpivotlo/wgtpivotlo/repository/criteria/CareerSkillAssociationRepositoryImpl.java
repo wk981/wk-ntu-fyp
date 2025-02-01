@@ -9,6 +9,7 @@ import com.wgtpivotlo.wgtpivotlo.model.Career;
 import com.wgtpivotlo.wgtpivotlo.model.CareerSkills;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
+import org.apache.coyote.BadRequestException;
 import org.hibernate.Session;
 import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import org.hibernate.query.criteria.JpaCriteriaQuery;
@@ -177,6 +178,7 @@ public class CareerSkillAssociationRepositoryImpl implements RecommendationCrite
             case ASPIRATION -> criteriaBuilder.greaterThanOrEqualTo(careerLevelExpress, careerLevel.toInt());
             case DIRECT_MATCH -> criteriaBuilder.equal(careerLevelExpress, careerLevel.toInt());
             case PATHWAY -> criteriaBuilder.lessThanOrEqualTo(careerLevelExpress, careerLevel.toInt());
+            default -> throw new IllegalArgumentException("Invalid Choice");
         };
 
         // Complete mainquery

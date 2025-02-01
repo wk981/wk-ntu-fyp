@@ -15,6 +15,8 @@ export interface AuthContextInterface {
   logoutMutation: UseMutationResult<void, Error, void, unknown>;
   meMutation: UseMutationResult<User, Error, void, unknown>;
   setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
+  isLoginLoading: boolean;
+  isRegisteringLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextInterface | undefined>(undefined);
@@ -108,7 +110,18 @@ const AuthProvider = ({ children }: ProviderProps) => {
     meMutation.mutate();
   }, []);
 
-  const value = { user, isLoggedIn, loginUser, registerUser, logoutUser, logoutMutation, meMutation, setUser };
+  const value = {
+    user,
+    isLoggedIn,
+    loginUser,
+    registerUser,
+    logoutUser,
+    logoutMutation,
+    meMutation,
+    setUser,
+    isLoginLoading: loginMutation.isPending,
+    isRegisteringLoading: registerMutation.isPending,
+  };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

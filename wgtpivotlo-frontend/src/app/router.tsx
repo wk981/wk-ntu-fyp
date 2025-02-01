@@ -12,6 +12,7 @@ import { LearningTimeline } from './routes/Learning-Timeline';
 import { UploadResume } from './routes/questionaire/UploadResume';
 import { FirstTimeUserDialog } from '@/components/first-time-user-dialog';
 import { DownloadResume } from './routes/Resume/DownloadResume';
+import { ExploreCareer } from './routes/Explore-Career';
 
 const QuestionaireLayout = () => (
   <QuestionaireProvider>
@@ -39,6 +40,7 @@ export const AppRouter = () => {
             <Route path="result" element={<Result />} />
           </Route>
           <Route path="timeline" element={<LearningTimeline />} />
+          <Route path="career" element={<ExploreCareer />} />
           <Route path="resume" element={<DownloadResume />} />
         </Route>
       </Routes>

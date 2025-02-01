@@ -37,12 +37,22 @@ public class CareerRecommendationService {
         this.userRepository = userRepository;
     }
 
-    private Optional<Page<Object[]>> queryCareersByType(Choice type, List<SkillIdWithProfiencyDTO> skillsProfiencyList, CareerLevel careerLevel, Pageable pageable, Optional<String> sector){
+    private Optional<Page<Object[]>> queryCareersByType(Choice type, List<SkillIdWithProfiencyDTO> skillsProfiencyList, Optional<CareerLevel> careerLevel, Pageable pageable, Optional<String> sector) {
         return switch (type) {
-            case DIRECT_MATCH -> careerSkillAssociationRepository.findDirectMatches(skillsProfiencyList,careerLevel,pageable,sector);
-            case ASPIRATION -> careerSkillAssociationRepository.findAspirational(skillsProfiencyList,careerLevel,pageable,sector);
-            case PATHWAY -> careerSkillAssociationRepository.findPathways(skillsProfiencyList,careerLevel,pageable,sector);
-            default -> throw new RuntimeException("type does not belong in RecommendationType");
+            case DIRECT_MATCH -> careerLevel.map(level ->
+                    careerSkillAssociationRepository.findDirectMatches(skillsProfiencyList, level, pageable, Optional.ofNullable(sector.orElse(null)))
+            ).orElseThrow(() -> new RuntimeException("Career level must be present for DIRECT_MATCH"));
+
+            case ASPIRATION -> careerLevel.map(level ->
+                    careerSkillAssociationRepository.findAspirational(skillsProfiencyList, level, pageable, Optional.ofNullable(sector.orElse(null)))
+            ).orElseThrow(() -> new RuntimeException("Career level must be present for ASPIRATION"));
+
+            case PATHWAY -> careerLevel.map(level ->
+                    careerSkillAssociationRepository.findPathways(skillsProfiencyList, level, pageable, Optional.ofNullable(sector.orElse(null)))
+            ).orElseThrow(() -> new RuntimeException("Career level must be present for PATHWAY"));
+
+            case USER, CAREER -> careerSkillAssociationRepository.recommend(skillsProfiencyList, pageable);
+            default -> throw new RuntimeException("Type does not belong in RecommendationType");
         };
     }
 
@@ -61,25 +71,40 @@ public class CareerRecommendationService {
         // get userId
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         long userId = userDetails.getId();
+        List<SkillIdWithProfiencyDTO> skillsProfiencyList;
 
-        // get user's skills
-        Optional<List<UserSkills>> existingUserSkills = userSkillsRepository.findByUserId(userId);
+        if(request.getType() == Choice.CAREER){
+            Optional<User> existingUser = userRepository.findById(userId);
+            existingUser.orElseThrow(()-> new ResourceNotFoundException("User not found"));
 
-        existingUserSkills.orElseThrow(() -> new ResourceNotFoundException("No skills found"));
+            Optional<Long> existingCareerId = existingUser.get().getCareerId().describeConstable();
+            existingCareerId.orElseThrow(() -> new ResourceNotFoundException("User has not specify career"));
 
-        List<UserSkills> userSkills = existingUserSkills.get();
-        List<SkillIdWithProfiencyDTO> skillsProfiencyList = userSkills.stream().map((userSkill -> SkillIdWithProfiencyDTO.builder().skillId(userSkill.getSkill().getSkillId()).profiency(userSkill.getProfiency()).build())).toList();
+            Optional<List<CareerSkills>> existingCareerSkills = careerSkillAssociationRepository.findByCareerIdsNative(Collections.singletonList(existingCareerId.get()));
+            skillsProfiencyList = existingCareerSkills
+                    .get()
+                    .stream()
+                    .map((careerSkill -> SkillIdWithProfiencyDTO.builder().skillId(careerSkill.getSkill().getSkillId()).profiency(careerSkill.getProfiency()).build()))
+                    .toList();
+        }
+        else{
+            // get user's skills
+            Optional<List<UserSkills>> existingUserSkills = userSkillsRepository.findByUserId(userId);
+            existingUserSkills.orElseThrow(() -> new ResourceNotFoundException("No skills found"));
+            List<UserSkills> userSkills = existingUserSkills.get();
+            skillsProfiencyList = userSkills.stream().map((userSkill -> SkillIdWithProfiencyDTO.builder().skillId(userSkill.getSkill().getSkillId()).profiency(userSkill.getProfiency()).build())).toList();
+        }
 
-        log.info("Step1a: Making a query to get careers with similarity score");
+        log.info("Making a query to get careers with similarity score");
         // Get all the career related to skills and profiency along with similarity score.
-        Optional<Page<Object[]>> careerRecommendation = queryCareersByType(request.getType(),
+        Optional<Page<Object[]>> result = queryCareersByType(
+                request.getType(),
                 skillsProfiencyList,
-                request.getCareerLevel(),
-                pageable,
-                Optional.ofNullable(
-                        String.valueOf(request.getSector())
-                ));
-        return mapping(correctedPageNumber,request.getPageNumber(),careerRecommendation);
+                Optional.ofNullable(request.getCareerLevel()), // Wrap in Optional
+                pageable, // Example pageable
+                Optional.ofNullable(request.getSector()) // Wrap in Optional
+        );
+        return mapping(correctedPageNumber,request.getPageNumber(),result);
 
     }
 

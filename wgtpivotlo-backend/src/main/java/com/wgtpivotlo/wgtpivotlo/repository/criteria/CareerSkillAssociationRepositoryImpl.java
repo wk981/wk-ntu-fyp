@@ -162,6 +162,11 @@ public class CareerSkillAssociationRepositoryImpl implements RecommendationCrite
                 criteriaBuilder.count(careerSkillsRoot.get("skill").get("skillId")) // Count of skills (denominator)
         ).asDouble();
 
+        // Ensure similarityScore does not exceed 1.0 (or the expected maximum)
+        Expression<Double> cappedSimilarityScore = criteriaBuilder.selectCase()
+                .when(criteriaBuilder.greaterThan(weightedAverage, 1.0), 1.0) // If similarityScore > 1, cap it at 1.0
+                .otherwise(weightedAverage).asDouble();
+
         // Calculate Skill Proficiency Factor
         Expression<Double> skillProficiencyFactor = criteriaBuilder.prod(skillMatchingWeight, weightedAverage);
 
@@ -185,7 +190,7 @@ public class CareerSkillAssociationRepositoryImpl implements RecommendationCrite
         criteriaQuery
                 .multiselect(
                         CareerRoot, // Select the entire Career entity
-                        similarityScore.alias("averageWeightage")
+                        cappedSimilarityScore.alias("averageWeightage")
                 )
                 .where(criteriaBuilder
                         .and(
@@ -277,16 +282,20 @@ public class CareerSkillAssociationRepositoryImpl implements RecommendationCrite
         Predicate joinCondition = criteriaBuilder.equal(CareerRoot.get("careerId"), careerSkillsRoot.get("career").get("careerId"));
 
         Expression<Double> similarityScore = criteriaBuilder.quot(
-                totalWeightage, // Total weightage (numerator)
-                criteriaBuilder.count(careerSkillsRoot.get("skill").get("skillId")) // Count of skills (denominator)
-        ).asDouble();
+                totalWeightage, // Numerator: total weightage (user’s skill weightage)
+                criteriaBuilder.count(careerSkillsRoot.get("skill").get("skillId")) // Denominator: total skills required
+        ).as(Double.class);
 
+        // Ensure similarityScore does not exceed 1.0 (or the expected maximum)
+        Expression<Double> cappedSimilarityScore = criteriaBuilder.selectCase()
+                .when(criteriaBuilder.greaterThan(similarityScore, 1.0), 1.0) // If similarityScore > 1, cap it at 1.0
+                .otherwise(similarityScore).asDouble();
 
         // Complete mainquery
         criteriaQuery
                 .multiselect(
                         CareerRoot, // Select the entire Career entity
-                        similarityScore.alias("averageWeightage")
+                        cappedSimilarityScore.alias("averageWeightage") // Use capped similarity score
                 )
                 .where(criteriaBuilder
                         .and(
@@ -296,7 +305,7 @@ public class CareerSkillAssociationRepositoryImpl implements RecommendationCrite
                                         .value(subQuery)
                         ))
                 .groupBy(CareerRoot.get("careerId"))
-                .orderBy(criteriaBuilder.desc(similarityScore));
+                .orderBy(criteriaBuilder.desc(cappedSimilarityScore));
 
         // first result is offset where the record first index at. Max results is the index 0 to n
         List<Object[]> careerWithSimilarityRes = em.createQuery(criteriaQuery).setFirstResult((int) pageable.getOffset()).setMaxResults(pageable.getPageSize()).getResultList();

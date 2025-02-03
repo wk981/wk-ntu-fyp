@@ -26,6 +26,7 @@ services:
       PG_DATABASE: ${PG_DATABASE}
       PG_URL: ${PG_URL}
       VITE_BACKEND_URL: ${VITE_BACKEND_URL}
+      SHOW_SQL: ${SHOW_SQL}
     deploy:
       resources:
         limits:

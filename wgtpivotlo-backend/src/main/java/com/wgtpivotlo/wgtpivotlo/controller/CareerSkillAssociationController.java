@@ -40,7 +40,6 @@ public class CareerSkillAssociationController {
         return ResponseEntity.ok(result);
     }
 
-
     @PostMapping("/career/recommendations")
     public ResponseEntity<PageDTO<CareerWithSimilarityScoreDTO>> getMoreTypedResult(@RequestBody CareerRecommendationDTO request, Authentication authentication) throws AccessDeniedException {
         PageDTO<CareerWithSimilarityScoreDTO> res = careerRecommendationService.getRecommendedCareers(request, authentication);

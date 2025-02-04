@@ -23,8 +23,7 @@ COPY --from=build /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/nginx.conf
 
 # Expose the port that Nginx will serve on
-EXPOSE 80
-EXPOSE 443
+EXPOSE 7000
 
 # Start Nginx
 CMD ["nginx", "-g", "daemon off;"]

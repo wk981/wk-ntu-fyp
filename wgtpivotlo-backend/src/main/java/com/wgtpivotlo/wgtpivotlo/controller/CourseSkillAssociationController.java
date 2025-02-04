@@ -1,35 +1,46 @@
 package com.wgtpivotlo.wgtpivotlo.controller;
 
-import com.wgtpivotlo.wgtpivotlo.dto.CourseDTO;
-import com.wgtpivotlo.wgtpivotlo.dto.CourseWithProfiencyDTO;
-import com.wgtpivotlo.wgtpivotlo.dto.CourseWithSkillsDTO;
-import com.wgtpivotlo.wgtpivotlo.dto.PageDTO;
+import com.wgtpivotlo.wgtpivotlo.dto.*;
 import com.wgtpivotlo.wgtpivotlo.service.CourseRecommendationService;
 import com.wgtpivotlo.wgtpivotlo.service.CourseSkillAssociationService;
+import com.wgtpivotlo.wgtpivotlo.service.UserCourseHistoryService;
 import jakarta.validation.constraints.Min;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
-import java.util.HashMap;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/api/v1/course-skill-association")
 public class CourseSkillAssociationController {
     private final CourseSkillAssociationService courseSkillAssociationService;
     private final CourseRecommendationService courseRecommendationService;
+    private final UserCourseHistoryService userCourseHistoryService;
 
-    public CourseSkillAssociationController(CourseSkillAssociationService courseSkillAssociationService, CourseRecommendationService courseRecommendationService) {
+    public CourseSkillAssociationController(CourseSkillAssociationService courseSkillAssociationService, CourseRecommendationService courseRecommendationService, UserCourseHistoryService userCourseHistoryService) {
         this.courseSkillAssociationService = courseSkillAssociationService;
         this.courseRecommendationService = courseRecommendationService;
+        this.userCourseHistoryService = userCourseHistoryService;
     }
 
     @GetMapping("/courses/{course_id}")
     public ResponseEntity<CourseWithSkillsDTO> getCourseById(@PathVariable Long course_id) {
         CourseWithSkillsDTO res = courseSkillAssociationService.findByCourseId(course_id);
         return ResponseEntity.ok(res);
+    }
+
+    @PostMapping("/courses/change-status")
+    public ResponseEntity<?> editUserCourseStatus(@RequestBody EditUserCourseStatusDTO request, Authentication authentication) throws AccessDeniedException{
+        userCourseHistoryService.editCourseStatusWithUserID(request,authentication);
+        return ResponseEntity.ok("success");
+    }
+
+    @PutMapping("/courses/delete-status/{course_id}")
+    public ResponseEntity<?> deleteUserCourseStatus(@PathVariable Long course_id, Authentication authentication) throws AccessDeniedException{
+        userCourseHistoryService.deleteCourseStatusWithUserId(course_id,authentication);
+        return ResponseEntity.ok("success");
     }
 
     @GetMapping("/courses")
@@ -51,11 +62,5 @@ public class CourseSkillAssociationController {
 
         return ResponseEntity.ok(courseRecommendationService.findPaginatedTimelineCourseBySkillId(skillId, careerId , pageNumber, pageSize, authentication));
     }
-
-//    @PostMapping("/course/learning-timeline")
-//    public ResponseEntity<HashMap<String,String>> getLearningTimeLine(Authentication authentication) throws AccessDeniedException {
-//        return ResponseEntity.ok(courseRecommendationService.recommendCoursesBasedOnUserSkills(authentication));
-//    }
-
 
 }

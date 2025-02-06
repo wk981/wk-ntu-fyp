@@ -64,6 +64,6 @@ export const postChangeCourseStatus = async ({ courseStatus, courseId }: EditCou
     const errorMessage: string = errorBody.message || 'Something went wrong'; // Extract the error message
     throw Error(errorMessage); // Throw a new Error with the message
   }
-  const json = response.json() as Promise<string>;
+  const json = response.text();
   return json;
 };

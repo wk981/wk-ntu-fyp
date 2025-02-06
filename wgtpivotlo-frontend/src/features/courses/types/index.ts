@@ -26,3 +26,8 @@ export interface CourseDTO {
   privatcourseSource: string;
   profiency?: string;
 }
+
+export interface EditCourseStatusRequestDTO {
+  courseStatus: 'In Progress' | 'Completed' | 'Not Done';
+  courseId: number;
+}

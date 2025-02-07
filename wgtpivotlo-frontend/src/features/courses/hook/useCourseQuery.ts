@@ -3,7 +3,7 @@ import { getCourseById } from '../api';
 
 export const useCourseQuery = (id: number) => {
   const getCourse = useQuery({
-    queryKey: ['course'],
+    queryKey: ['course', id],
     queryFn: () => getCourseById(id),
   });
 

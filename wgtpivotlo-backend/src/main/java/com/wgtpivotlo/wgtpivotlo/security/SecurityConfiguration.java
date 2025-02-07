@@ -81,7 +81,6 @@ public class SecurityConfiguration {
     public CorsConfigurationSource corsConfigurationSource() {
         String[] parts = corsURLList.split(",");
         List<String> corsURL = new ArrayList<>();
-        corsURL.add("http://localhost:5173");
         Collections.addAll(corsURL, parts);
 
         CorsConfiguration configuration = new CorsConfiguration();

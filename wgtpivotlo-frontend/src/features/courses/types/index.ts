@@ -4,10 +4,16 @@ import { PageRequest, PageResponse } from '@/types';
 export interface CoursePaginationSkillsRequest extends PageRequest {
   skillId: number;
   careerId: number;
+  skillLevelFilter?: string;
 }
 
-export interface CourseDTOPaginated extends PageResponse {
+export interface CoursePageDTO extends PageResponse {
   data: CourseDTO[];
+}
+
+export interface TimelineCouseDTO {
+  availableSkillLevels: string[];
+  pageDTO: CoursePageDTO;
 }
 
 export interface CourseWithSkillsDTO {
@@ -25,4 +31,9 @@ export interface CourseDTO {
   reviews_counts: number;
   privatcourseSource: string;
   profiency?: string;
+}
+
+export interface EditCourseStatusRequestDTO {
+  courseStatus: 'In Progress' | 'Completed' | 'Not Done';
+  courseId: number;
 }

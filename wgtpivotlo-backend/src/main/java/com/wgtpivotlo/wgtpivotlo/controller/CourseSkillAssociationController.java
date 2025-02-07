@@ -1,6 +1,7 @@
 package com.wgtpivotlo.wgtpivotlo.controller;
 
 import com.wgtpivotlo.wgtpivotlo.dto.*;
+import com.wgtpivotlo.wgtpivotlo.enums.SkillLevel;
 import com.wgtpivotlo.wgtpivotlo.service.CourseRecommendationService;
 import com.wgtpivotlo.wgtpivotlo.service.CourseSkillAssociationService;
 import com.wgtpivotlo.wgtpivotlo.service.UserCourseHistoryService;
@@ -10,6 +11,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
+import java.util.HashMap;
+import java.util.Optional;
 
 
 @RestController
@@ -53,14 +56,15 @@ public class CourseSkillAssociationController {
     }
 
     @GetMapping("/courses/timeline")
-    public ResponseEntity<PageDTO<CourseWithProfiencyDTO>> getPaginatedTimelineCoursesBySkill(
+    public ResponseEntity<HashMap<String, Object>> getPaginatedTimelineCoursesBySkill(
             @RequestParam(required = true) long skillId,
             @RequestParam(required = true) long careerId,
-            @RequestParam(defaultValue = "1") @Min(1) int pageNumber,
+            @RequestParam(required = false) Optional<SkillLevel> skillLevelFilter,
+            @RequestParam(defaultValue = "1")@Min(1) int pageNumber,
             @RequestParam(defaultValue = "10") @Min(1) int pageSize,
             Authentication authentication) throws AccessDeniedException {
 
-        return ResponseEntity.ok(courseRecommendationService.findPaginatedTimelineCourseBySkillId(skillId, careerId , pageNumber, pageSize, authentication));
+        return ResponseEntity.ok(courseRecommendationService.findPaginatedTimelineCourseBySkillId(skillId, careerId, skillLevelFilter, pageNumber, pageSize, authentication));
     }
 
 }

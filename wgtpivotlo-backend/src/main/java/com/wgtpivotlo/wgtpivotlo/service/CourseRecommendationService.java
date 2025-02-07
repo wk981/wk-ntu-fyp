@@ -81,7 +81,7 @@ public class CourseRecommendationService {
         return res;
     }
 
-    public PageDTO<CourseWithProfiencyDTO> findPaginatedTimelineCourseBySkillId(long skillId, long careerId, int pageNumber, int pageSize, Authentication authentication) throws AccessDeniedException {
+    public HashMap<String, Object> findPaginatedTimelineCourseBySkillId(long skillId, long careerId, Optional<SkillLevel> skillLevelFilter, int pageNumber, int pageSize, Authentication authentication) throws AccessDeniedException {
         if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
             throw new AccessDeniedException("Access Denied");
         }
@@ -126,9 +126,11 @@ public class CourseRecommendationService {
 
         int correctedPageNumber = (pageNumber > 0) ? pageNumber - 1 : 0;
         Pageable skillPageWithElements = PageRequest.of(correctedPageNumber, pageSize, Sort.by("rating").descending());
+        Optional<String> filterBySkillLevel = skillLevelFilter.map(Object::toString);
+
 
         log.info("Step 4: Making a query to get course based on skillId and skill level flow");
-        Page<Object[]> paginatedCourses = courseRepository.findByCourseBySkillIdSortedByProficiency(skillId, recommendedSkillLevelsFlow, skillPageWithElements);
+        Page<Object[]> paginatedCourses = courseRepository.findByCourseBySkillIdSortedByProficiency(skillId, recommendedSkillLevelsFlow, filterBySkillLevel,skillPageWithElements);
 
         List<CourseWithProfiencyDTO> courseWithProfiencyDTOS = (List<CourseWithProfiencyDTO>) paginatedCourses.getContent().stream().map((objects -> (CourseWithProfiencyDTO) CourseWithProfiencyDTO.builder()
                 .course_id((Long) objects[0])             // course_id (long)
@@ -147,7 +149,10 @@ public class CourseRecommendationService {
         }
 
         log.info("Step 5: Tidying up body and pagination");
-        return new PageDTO<>(paginatedCourses.getTotalPages(), pageNumber, courseWithProfiencyDTOS);
+        HashMap<String, Object> res = new HashMap<>();
+        res.put("pageDTO", new PageDTO<>(paginatedCourses.getTotalPages(), pageNumber, courseWithProfiencyDTOS));
+        res.put("availableSkillLevels", recommendedSkillLevelsFlow);
+        return res;
     }
 
     private List<SkillLevel> getSkillLevelProcedure(long userSkillId,long careerSkillId, int userSkillInt, int careerSkillInt) {

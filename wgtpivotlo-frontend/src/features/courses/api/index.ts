@@ -1,10 +1,10 @@
 import { ErrorResponse } from '@/types';
 import { backendURL } from '@/utils';
 import {
-  CourseDTOPaginated,
   CoursePaginationSkillsRequest,
   CourseWithSkillsDTO,
   EditCourseStatusRequestDTO,
+  TimelineCouseDTO,
 } from '../types';
 
 export const getCourseById = async (course_id: number) => {
@@ -26,10 +26,19 @@ export const getCoursePaginationBasedOnSkillId = async ({
   skillId,
   careerId,
   pageNumber,
+  skillLevelFilter,
 }: CoursePaginationSkillsRequest) => {
-  const url =
+  let url =
     backendURL +
     `/v1/course-skill-association/courses/timeline?skillId=${skillId}&pageNumber=${pageNumber}&pageSize=5&careerId=${careerId}`;
+  if (
+    skillLevelFilter !== '' &&
+    skillLevelFilter !== 'Show all' &&
+    skillLevelFilter !== undefined &&
+    skillLevelFilter !== null
+  ) {
+    url += `&skillLevelFilter=${skillLevelFilter}`;
+  }
   // console.log(`skillId: ${skillId}, pageNumber: ${pageNumber}`)
   const response = await fetch(url, {
     method: 'GET',
@@ -40,7 +49,7 @@ export const getCoursePaginationBasedOnSkillId = async ({
     const errorMessage: string = errorBody.message || 'Something went wrong'; // Extract the error message
     throw Error(errorMessage); // Throw a new Error with the message
   }
-  const json = response.json() as Promise<CourseDTOPaginated>;
+  const json = response.json() as Promise<TimelineCouseDTO>;
   return json;
 };
 

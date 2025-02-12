@@ -24,4 +24,5 @@ public interface CareerSkillAssociationRepository extends JpaRepository<CareerSk
 
     @Query(value = "SELECT cs.* FROM career_skill cs WHERE cs.career_Id = :careerId AND skill_id = :skillId LIMIT 1", nativeQuery = true)
     Optional<CareerSkills> findCareerSkillsByCareerIdAndSkillId(@Param("careerId") Long careerId, @Param("skillId") Long skillId);
+
 }

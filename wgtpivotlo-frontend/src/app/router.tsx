@@ -2,7 +2,7 @@ import { Navbar } from '@/components/navbar';
 import { BrowserRouter as Router, Route, Routes, Outlet } from 'react-router-dom';
 import { Login } from './routes/auth/login';
 import { Register } from './routes/auth/register';
-import { Landing } from './routes/Landing';
+// import { Landing } from '../components/Landing';
 import { QuestionaireProvider } from '@/features/questionaire/contexts/QuestionaireProvider';
 import { Questions } from './routes/questionaire/Questions';
 import { Result } from './routes/questionaire/Result';
@@ -13,6 +13,7 @@ import { UploadResume } from './routes/questionaire/UploadResume';
 import { FirstTimeUserDialog } from '@/components/first-time-user-dialog';
 import { DownloadResume } from './routes/Resume/DownloadResume';
 import { ExploreCareer } from './routes/Explore-Career';
+import { Home } from './routes/Home';
 
 const QuestionaireLayout = () => (
   <QuestionaireProvider>
@@ -25,7 +26,7 @@ export const AppRouter = () => {
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Landing />} />
+        <Route path="/" element={<Home />} />
         <Route path="auth">
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />

@@ -10,6 +10,7 @@ import com.wgtpivotlo.wgtpivotlo.errors.exceptions.ResourceNotFoundException;
 import com.wgtpivotlo.wgtpivotlo.model.*;
 import com.wgtpivotlo.wgtpivotlo.repository.*;
 import com.wgtpivotlo.wgtpivotlo.security.UserDetailsImpl;
+import com.wgtpivotlo.wgtpivotlo.utils.SkillLevelHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,55 +31,15 @@ public class CourseRecommendationService {
     private final CareerSkillAssociationRepository careerSkillAssociationRepository;
     private final CareerRepository careerRepository;
     private final CourseRepository courseRepository;
-    private static List<SkillLevel> skillLevelList = Arrays.asList(
-            SkillLevel.Beginner,
-            SkillLevel.Intermediate,
-            SkillLevel.Advanced
-    );
+    private final SkillLevelHelper skillLevelHelper;
 
     @Autowired
-    public CourseRecommendationService(UserSkillsRepository userSkillsRepository, CareerSkillAssociationRepository careerSkillAssociationRepository, CareerRepository careerRepository, CourseRepository courseRepository) {
+    public CourseRecommendationService(UserSkillsRepository userSkillsRepository, CareerSkillAssociationRepository careerSkillAssociationRepository, CareerRepository careerRepository, CourseRepository courseRepository, SkillLevelHelper skillLevelHelper) {
         this.userSkillsRepository = userSkillsRepository;
         this.careerSkillAssociationRepository = careerSkillAssociationRepository;
         this.careerRepository = careerRepository;
         this.courseRepository = courseRepository;
-    }
-
-    public HashMap<String, String> recommendCoursesBasedOnUserSkills(Authentication authentication) throws AccessDeniedException {
-        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-            throw new AccessDeniedException("Access Denied");
-        }
-
-        log.info("Step 1: Get UserId and preference career");
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        long userId = userDetails.getId();
-        Optional<Career> existingPreferranceCareer = careerRepository.findUserCareer(userId);
-        existingPreferranceCareer.orElseThrow(() -> new ResourceNotFoundException("User has not select a preference career"));
-        Career career = existingPreferranceCareer.get();
-
-        log.info("Step 2: Get User's Skills");
-        Optional<List<UserSkills>> existingUserSkills = userSkillsRepository.findByUserId(userId);
-        existingUserSkills.orElseThrow(() -> new ResourceNotFoundException("User has not done questionaire."));
-        List<UserSkills> userSkillsList = existingUserSkills.get();
-
-        log.info("Step 3: Get career skills");
-        Optional<List<CareerSkills>> existingCareerSkillsList = careerSkillAssociationRepository.findByCareerIdsNative(Collections.singletonList(career.getCareerId()));
-        existingCareerSkillsList.orElseThrow(() -> new ResourceNotFoundException("No skills found for that career"));
-        HashMap<Long, List<SkillLevel>> skillsToLevelMap = new HashMap<>();
-
-        for (UserSkills userSkills: userSkillsList){
-            Skill userSkill = userSkills.getSkill();
-            SkillLevel userSkillLevel = userSkills.getProfiency();
-            for(CareerSkills careerSkills: existingCareerSkillsList.get()){
-                Skill careerSkill = careerSkills.getSkill();
-                SkillLevel careerSkillLevel = careerSkills.getProfiency();
-                List<SkillLevel> temp = getSkillLevelProcedure(userSkill.getSkillId(), careerSkill.getSkillId(), userSkillLevel.toInt(), careerSkillLevel.toInt());
-                skillsToLevelMap.put(careerSkill.getSkillId(),temp);
-            }
-        }
-        HashMap<String, String> res = new HashMap<>();
-        res.put("data", skillsToLevelMap.toString());
-        return res;
+        this.skillLevelHelper = skillLevelHelper;
     }
 
     public HashMap<String, Object> findPaginatedTimelineCourseBySkillId(long skillId, long careerId, Optional<SkillLevel> skillLevelFilter, int pageNumber, int pageSize, Authentication authentication) throws AccessDeniedException {
@@ -98,31 +59,7 @@ public class CourseRecommendationService {
         existCareerSkills.orElseThrow(() -> new ResourceNotFoundException("No skill found for career"));
         SkillLevel careerSkillLevel = existCareerSkills.get().getProfiency();
 
-        List<String> recommendedSkillLevelsFlow = new ArrayList<>();
-        if (existingUserSkill.isPresent()) {
-            // Get user's current proficiency index
-            int currentProficiencyIndex = existingUserSkill.get().getProfiency().toInt() - 1;
-
-            // Get career's required proficiency level index
-            int careerProficiencyIndex = skillLevelList.indexOf(careerSkillLevel);
-
-            // Ensure the current proficiency is valid
-            if (currentProficiencyIndex < skillLevelList.size()) {
-                // Add all levels from current proficiency to career's required level
-                for (int i = currentProficiencyIndex; i <= careerProficiencyIndex && i < skillLevelList.size(); i++) {
-                    recommendedSkillLevelsFlow.add(skillLevelList.get(i).toString());
-                }
-            } else {
-                // Already at max level, suggest the highest level
-                recommendedSkillLevelsFlow.add(skillLevelList.get(currentProficiencyIndex).toString());
-            }
-        } else {
-            // Default for new users: Start from Beginner to the career's required level
-            int careerProficiencyIndex = skillLevelList.indexOf(careerSkillLevel);
-            for (int i = 0; i <= careerProficiencyIndex && i < skillLevelList.size(); i++) {
-                recommendedSkillLevelsFlow.add(skillLevelList.get(i).toString());
-            }
-        }
+        List<String> recommendedSkillLevelsFlow = skillLevelHelper.getSkillLevelFlow(existingUserSkill, careerSkillLevel);
 
         int correctedPageNumber = (pageNumber > 0) ? pageNumber - 1 : 0;
         Pageable skillPageWithElements = PageRequest.of(correctedPageNumber, pageSize, Sort.by("rating").descending());
@@ -155,15 +92,4 @@ public class CourseRecommendationService {
         return res;
     }
 
-    private List<SkillLevel> getSkillLevelProcedure(long userSkillId,long careerSkillId, int userSkillInt, int careerSkillInt) {
-        List<SkillLevel> temp = new ArrayList<>();
-        int index = 1;
-        if (userSkillId == careerSkillId){
-            index = userSkillInt;
-        }
-        for (int i = index; i <= careerSkillInt; i++) {
-            temp.add(skillLevelList.get(i - 1)); // Adjust for zero-based indexing
-        }
-        return temp;
-    }
 }

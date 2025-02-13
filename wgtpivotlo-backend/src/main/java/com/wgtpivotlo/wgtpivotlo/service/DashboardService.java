@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class DashboardService {
@@ -38,7 +39,18 @@ public class DashboardService {
         List<UserSkills> userSkillsList = userService.getUserSkills(userId);
         List<CareerSkills> careerSkillsList = careerSkillAssociationService.findCareerSkillsByCareerId(userCareer.getCareerId());
         
-        List<SkillWithProfiencyDTO> userSkillDTOList = new java.util.ArrayList<>(List.of());
+        List<SkillWithProfiencyDTO> userSkillDTOList = userSkillsList.stream().map((userSkills) -> {
+            Skill skill = userSkills.getSkill();
+            return SkillWithProfiencyDTO
+                    .builder()
+                    .skillId(skill.getSkillId())
+                    .name(skill.getName())
+                    .pic(skill.getPic_url())
+                    .description(skill.getDescription())
+                    .profiency(userSkills.getProfiency())
+                    .build();
+        }).collect(Collectors.toList());
+
         double progression = 0;
         List<SkillWIthCareerLevelFlowDTO> skillGapList = new ArrayList<>();
 
@@ -51,19 +63,7 @@ public class DashboardService {
                     double userSkillLevelWeightage = userSkillLevel.toWeightedDouble();
                     progression += userSkillLevelWeightage;
                 }
-                Skill skill = userSkills.getSkill();
-                userSkillDTOList.add(
-                        SkillWithProfiencyDTO
-                                .builder()
-                                .skillId(skill.getSkillId())
-                                .name(skill.getName())
-                                .pic(skill.getPic_url())
-                                .description(skill.getDescription())
-                                .profiency(userSkills.getProfiency())
-                                .build()
-                );
              }
-
             List<String> skillFlow = skillLevelHelper.getSkillLevelFlow(tmp,careerSkills.getProfiency());
             Skill careerSkill = careerSkills.getSkill();
             SkillDTO skillDTO = SkillDTO.builder().skillId(careerSkill.getSkillId()).name(careerSkill.getName()).description(careerSkill.getDescription()).build();

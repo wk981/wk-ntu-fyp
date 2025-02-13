@@ -11,6 +11,7 @@ import com.wgtpivotlo.wgtpivotlo.repository.CareerSkillAssociationRepository;
 import com.wgtpivotlo.wgtpivotlo.repository.UserSkillsRepository;
 import com.wgtpivotlo.wgtpivotlo.security.UserDetailsImpl;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
@@ -21,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class QuestionaireService {
     private final CareerSkillAssociationRepository careerSkillAssociationRepository;
@@ -54,6 +56,7 @@ public class QuestionaireService {
         Optional<List<UserSkills>> existingUserSkills = userSkillsRepository.findByUserId(userId);
         if (existingUserSkills.isPresent()){
             // remove and overwrite
+            log.info("Removing user skills");
             userSkillsRepository.deleteByUserId(userId);
         }
 

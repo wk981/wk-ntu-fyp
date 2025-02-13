@@ -13,6 +13,7 @@ import React, { useState } from 'react';
 import { CourseDTO, EditCourseStatusRequestDTO } from '../types';
 interface CourseItemInterface {
   course: CourseDTO;
+  status?: string;
 }
 
 interface PreviewDialogProps {
@@ -20,7 +21,7 @@ interface PreviewDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
-export const CourseItem = React.forwardRef<HTMLDivElement, CourseItemInterface>(({ course }, ref) => {
+export const CourseItem = React.forwardRef<HTMLDivElement, CourseItemInterface>(({ course, status }, ref) => {
   const [open, setOpen] = useState<boolean>(false);
   const { isEditingCourseProgressAsyncMutate, isEditingCourseProgressLoading } = useEditCourseProgress();
   const handleCardClick = () => {
@@ -28,7 +29,7 @@ export const CourseItem = React.forwardRef<HTMLDivElement, CourseItemInterface>(
   };
   const handleSelectValueChange = async (value: string) => {
     try {
-      if (!['In Progress', 'Completed', 'Not Done'].includes(value)) {
+      if (!['In Progress', 'Completed', 'Not Done'].includes(value) && value !== status) {
         console.error('Invalid course status:', value);
         return;
       }
@@ -65,6 +66,7 @@ export const CourseItem = React.forwardRef<HTMLDivElement, CourseItemInterface>(
             </div>
             <div className="w-auto" onClick={(e) => e.stopPropagation()} onMouseDown={(e) => e.stopPropagation()}>
               <Select
+                defaultValue={status}
                 onValueChange={(value) => {
                   void handleSelectValueChange(value);
                 }}
@@ -93,7 +95,7 @@ export const CourseItem = React.forwardRef<HTMLDivElement, CourseItemInterface>(
           <div className="flex items-center gap-4 text-sm">
             <div className="flex items-center gap-1.5">
               <Star className="h-4 w-4 fill-primary text-primary" />
-              <span className="font-medium">{course.rating}</span>
+              <span className="font-medium">{course.rating.toFixed(1)}/5</span>
             </div>
             <div className="flex items-center gap-1.5 text-muted-foreground">
               <Users className="h-4 w-4" />

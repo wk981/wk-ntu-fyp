@@ -1,6 +1,7 @@
 package com.wgtpivotlo.wgtpivotlo.controller;
 
 import com.wgtpivotlo.wgtpivotlo.dto.*;
+import com.wgtpivotlo.wgtpivotlo.enums.CourseStatus;
 import com.wgtpivotlo.wgtpivotlo.enums.SkillLevel;
 import com.wgtpivotlo.wgtpivotlo.service.CourseRecommendationService;
 import com.wgtpivotlo.wgtpivotlo.service.CourseSkillAssociationService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -67,4 +69,11 @@ public class CourseSkillAssociationController {
         return ResponseEntity.ok(courseRecommendationService.findPaginatedTimelineCourseBySkillId(skillId, careerId, skillLevelFilter, pageNumber, pageSize, authentication));
     }
 
+    @GetMapping("/courses/history")
+    public ResponseEntity<Optional<List<CourseWithStatusDTO>>> getUserCourseHistory(
+            @RequestParam(required = false) SkillLevel skillLevel,
+            @RequestParam(required = false) CourseStatus courseStatus,
+            Authentication authentication) throws AccessDeniedException {
+        return ResponseEntity.ok(userCourseHistoryService.getUserCourseHistory(authentication, skillLevel, courseStatus));
+    }
 }

@@ -14,11 +14,12 @@ import { FirstTimeUserDialog } from '@/components/first-time-user-dialog';
 import { DownloadResume } from './routes/Resume/DownloadResume';
 import { ExploreCareer } from './routes/Explore-Career';
 import { Landing } from '@/components/Landing';
-import { Dashboard } from './routes/Dashboard';
+import { Dashboard } from './routes/Dashboard/Dashboard';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/AppSidebar';
 import { BreadcrumbCustom } from '@/components/breadcrumpcustom';
 import NotFound from './routes/NotFound';
+import { CourseHistory } from './routes/Dashboard/CourseHistory';
 
 const QuestionaireLayout = () => (
   <QuestionaireProvider>
@@ -80,6 +81,7 @@ export const AppRouter = () => {
             </Route>
             <Route path="dashboard" element={<DashboardLayout />}>
               <Route index element={<Dashboard />} />
+              <Route path="history" element={<CourseHistory />} />
             </Route>
           </Route>
           <Route path="*" element={<NotFound />} /> {/* Catch-all route */}

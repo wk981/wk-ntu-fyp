@@ -1,5 +1,6 @@
 package com.wgtpivotlo.wgtpivotlo.service;
 
+import com.wgtpivotlo.wgtpivotlo.enums.SkillLevel;
 import com.wgtpivotlo.wgtpivotlo.errors.exceptions.ResourceNotFoundException;
 import com.wgtpivotlo.wgtpivotlo.model.Career;
 import com.wgtpivotlo.wgtpivotlo.model.User;
@@ -88,6 +89,36 @@ public class UserService {
         existingUser.orElseThrow(() -> new ResourceNotFoundException("User is not found"));
 
         return existingUser.get();
+    }
+
+    @Transactional
+    public void updateUserSkillProfiency(long userId, long skillId, SkillLevel skillLevel){
+        userSkillsRepository.updateByUserIdAndSkillIdAndProfiency(userId,skillId,skillLevel.toString());
+    }
+
+    @Transactional
+    public void addNewUserSkill(long userId, long skillId, SkillLevel skillLevel){
+        userSkillsRepository.insertByUserIdAndSkillIdAndProfiency(userId,skillId,skillLevel.toString());
+    }
+
+    @Transactional
+    public void updateOrAddUserSkill(long userId, long skillId, SkillLevel skillLevel){
+        Optional<UserSkills> existingUserSkill = userSkillsRepository.findByUserIdAndSkillId(userId, skillId);
+        if (existingUserSkill.isPresent()){
+            int currentProfiency = existingUserSkill.get().getProfiency().toInt();
+            int newProfiency = skillLevel.toInt();
+            if (newProfiency > currentProfiency) { // Only update if strictly higher
+                log.info("Updating user's skill proficiency");
+                updateUserSkillProfiency(userId, skillId, skillLevel);
+            }
+            else {
+                log.info("User already has this skill at the same or higher level, no update needed.");
+            }
+        }
+        else{
+            log.info("Insert a new user's skill");
+            addNewUserSkill(userId,skillId,skillLevel);
+        }
     }
 
 }

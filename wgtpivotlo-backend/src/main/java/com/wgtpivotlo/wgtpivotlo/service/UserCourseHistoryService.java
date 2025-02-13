@@ -110,12 +110,13 @@ public class UserCourseHistoryService {
 
     }
 
-    public Optional<List<CourseWithStatusDTO>> getUserCourseHistory(Authentication authentication) throws AccessDeniedException {
+    public Optional<List<CourseWithStatusDTO>> getUserCourseHistory(Authentication authentication, SkillLevel skillLevel, CourseStatus courseStatus) throws AccessDeniedException {
         // Get userId
         log.info("Step 1: Get UserId");
         User user = userService.getUser(authentication);
+        String courseStatusString = (courseStatus != null) ? courseStatus.toString() : null;
 
-        Optional<List<UserCourseHistory>> existingCourseHistory = userCourseHistoryRepository.findByUser(user);
+        Optional<List<UserCourseHistory>> existingCourseHistory = userCourseHistoryRepository.findByUserIdAndCourseStatus(user.getUser_id(), Optional.ofNullable(courseStatusString));
         List<CourseWithStatusDTO> res = existingCourseHistory.get().stream().map((userCourse) -> {
             Course course = userCourse.getCourse();
             CourseWithSkillsDTO courseWithSkillsDTO = courseSkillAssociationService.findByCourseId(course.getCourse_id());
@@ -123,6 +124,6 @@ public class UserCourseHistoryService {
             return CourseWithStatusDTO.builder().courseWithProfiencyDTO(courseWithProfiencyDTO).courseStatus(userCourse.getCourseStatus()).build();
         }).toList();
 
-        return Optional.of(res);
+        return Optional.ofNullable(res);
     }
 }

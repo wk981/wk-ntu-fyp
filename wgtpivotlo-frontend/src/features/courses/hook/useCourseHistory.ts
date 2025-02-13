@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import { getCourseHistory } from '../api';
 
-export const useCourseHistory = () => {
+export const useCourseHistory = (filter?: string) => {
   const { data, isLoading, isSuccess } = useQuery({
-    queryKey: ['course-history'],
-    queryFn: () => getCourseHistory(),
+    queryKey: ['course-history', filter],
+    queryFn: () => getCourseHistory(filter),
   });
   return {
     courseHistoryData: data,

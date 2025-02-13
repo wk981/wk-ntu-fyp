@@ -28,10 +28,11 @@ export const CourseList = ({ skill, careerId, skillLevelFilter, setAvailableDiff
     if (isIntersecting && hasMoreCourses) {
       void fetchNextCourses(); // Call the function if it exists
     }
-  }, [isIntersecting]); // Add all necessary dependencies
+  }, [fetchNextCourses, hasMoreCourses, isIntersecting]); // Add all necessary dependencies
 
   useEffect(() => {
     if (availableFilters && availableFilters.length > 0) {
+      console.log(availableFilters);
       setAvailableDifficulties((prev) => {
         const newSet = new Set(availableFilters);
         return areSetsEqual(prev, newSet) ? prev : newSet;
@@ -40,7 +41,7 @@ export const CourseList = ({ skill, careerId, skillLevelFilter, setAvailableDiff
   }, [availableFilters]);
 
   return (
-    <div className="flex-1 overflow-y-auto h-[calc(100vh-100px)] w-full">
+    <div className="flex-1 overflow-y-auto h-[calc(100vh-150px)] w-full">
       {courses &&
         courses.map((course, index) => (
           <CourseItem key={index} ref={courses.length === index + 1 ? elementRef : null} course={course} />

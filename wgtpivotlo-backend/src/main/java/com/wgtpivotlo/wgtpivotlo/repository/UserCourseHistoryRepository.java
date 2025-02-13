@@ -18,4 +18,7 @@ public interface UserCourseHistoryRepository  extends JpaRepository<UserCourseHi
     Optional<UserCourseHistory> findByUserIdAndCourseId(@Param("userId") long userId,@Param("courseId") long courseId);
 
     Optional<List<UserCourseHistory>> findByUser(User user);
+
+    @Query(value = "SELECT * FROM user_history uh WHERE uh.user_id = :userId AND (:courseStatus IS NULL OR uh.course_completion_status = :courseStatus)", nativeQuery = true)
+    Optional<List<UserCourseHistory>> findByUserIdAndCourseStatus(@Param("userId") long userId, @Param("courseStatus") Optional<String> courseStatus);
 }

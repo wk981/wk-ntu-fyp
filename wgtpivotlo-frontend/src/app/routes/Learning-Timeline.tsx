@@ -8,6 +8,7 @@ import { capitalizeEveryFirstChar } from '@/utils';
 import { useState } from 'react';
 
 export const LearningTimeline = () => {
+  // Bug: Show all doesnt trigger intersection
   const { getCareerPreference } = usePreference(true);
   const { data, isLoading } = getCareerPreference;
   const [showFilters, setShowFilters] = useState<boolean>(false);

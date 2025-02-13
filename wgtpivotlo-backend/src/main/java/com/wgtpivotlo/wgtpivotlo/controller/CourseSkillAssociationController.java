@@ -1,6 +1,7 @@
 package com.wgtpivotlo.wgtpivotlo.controller;
 
 import com.wgtpivotlo.wgtpivotlo.dto.*;
+import com.wgtpivotlo.wgtpivotlo.enums.CourseStatus;
 import com.wgtpivotlo.wgtpivotlo.enums.SkillLevel;
 import com.wgtpivotlo.wgtpivotlo.service.CourseRecommendationService;
 import com.wgtpivotlo.wgtpivotlo.service.CourseSkillAssociationService;
@@ -69,7 +70,10 @@ public class CourseSkillAssociationController {
     }
 
     @GetMapping("/courses/history")
-    public ResponseEntity<Optional<List<CourseWithStatusDTO>>> getUserCourseHistory(Authentication authentication) throws AccessDeniedException {
-        return ResponseEntity.ok(userCourseHistoryService.getUserCourseHistory(authentication));
+    public ResponseEntity<Optional<List<CourseWithStatusDTO>>> getUserCourseHistory(
+            @RequestParam(required = false) SkillLevel skillLevel,
+            @RequestParam(required = false) CourseStatus courseStatus,
+            Authentication authentication) throws AccessDeniedException {
+        return ResponseEntity.ok(userCourseHistoryService.getUserCourseHistory(authentication, skillLevel, courseStatus));
     }
 }

@@ -8,6 +8,12 @@ import {
   TimelineCouseDTO,
 } from '../types';
 
+const courseStatusMap = {
+  'In Progress': 'IN_PROGRESS',
+  Completed: 'COMPLETED',
+  'Not Done': 'NOT_DONE',
+} as const; // Makes the object readonly with exact keys;
+
 export const getCourseById = async (course_id: number) => {
   const url = backendURL + `/v1/course-skill-association/courses/${course_id}`;
   const response = await fetch(url, {
@@ -78,8 +84,12 @@ export const postChangeCourseStatus = async ({ courseStatus, courseId }: EditCou
   return json;
 };
 
-export const getCourseHistory = async (): Promise<CourseDTOWithStatus[]> => {
-  const url = backendURL + '/v1/course-skill-association/courses/history';
+export const getCourseHistory = async (filter?: string): Promise<CourseDTOWithStatus[]> => {
+  let url = backendURL + '/v1/course-skill-association/courses/history';
+  if (filter) {
+    const mappedFilter: string = courseStatusMap[filter as keyof typeof courseStatusMap];
+    url += `?courseStatus=${mappedFilter}`;
+  }
   const response = await fetch(url, {
     method: 'GET',
     headers: {

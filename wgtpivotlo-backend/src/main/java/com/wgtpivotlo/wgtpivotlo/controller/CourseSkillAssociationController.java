@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -67,4 +68,8 @@ public class CourseSkillAssociationController {
         return ResponseEntity.ok(courseRecommendationService.findPaginatedTimelineCourseBySkillId(skillId, careerId, skillLevelFilter, pageNumber, pageSize, authentication));
     }
 
+    @GetMapping("/courses/history")
+    public ResponseEntity<Optional<List<CourseWithStatusDTO>>> getUserCourseHistory(Authentication authentication) throws AccessDeniedException {
+        return ResponseEntity.ok(userCourseHistoryService.getUserCourseHistory(authentication));
+    }
 }

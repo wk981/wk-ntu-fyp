@@ -1,5 +1,7 @@
 package com.wgtpivotlo.wgtpivotlo.service;
 
+import com.wgtpivotlo.wgtpivotlo.dto.CourseDTO;
+import com.wgtpivotlo.wgtpivotlo.dto.CourseWithStatusDTO;
 import com.wgtpivotlo.wgtpivotlo.dto.EditUserCourseStatusDTO;
 import com.wgtpivotlo.wgtpivotlo.enums.CourseStatus;
 import com.wgtpivotlo.wgtpivotlo.errors.exceptions.ResourceNotFoundException;
@@ -16,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -23,12 +26,12 @@ import java.util.Optional;
 public class UserCourseHistoryService {
     private final UserCourseHistoryRepository userCourseHistoryRepository;
     private final CourseRepository courseRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    public UserCourseHistoryService(UserCourseHistoryRepository userCourseHistoryRepository, CourseRepository courseRepository, UserRepository userRepository) {
+    public UserCourseHistoryService(UserCourseHistoryRepository userCourseHistoryRepository, CourseRepository courseRepository, UserRepository userRepository, UserService userService) {
         this.userCourseHistoryRepository = userCourseHistoryRepository;
         this.courseRepository = courseRepository;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @Transactional
@@ -41,10 +44,7 @@ public class UserCourseHistoryService {
 
         // Get userId
         log.info("Step 1: Get UserId");
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        long userId = userDetails.getId();
-        Optional<User> existingUser = userRepository.findById(userId);
-        existingUser.orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        User user = userService.getUser(authentication);
 
         // Check if course id is valid
         log.info("Step 2: Check if course is valid");
@@ -52,13 +52,13 @@ public class UserCourseHistoryService {
         existingCourse.orElseThrow(() -> new ResourceNotFoundException("Course not found"));
 
         // Check existing
-        Optional<UserCourseHistory> existingCourseHistory = userCourseHistoryRepository.findByUserIdAndCourseId(userId,courseId);
+        Optional<UserCourseHistory> existingCourseHistory = userCourseHistoryRepository.findByUserIdAndCourseId(user.getUser_id(),courseId);
         UserCourseHistory newEntry;
         if (existingCourseHistory.isPresent()){
-            newEntry = UserCourseHistory.builder().userHistoryId(existingCourseHistory.get().getUserHistoryId()).user(existingUser.get()).course(existingCourse.get()).courseStatus(courseStatus).build();
+            newEntry = UserCourseHistory.builder().userHistoryId(existingCourseHistory.get().getUserHistoryId()).user(user).course(existingCourse.get()).courseStatus(courseStatus).build();
         }
         else{
-            newEntry = UserCourseHistory.builder().user(existingUser.get()).course(existingCourse.get()).courseStatus(courseStatus).build();
+            newEntry = UserCourseHistory.builder().user(user).course(existingCourse.get()).courseStatus(courseStatus).build();
         }
         // Find the course in user course history using course Id
         log.info("Step 3: Insert course status");
@@ -73,10 +73,7 @@ public class UserCourseHistoryService {
 
         // Get userId
         log.info("Step 1: Get UserId");
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        long userId = userDetails.getId();
-        Optional<User> existingUser = userRepository.findById(userId);
-        existingUser.orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        User user = userService.getUser(authentication);
 
         // Check if course id is valid
         log.info("Step 2: Check if course is valid");
@@ -84,7 +81,7 @@ public class UserCourseHistoryService {
         existingCourse.orElseThrow(() -> new ResourceNotFoundException("Course not found"));
 
         // Check existing
-        Optional<UserCourseHistory> existingCourseHistory = userCourseHistoryRepository.findByUserIdAndCourseId(userId,courseId);
+        Optional<UserCourseHistory> existingCourseHistory = userCourseHistoryRepository.findByUserIdAndCourseId(user.getUser_id(),courseId);
         existingCourseHistory.ifPresentOrElse(
                 userCourseHistory -> {
                     log.info("Step 3: Deleting");
@@ -95,5 +92,20 @@ public class UserCourseHistoryService {
                 }
         );
 
+    }
+
+    public Optional<List<CourseWithStatusDTO>> getUserCourseHistory(Authentication authentication) throws AccessDeniedException {
+        // Get userId
+        log.info("Step 1: Get UserId");
+        User user = userService.getUser(authentication);
+
+        Optional<List<UserCourseHistory>> existingCourseHistory = userCourseHistoryRepository.findByUser(user);
+        List<CourseWithStatusDTO> res = existingCourseHistory.get().stream().map((userCourse) -> {
+            Course course = userCourse.getCourse();
+            CourseDTO courseDTO = new CourseDTO(course);
+            return CourseWithStatusDTO.builder().courseDTO(courseDTO).courseStatus(userCourse.getCourseStatus()).build();
+        }).toList();
+
+        return Optional.of(res);
     }
 }

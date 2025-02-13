@@ -2,6 +2,7 @@ import landing from '@/assets/landing.svg';
 import { HomeCard, HomeCardInterface } from '@/components/home-card';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/features/auth/hook/useAuth';
+import { useEffect } from 'react';
 // import { useScrollToNextDiv } from '@/hook/useScrollToNextDiv';
 import { useNavigate } from 'react-router-dom';
 
@@ -25,7 +26,7 @@ const landingCardObj: HomeCardInterface[] = [
 
 export const Landing = () => {
   // const { sectionsRef } = useScrollToNextDiv();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, user } = useAuth();
   const navigate = useNavigate();
   const handleCLick = () => {
     if (isLoggedIn) {
@@ -34,6 +35,11 @@ export const Landing = () => {
       void navigate('/auth/login');
     }
   };
+  useEffect(() => {
+    if (isLoggedIn && user?.isCareerPreferenceSet) {
+      void navigate('/dashboard');
+    }
+  }, [isLoggedIn, navigate, user?.isCareerPreferenceSet]);
   return (
     <div className="relative flex flex-col gap-8 md:gap-16 max-w-[1280px] w-full mx-auto px-4 min-h-screen overflow-y-auto">
       <section className="flex flex-col gap-8 md:gap-16 items-center pt-8 md:pt-16">

@@ -1,4 +1,4 @@
-import { LoadingSpinner } from '@/components/loading-spinner';
+import { LoadingSpinnerComponent } from '@/components/loading-spinner';
 import { useAuth } from '@/features/auth/hook/useAuth';
 import { useEffect, useRef } from 'react';
 
@@ -24,9 +24,11 @@ export const Logout = () => {
     }
   }, [logoutUser]);
 
-  if (isPending) {
-    return <LoadingSpinner />;
-  } else {
-    return null;
-  }
+  return (
+    <div className="flex flex-col items-center justify-center h-screen text-center gap-4">
+      <h1 className="text-4xl font-bold">Logging you out</h1>
+      <p className="text-gray-500">Please wait...</p>
+      {isPending && <LoadingSpinnerComponent />}
+    </div>
+  );
 };

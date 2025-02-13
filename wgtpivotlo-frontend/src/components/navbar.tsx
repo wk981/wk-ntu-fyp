@@ -10,8 +10,8 @@ import { Menu, X } from 'lucide-react';
 import { useOnURLChange } from '@/hook/useOnURLChange';
 
 const exploreMoreItems = [
-  { label: 'Career', href: '/career' },
-  { label: 'Learning Timeline', href: '/timeline' },
+  { label: 'Career', href: '/explore/career' },
+  { label: 'Learning Timeline', href: '/explore/timeline' },
 ];
 
 export const Navbar = () => {
@@ -33,8 +33,8 @@ export const Navbar = () => {
     }
   };
   return (
-    <nav className="h-[65px] sticky top-0 z-50 w-full bg-white shadow-md">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <nav className="h-[65px] sticky top-0 z-50 w-full bg-white shadow-md ">
+      <div className="mx-auto max-w-[1920px] px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-4">
             <Link to={'/'}>

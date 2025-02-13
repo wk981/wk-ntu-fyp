@@ -65,7 +65,7 @@ export const ExploreCareer = () => {
   }
 
   return (
-    <div className="m-auto max-w-[1280px] min-h-[calc(100vh-65px)] overflow-auto space-y-7 p-4">
+    <div className="m-auto min-h-[calc(100vh-65px)] overflow-auto md:px-4">
       {data && (categorySearchParams === '' || !categorySearchParams) ? (
         <>
           <Preview

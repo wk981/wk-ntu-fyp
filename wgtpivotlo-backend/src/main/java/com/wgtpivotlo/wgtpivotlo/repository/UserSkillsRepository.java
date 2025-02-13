@@ -27,4 +27,8 @@ public interface UserSkillsRepository extends JpaRepository<UserSkills, Long> {
     @Modifying
     @Query(value="INSERT INTO user_skill (user_id, skill_id, profiency) VALUES (:userId, :skillId, :profiency)", nativeQuery = true)
     void insertByUserIdAndSkillIdAndProfiency(@Param("userId")Long userId, @Param("skillId") Long skillId, @Param("profiency") String profiency);
+
+    @Modifying
+    @Query(value="UPDATE user_skill SET profiency=:profiency WHERE user_id = :userId AND skill_id = :skillId", nativeQuery = true)
+    void updateByUserIdAndSkillIdAndProfiency(@Param("userId")Long userId, @Param("skillId") Long skillId, @Param("profiency") String profiency);
 }

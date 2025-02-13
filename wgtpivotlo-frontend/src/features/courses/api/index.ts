@@ -1,6 +1,7 @@
 import { ErrorResponse } from '@/types';
 import { backendURL } from '@/utils';
 import {
+  CourseDTOWithStatus,
   CoursePaginationSkillsRequest,
   CourseWithSkillsDTO,
   EditCourseStatusRequestDTO,
@@ -74,5 +75,25 @@ export const postChangeCourseStatus = async ({ courseStatus, courseId }: EditCou
     throw Error(errorMessage); // Throw a new Error with the message
   }
   const json = response.text();
+  return json;
+};
+
+export const getCourseHistory = async (): Promise<CourseDTOWithStatus[]> => {
+  const url = backendURL + '/v1/course-skill-association/courses/history';
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    const errorBody: ErrorResponse = (await response.json()) as ErrorResponse; // Parse the error response
+    const errorMessage: string = errorBody.message || 'Something went wrong'; // Extract the error message
+    throw Error(errorMessage); // Throw a new Error with the message
+  }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const json: CourseDTOWithStatus[] = await response.json();
   return json;
 };

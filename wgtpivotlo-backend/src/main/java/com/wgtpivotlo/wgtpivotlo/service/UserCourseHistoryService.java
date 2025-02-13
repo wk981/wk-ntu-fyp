@@ -118,8 +118,9 @@ public class UserCourseHistoryService {
         Optional<List<UserCourseHistory>> existingCourseHistory = userCourseHistoryRepository.findByUser(user);
         List<CourseWithStatusDTO> res = existingCourseHistory.get().stream().map((userCourse) -> {
             Course course = userCourse.getCourse();
-            CourseDTO courseDTO = new CourseDTO(course);
-            return CourseWithStatusDTO.builder().courseDTO(courseDTO).courseStatus(userCourse.getCourseStatus()).build();
+            CourseWithSkillsDTO courseWithSkillsDTO = courseSkillAssociationService.findByCourseId(course.getCourse_id());
+            CourseWithProfiencyDTO courseWithProfiencyDTO = new CourseWithProfiencyDTO(course, courseWithSkillsDTO.getProfiency().toString());
+            return CourseWithStatusDTO.builder().courseWithProfiencyDTO(courseWithProfiencyDTO).courseStatus(userCourse.getCourseStatus()).build();
         }).toList();
 
         return Optional.of(res);

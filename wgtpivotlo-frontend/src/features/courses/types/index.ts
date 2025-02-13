@@ -37,3 +37,8 @@ export interface EditCourseStatusRequestDTO {
   courseStatus: 'In Progress' | 'Completed' | 'Not Done';
   courseId: number;
 }
+
+export interface CourseDTOWithStatus {
+  courseWithProfiencyDTO: CourseDTO;
+  courseStatus: string;
+}

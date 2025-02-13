@@ -38,8 +38,8 @@ export const Profile = () => {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <Link to={'/profile'}>
-          <DropdownMenuItem className="cursor-pointer">Profile</DropdownMenuItem>
+        <Link to={'/dashboard'}>
+          <DropdownMenuItem className="cursor-pointer">Dashboard</DropdownMenuItem>
         </Link>
         <DropdownMenuSeparator />
         <Link to={'/auth/logout'}>

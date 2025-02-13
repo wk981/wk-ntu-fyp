@@ -55,17 +55,19 @@ export const Preview = ({
             <ArrowLeft className="h-4 w-4" />
           </Button>
         )}
-        <h1 className="text-lg font-bold mb-2">{previewTitleMap[category]}</h1>
-        {seeMore && (
-          <p
-            className="cursor-pointer text-blue-anchor hover:text-blue-800 transition-colors"
-            onClick={() => {
-              onClick(category);
-            }}
-          >
-            See More
-          </p>
-        )}
+        <div className="flex justify-between items-center flex-1 mb-2">
+          <h1 className="md:text-lg font-bold">{previewTitleMap[category]}</h1>
+          {seeMore && (
+            <p
+              className="cursor-pointer md:text-base text-xs text-blue-anchor hover:text-blue-800 transition-colors"
+              onClick={() => {
+                onClick(category);
+              }}
+            >
+              See More
+            </p>
+          )}
+        </div>
       </div>
       <PreviewList
         data={data}

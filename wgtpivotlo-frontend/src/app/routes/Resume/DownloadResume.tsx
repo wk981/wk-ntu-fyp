@@ -13,7 +13,7 @@ export const DownloadResume = () => {
   };
 
   return (
-    <div className="relative max-w-[1280px] w-full mx-auto px-4 py-6 sm:py-12 min-h-[calc(100vh-65px)] flex justify-center items-center">
+    <div className="w-full flex justify-center items-center">
       <section className="text-center space-y-5 bg-white rounded-lg md:px-12 px-4 py-8 md:py-12 border border-grey drop-shadow-lg">
         <h1 className="text-2xl md:text-4xl font-bold">Thank you for using WGTPivotLo!</h1>
         {isLoading === true ? (
@@ -32,9 +32,9 @@ export const DownloadResume = () => {
                 <a className="hidden" href={blobUrl} download={file.name} ref={anchorRef}></a>
               </Button>
             )}
-            <h3 className="text-sm md:text-md italic">
-              Note: We’ve done our best to map skills to categories accurately. Thank you for understanding!
-            </h3>
+            <p className="text-sm text-gray-500 italic mt-8">
+              Note: We've done our best to map skills to categories accurately. Thank you for understanding!
+            </p>
           </>
         )}
       </section>

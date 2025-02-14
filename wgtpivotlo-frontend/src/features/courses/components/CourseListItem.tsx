@@ -1,7 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { ExternalLink, Star, Users } from 'lucide-react';
 import { useCourseQuery } from '../hook/useCourseQuery';
-import { LoadingSpinner } from '@/components/loading-spinner';
+import { LoadingSpinnerComponent } from '@/components/loading-spinner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { capitalizeEveryFirstChar } from '@/utils';
 import { Button } from '@/components/ui/button';
@@ -47,7 +47,7 @@ export const CourseItem = React.forwardRef<HTMLDivElement, CourseItemInterface>(
   };
   return (
     <>
-      {isEditingCourseProgressLoading && <LoadingSpinner />}
+      {isEditingCourseProgressLoading && <LoadingSpinnerComponent />}
       <Card
         className="group hover:shadow-md cursor-pointer scale-95 hover:scale-100 transform transition duration-100 z-40"
         ref={ref}
@@ -111,9 +111,6 @@ export const CourseItem = React.forwardRef<HTMLDivElement, CourseItemInterface>(
 
 const PreviewCourseDialog = ({ courseId, onOpenChange, open }: PreviewDialogProps) => {
   const { getCourse } = useCourseQuery(courseId);
-  if (getCourse.isLoading) {
-    return <LoadingSpinner />;
-  }
   if (getCourse.isSuccess && getCourse.data !== undefined) {
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>

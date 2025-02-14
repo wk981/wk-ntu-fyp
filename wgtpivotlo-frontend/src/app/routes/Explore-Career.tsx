@@ -1,4 +1,4 @@
-import { LoadingSpinner } from '@/components/loading-spinner';
+import { LoadingSpinnerComponent } from '@/components/loading-spinner';
 import { Preview } from '@/components/preview';
 import { useExploreCareer } from '@/features/careers/hooks/useExploreCareer';
 import { usePreference } from '@/features/careers/hooks/usePreference';
@@ -66,6 +66,11 @@ export const ExploreCareer = () => {
 
   return (
     <div className="m-auto min-h-[calc(100vh-65px)] overflow-auto md:px-4">
+      {(isExploringLoading || isChoiceLoading) && (
+        <div className="flex items-center w-full justify-center">
+          <LoadingSpinnerComponent />
+        </div>
+      )}
       {data && (categorySearchParams === '' || !categorySearchParams) ? (
         <>
           <Preview
@@ -104,7 +109,6 @@ export const ExploreCareer = () => {
           </>
         )
       )}
-      {(isExploringLoading || isChoiceLoading) && <LoadingSpinner />}
     </div>
   );
 };

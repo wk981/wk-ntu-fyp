@@ -4,6 +4,7 @@ import useInViewPort from '@/hook/useInViewPort';
 import { useEffect, useRef } from 'react';
 import { CourseItem } from './CourseListItem';
 import { areSetsEqual } from '@/utils';
+import { LoadingSpinnerComponent } from '@/components/loading-spinner';
 
 interface CourseListInterface {
   skill: SkillDTO;
@@ -12,11 +13,12 @@ interface CourseListInterface {
   setAvailableDifficulties: React.Dispatch<React.SetStateAction<Set<string>>>;
 }
 export const CourseList = ({ skill, careerId, skillLevelFilter, setAvailableDifficulties }: CourseListInterface) => {
-  const { courses, hasMoreCourses, fetchNextCourses, availableFilters } = useCourseQueryBySkillPaginated({
-    skillId: skill.skillId,
-    careerId: careerId,
-    skillLevelFilter: skillLevelFilter,
-  });
+  const { courses, hasMoreCourses, fetchNextCourses, availableFilters, isFetchingCourses } =
+    useCourseQueryBySkillPaginated({
+      skillId: skill.skillId,
+      careerId: careerId,
+      skillLevelFilter: skillLevelFilter,
+    });
   const elementRef = useRef<HTMLDivElement>(null);
   const isIntersecting = useInViewPort(elementRef, {
     root: null, // Use the viewport as the root
@@ -32,7 +34,6 @@ export const CourseList = ({ skill, careerId, skillLevelFilter, setAvailableDiff
 
   useEffect(() => {
     if (availableFilters && availableFilters.length > 0) {
-      console.log(availableFilters);
       setAvailableDifficulties((prev) => {
         const newSet = new Set(availableFilters);
         return areSetsEqual(prev, newSet) ? prev : newSet;
@@ -41,11 +42,16 @@ export const CourseList = ({ skill, careerId, skillLevelFilter, setAvailableDiff
   }, [availableFilters]);
 
   return (
-    <div className="flex-1 overflow-y-auto h-[calc(100vh-150px)] w-full">
+    <div className="flex-1 overflow-y-auto h-[calc(100vh-350px)] w-full">
       {courses &&
         courses.map((course, index) => (
           <CourseItem key={index} ref={courses.length === index + 1 ? elementRef : null} course={course} />
         ))}
+      {isFetchingCourses && (
+        <div className="flex items-center w-full justify-center">
+          <LoadingSpinnerComponent />
+        </div>
+      )}
     </div>
   );
 };

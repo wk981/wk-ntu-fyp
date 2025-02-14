@@ -75,7 +75,7 @@ public class DashboardService {
         return DashboardDTO
                 .builder()
                 .username(user.getUsername())
-                .pic(user.getUsername())
+                .pic(user.getPic())
                 .careerProgression(progression/careerSkillsList.size())
                 .userSkills(userSkillDTOList)
                 .career(userCareer)

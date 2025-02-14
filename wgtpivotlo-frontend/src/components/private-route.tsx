@@ -1,5 +1,5 @@
 import { useAuth } from '@/features/auth/hook/useAuth';
-import { LoadingSpinner } from './loading-spinner';
+// import { LoadingSpinner } from './loading-spinner';
 import { Navigate, Outlet } from 'react-router-dom';
 
 const PrivateRoute = () => {
@@ -8,7 +8,7 @@ const PrivateRoute = () => {
 
   // Show a loading spinner while checking the authentication status
   if (isPending) {
-    return <LoadingSpinner />;
+    return null;
   }
 
   // Redirect to login if the user is not authenticated

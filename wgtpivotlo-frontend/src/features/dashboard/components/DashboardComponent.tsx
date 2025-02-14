@@ -31,6 +31,7 @@ export const DashboardComponent = () => {
               <AvatarImage src={avatarImage} alt={dashboardData?.username} />
               <AvatarFallback>{dashboardData?.username && capitalizeFirstChar(dashboardData?.username)}</AvatarFallback>
             </Avatar>
+
             <h2 className="text-xl font-bold">
               {dashboardData?.username && capitalizeFirstChar(dashboardData?.username)}
             </h2>

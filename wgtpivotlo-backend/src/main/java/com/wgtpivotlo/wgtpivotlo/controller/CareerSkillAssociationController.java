@@ -47,7 +47,11 @@ public class CareerSkillAssociationController {
     }
 
     @PostMapping("/career/recommendation-exploration")
+<<<<<<< Updated upstream
     public ResponseEntity<HashMap<String, PageDTO<CareerWithSimilarityScoreDTO>>> getRecommendationExploreOtherCareer(@RequestBody  PageRequest request, Authentication authentication){
+=======
+    public ResponseEntity<HashMap<String, PageDTO<CareerWithSimilarityScoreDTO>>> getRecommendationExploreOtherCareer(@RequestBody PageRequest request, Authentication authentication) throws JsonProcessingException, AccessDeniedException {
+>>>>>>> Stashed changes
         return ResponseEntity.ok(careerRecommendationService.getRecommendationExploreOtherCareer(request, authentication));
     }
 

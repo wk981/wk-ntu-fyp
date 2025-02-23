@@ -13,6 +13,7 @@ import com.wgtpivotlo.wgtpivotlo.security.UserDetailsImpl;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -25,19 +26,15 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class QuestionaireService {
-    private final CareerSkillAssociationRepository careerSkillAssociationRepository;
+    private final CareerRecommendationService careerRecommendationService;
     private final UserSkillsRepository userSkillsRepository;
     private final CareerRepository careerRepository;
 
     @Autowired
-    public QuestionaireService(CareerSkillAssociationRepository careerSkillAssociationRepository, UserSkillsRepository userSkillsRepository, CareerRepository careerRepository) {
-        this.careerSkillAssociationRepository = careerSkillAssociationRepository;
+    public QuestionaireService(CareerRecommendationService careerRecommendationService, UserSkillsRepository userSkillsRepository, CareerRepository careerRepository) {
+        this.careerRecommendationService = careerRecommendationService;
         this.userSkillsRepository = userSkillsRepository;
         this.careerRepository = careerRepository;
-    }
-
-    public List<String> getSectors(){
-        return careerRepository.findAllCareer();
     }
 
     @Transactional
@@ -65,6 +62,7 @@ public class QuestionaireService {
             userSkillsRepository.insertByUserIdAndSkillIdAndProfiency(userId, userSkill.getSkillId(), userSkill.getProfiency().toString());
         }
 
+<<<<<<< Updated upstream
         Optional<HashMap<String, List<Object[]>>> mixedCareersResult= careerSkillAssociationRepository.recommend(userSkills,questionaireRequest.getCareerLevel(), PageRequest.of(0, 5), Optional.ofNullable(questionaireRequest.getSector()));
 
         mixedCareersResult.orElseThrow(() -> new ResourceNotFoundException("No career found"));
@@ -92,6 +90,9 @@ public class QuestionaireService {
             res.put(key, tempCareerWithSimilarityScore);
         }
         return res;
+=======
+        return careerRecommendationService.getQuestionaireRecommendation(userSkills, questionaireRequest.getCareerLevel(),  PageRequest.of(0, 5), Optional.ofNullable(questionaireRequest.getSector()));
+>>>>>>> Stashed changes
     }
 
 }

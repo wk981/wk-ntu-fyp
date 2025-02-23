@@ -156,6 +156,7 @@ public class CareerRecommendationService {
         return res;
     }
 
+<<<<<<< Updated upstream
     private PageDTO<CareerWithSimilarityScoreDTO> mapping(int correctedPageNumber, int pageNumber, Optional<Page<Object[]>> result){
         if (result.isEmpty()){
             log.warn("No career returned");
@@ -163,6 +164,49 @@ public class CareerRecommendationService {
         }
 
         if (correctedPageNumber >= result.get().getTotalPages()) {
+=======
+    public HashMap<String, List<CareerWithSimilarityScoreDTO>> getQuestionaireRecommendation(List<SkillIdWithProfiencyDTO> skillsProfiencyList,
+                                                                                         CareerLevel careerLevel,
+                                                                                         Pageable pageable,
+                                                                                         Optional<String> sector
+    ){
+        Parameters parameters = getCareerSimilarityWithPaginationHelper(skillsProfiencyList);
+
+        Page<CareerWithSimilarityScoreDTO> pathwayResult = getCareerSimilarityWithPagination(
+                parameters.getSkillMap(),
+                parameters.getSkillIds(),
+                Optional.of(careerLevel),
+                Optional.of(Choice.PATHWAY),
+                Optional.ofNullable(null),
+                pageable
+        );
+        Page<CareerWithSimilarityScoreDTO> directResult = getCareerSimilarityWithPagination(
+                parameters.getSkillMap(),
+                parameters.getSkillIds(),
+                Optional.of(careerLevel),
+                Optional.of(Choice.DIRECT_MATCH),
+                Optional.of(String.valueOf(sector)),
+                pageable
+        );
+        Page<CareerWithSimilarityScoreDTO> aspirationResult = getCareerSimilarityWithPagination(
+                parameters.getSkillMap(),
+                parameters.getSkillIds(),
+                Optional.of(careerLevel),
+                Optional.of(Choice.ASPIRATION),
+                Optional.ofNullable(null),
+                pageable
+        );
+
+        HashMap<String, List<CareerWithSimilarityScoreDTO>> res = new HashMap<>();
+        res.put("pathwayMatches", pathwayResult.getContent());
+        res.put("directMatches", directResult.getContent());
+        res.put("aspirationMatches", aspirationResult.getContent());
+        return res;
+    }
+
+    private PageDTO<CareerWithSimilarityScoreDTO> mapping(int correctedPageNumber, int pageNumber, Page<CareerWithSimilarityScoreDTO> res){
+        if (correctedPageNumber >= res.getTotalPages()) {
+>>>>>>> Stashed changes
             log.warn("Page number out of bounds");
             throw new PageItemsOutOfBoundException("Page number out of bounds");
         }
@@ -181,7 +225,139 @@ public class CareerRecommendationService {
                         }
                 ).toList();
 
+<<<<<<< Updated upstream
         return new PageDTO<>(result.get().getTotalPages(), pageNumber, careerWithSimilarityScoreDTOList);
+=======
+    private Page<CareerWithSimilarityScoreDTO> getCareerSimilarityWithPagination(
+            Map<Long, SkillLevel> skillIdToSkillLevelMap,
+            List<Long> skillIdList,
+            Optional<CareerLevel> preferedCareerLevel,
+            Optional<Choice> recommendationChoice,
+            Optional<String> sector,
+            Pageable pageable
+    ) {
+        // Step 1: Fetch all the careers with skills that contains the skillIds
+        List<CareerWithSkillsDTO> careerWithSkillsDTOList = careerSkillAssociationService.findAllCareerBySkillIdList(skillIdList);
+        List<CareerWithSimilarityScoreDTO> careerSimilarityList = new ArrayList<>();
+
+        // Step 2a: Compare career's skills with user skills
+        for(CareerWithSkillsDTO careerWithSkillsDTO: careerWithSkillsDTOList){
+            long careerId = careerWithSkillsDTO.getCareer_id(); // current careerId
+            List<SkillWithProfiencyDTO> skillWithProfiencyDTOList = careerWithSkillsDTO.getSkillsWithProfiency(); // current skills tied with career
+            double weightedScore = 0;
+            for(SkillWithProfiencyDTO skillWithProfiencyDTO: skillWithProfiencyDTOList){ // go thru skill and profiency
+                if(skillIdToSkillLevelMap.containsKey(skillWithProfiencyDTO.getSkillId())){ // check if skillId exist in skillIdMap (normally user or career)
+                    weightedScore += skillIdToSkillLevelMap.get(skillWithProfiencyDTO.getSkillId()).toWeightedDouble(); // calculate weightedScore
+                }
+            }
+
+            // Build career
+            Career career = Career
+                    .builder()
+                    .careerId(careerId)
+                    .title(careerWithSkillsDTO.getTitle())
+                    .careerLevel(careerWithSkillsDTO.getCareerLevel())
+                    .responsibility(careerWithSkillsDTO.getResponsibility())
+                    .sector(careerWithSkillsDTO.getSector())
+                    .pic_url(careerWithSkillsDTO.getPic_url())
+                    .build();
+
+            int totalCareerSkills = skillWithProfiencyDTOList.size(); // career's total skill counts
+            double careerSimilarityScore = weightedScore / Math.max(totalCareerSkills, 1); // Prevent division by zero
+            double totalWeightedSimilarityScore = 0;
+
+            // Only for questionaire result
+            if (preferedCareerLevel.isPresent() && recommendationChoice.isPresent() && sector.isPresent()){
+                totalWeightedSimilarityScore += (careerSimilarityScore * 0.75) + (preferedCareerLevel.get().toWeightedDouble() * (1 - 0.75));
+            }
+            else{
+                totalWeightedSimilarityScore = careerSimilarityScore;
+            }
+
+            careerSimilarityList.add(new CareerWithSimilarityScoreDTO(career, totalWeightedSimilarityScore));
+        }
+
+
+        // Step 3: Apply sort
+        careerSimilarityList.sort(Comparator.comparing(CareerWithSimilarityScoreDTO::getSimilarityScore).reversed());
+        if (preferedCareerLevel.isPresent() && recommendationChoice.isPresent() && sector.isPresent()){
+            sortCareerWithSimilarityScoreDTOBySkillLevel(careerSimilarityList, preferedCareerLevel.get(), recommendationChoice.get(), sector.get());
+        }
+
+        // Step 4: Apply Pagination
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), careerSimilarityList.size());
+        List<CareerWithSimilarityScoreDTO> paginatedList;
+        if (start >= careerSimilarityList.size()) {
+            // If start index is out of range, return an empty list
+            paginatedList = Collections.emptyList();
+        } else {
+            // Ensure 'end' does not exceed the list size
+            end = Math.min(end, careerSimilarityList.size());
+            paginatedList = careerSimilarityList.subList(start, end);
+        }
+        return new PageImpl<>(paginatedList, pageable, careerSimilarityList.size());
+    }
+
+    private void sortCareerWithSimilarityScoreDTOBySkillLevel(List<CareerWithSimilarityScoreDTO> careerWithSimilarityScoreDTOList, CareerLevel preferedCareerLevel, Choice recommendationChoice, String sector){
+        switch (recommendationChoice){
+            case PATHWAY -> {
+                careerWithSimilarityScoreDTOList.sort(Comparator.comparingInt(value -> {
+                    CareerLevel careerLevel = value.getCareer().getCareerLevel();
+                    if (careerLevel.toInt() >= preferedCareerLevel.toInt()) return Integer.MIN_VALUE;
+                    return careerLevel.toInt();
+                }));
+                careerWithSimilarityScoreDTOList.removeIf(value -> !Objects.equals(value.getCareer().getSector(), sector));
+
+            }
+            case ASPIRATION -> {
+                careerWithSimilarityScoreDTOList.sort(Comparator.comparingInt(value -> {
+                    CareerLevel careerLevel = value.getCareer().getCareerLevel();
+                    if (careerLevel.toInt() > preferedCareerLevel.toInt()) return Integer.MIN_VALUE;
+                    return careerLevel.toInt();
+                }));
+            }
+            case DIRECT_MATCH -> {
+                careerWithSimilarityScoreDTOList.sort(Comparator.comparingInt(value -> {
+                    CareerLevel careerLevel = value.getCareer().getCareerLevel();
+                    if (careerLevel.toInt() == preferedCareerLevel.toInt()) return Integer.MIN_VALUE;
+                    return careerLevel.toInt();
+                }));
+            }
+            default -> {
+                return;
+            }
+        }
+    }
+
+    // Help to map. userOrCareerSkills must be a list<UserSKills> or list<CareerSKills>
+    private Parameters getCareerSimilarityWithPaginationHelper(Object userOrCareerSkills){
+        Map<Long, SkillLevel> skillIdToSkillLevelMap = new HashMap<>();
+        List<Long> skillsIdList;
+        if(userOrCareerSkills instanceof List<?> ){ // Check whether userOrCareerSkills is a list
+            List<?> list = (List<?>) userOrCareerSkills;
+            if (!list.isEmpty() && list.get(0) instanceof CareerSkills) {
+                List<CareerSkills> careerSkillsList = (List<CareerSkills>) list;
+                for(CareerSkills careerSkill: careerSkillsList){
+                    skillIdToSkillLevelMap.put(careerSkill.getSkill().getSkillId(), careerSkill.getProfiency());
+                }
+                skillsIdList = careerSkillsList.stream().map((careerSkill) -> careerSkill.getSkill().getSkillId()).toList();
+                return new Parameters(skillIdToSkillLevelMap, skillsIdList);
+            }
+            else if(!list.isEmpty() && list.get(0) instanceof UserSkills){
+                List<UserSkills> userSkills = (List<UserSkills>) userOrCareerSkills;
+                for(UserSkills userSkill: userSkills){
+                    skillIdToSkillLevelMap.put(userSkill.getSkill().getSkillId(), userSkill.getProfiency());
+                }
+                skillsIdList = userSkills.stream().map((careerSkill) -> careerSkill.getSkill().getSkillId()).toList();
+                return new Parameters(skillIdToSkillLevelMap, skillsIdList);
+            }
+        }
+        else{
+            throw new RuntimeException("Bad use of getCareerSimilarityWithPaginationHelper");
+        }
+        return null;
+>>>>>>> Stashed changes
     }
 
 }

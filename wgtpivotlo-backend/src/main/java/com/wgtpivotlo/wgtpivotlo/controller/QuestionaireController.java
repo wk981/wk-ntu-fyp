@@ -3,6 +3,7 @@ package com.wgtpivotlo.wgtpivotlo.controller;
 import com.wgtpivotlo.wgtpivotlo.dto.CareerWithSimilarityScoreDTO;
 import com.wgtpivotlo.wgtpivotlo.dto.QuestionaireRequest;
 import com.wgtpivotlo.wgtpivotlo.dto.SkillDTO;
+import com.wgtpivotlo.wgtpivotlo.service.CareerService;
 import com.wgtpivotlo.wgtpivotlo.service.FileService;
 import com.wgtpivotlo.wgtpivotlo.service.QuestionaireService;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -23,16 +24,18 @@ import java.util.Set;
 public class QuestionaireController {
     private final QuestionaireService questionaireService;
     private final FileService fileService;
+    private final CareerService careerService;
 
     @Autowired
-    public QuestionaireController(QuestionaireService questionaireService, FileService fileService) {
+    public QuestionaireController(QuestionaireService questionaireService, FileService fileService, CareerService careerService) {
         this.questionaireService = questionaireService;
         this.fileService = fileService;
+        this.careerService = careerService;
     }
 
     @GetMapping("/sectors")
     public ResponseEntity<List<String>> getSectors(){
-        return ResponseEntity.ok(questionaireService.getSectors());
+        return ResponseEntity.ok(careerService.getSectors());
     }
 
     @PostMapping("/result")

@@ -13,7 +13,6 @@ import com.wgtpivotlo.wgtpivotlo.security.UserDetailsImpl;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -62,37 +61,7 @@ public class QuestionaireService {
             userSkillsRepository.insertByUserIdAndSkillIdAndProfiency(userId, userSkill.getSkillId(), userSkill.getProfiency().toString());
         }
 
-<<<<<<< Updated upstream
-        Optional<HashMap<String, List<Object[]>>> mixedCareersResult= careerSkillAssociationRepository.recommend(userSkills,questionaireRequest.getCareerLevel(), PageRequest.of(0, 5), Optional.ofNullable(questionaireRequest.getSector()));
-
-        mixedCareersResult.orElseThrow(() -> new ResourceNotFoundException("No career found"));
-        HashMap<String, List<Object[]>> mixedCareers = mixedCareersResult.get();
-
-        HashMap<String, List<CareerWithSimilarityScoreDTO>> res = new HashMap<>();
-
-        for (HashMap.Entry<String, List<Object[]>> entry : mixedCareers.entrySet()) {
-            String key = entry.getKey();
-            List<Object[]> temp = entry.getValue();
-
-            List<CareerWithSimilarityScoreDTO> tempCareerWithSimilarityScore = temp
-                    .stream()
-                    .map((Object[] objects)-> {
-                        Career career = (Career) objects[0];
-                        Double similarityScore = (Double) objects[1];
-                        return CareerWithSimilarityScoreDTO
-                                .builder()
-                                .career(career)
-                                .similarityScore(String.format("%.2f", similarityScore))
-                                .build();
-                    }
-            ).toList();
-
-            res.put(key, tempCareerWithSimilarityScore);
-        }
-        return res;
-=======
         return careerRecommendationService.getQuestionaireRecommendation(userSkills, questionaireRequest.getCareerLevel(),  PageRequest.of(0, 5), Optional.ofNullable(questionaireRequest.getSector()));
->>>>>>> Stashed changes
     }
 
 }

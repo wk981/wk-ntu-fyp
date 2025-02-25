@@ -87,7 +87,12 @@ export const DashboardComponent = () => {
           <CardContent>
             <div className="max-h-60 overflow-y-auto">
               {dashboardData?.userSkills.map((skill, index) => (
-                <BadgeWithTooltip key={index} badgeStyle={{className: "h-[40px] rounded-full py-2 px-4 mx-1 my-1 text-sm"}} text={capitalizeEveryFirstChar(skill.name)} tooltipContent={capitalizeEveryFirstChar(skill.profiency)}/>
+                <BadgeWithTooltip
+                  key={index}
+                  badgeStyle={{ className: 'h-[40px] rounded-full py-2 px-4 mx-1 my-1 text-sm' }}
+                  text={capitalizeEveryFirstChar(skill.name)}
+                  tooltipContent={capitalizeEveryFirstChar(skill.profiency)}
+                />
               ))}
             </div>
           </CardContent>

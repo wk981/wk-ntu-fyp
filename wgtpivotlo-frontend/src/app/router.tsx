@@ -16,6 +16,7 @@ import { BreadcrumbCustom } from '@/components/breadcrumpcustom';
 import NotFound from './routes/NotFound';
 import { CourseHistory } from './routes/Dashboard/CourseHistory';
 import { Home } from './routes/Home';
+import { Settings } from './routes/auth/settings';
 
 const QuestionaireLayout = () => (
   <QuestionaireProvider>
@@ -44,6 +45,7 @@ export const AppRouter = () => {
             <Route path="register" element={<Register />} />
             <Route path="logout" element={<Logout />} />
           </Route>
+          <Route path="account-settings" element={<Settings />} />
           <Route element={<PrivateRoute />}>
             <Route element={<CommonLayout />}>
               <Route path="questionaire" element={<QuestionaireLayout />}>

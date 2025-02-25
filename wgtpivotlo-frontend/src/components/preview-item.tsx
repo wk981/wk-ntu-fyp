@@ -11,6 +11,7 @@ import stockItemImg from '@/assets/stock-item.png';
 import React from 'react';
 import { Button } from './ui/button';
 import { HeartBadge } from './heart-badge';
+import { Progress } from './ui/progress';
 
 interface PreviewItemProps {
   item: CareerWithSimilarityScoreDTO;
@@ -26,7 +27,7 @@ interface PreviewDialogProps {
 export const PreviewItem = React.forwardRef<HTMLDivElement, PreviewItemProps>(
   ({ item, heartBadgeOnClick, heartBadgeCheckedId }, ref) => {
     const career = item.career;
-    // const similarityScore = Math.ceil(Number(item.similarityScore) * 100);
+    const similarityScore = Math.ceil(Number(item.similarityScore) * 100);
 
     return (
       <Card className="w-[332px] h-[410px] flex flex-col" ref={ref}>
@@ -54,11 +55,11 @@ export const PreviewItem = React.forwardRef<HTMLDivElement, PreviewItemProps>(
             </CardTitle>
           </CardHeader>
           <CardContent className="p-4 pt-0 flex flex-col flex-grow">
-            {/* <div>
+            <div>
               <h2 className="font-medium mb-1">Match Score</h2>
-              <Progress value={similarityScore} className="h-2" /> 
+              <Progress value={similarityScore} className="h-2" />
               <p className="text-sm text-muted-foreground mt-1">{similarityScore}% match</p>
-            </div> */}
+            </div>
             <p className="text-sm text-muted-foreground leading-5 mb-auto h-full">
               {capitalizeFirstChar(career.responsibility)}
             </p>

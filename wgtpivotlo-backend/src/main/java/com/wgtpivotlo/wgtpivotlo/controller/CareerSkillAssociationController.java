@@ -1,5 +1,6 @@
 package com.wgtpivotlo.wgtpivotlo.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.wgtpivotlo.wgtpivotlo.dto.*;
 import com.wgtpivotlo.wgtpivotlo.mapper.MappingUtils;
 import com.wgtpivotlo.wgtpivotlo.model.Career;
@@ -47,7 +48,7 @@ public class CareerSkillAssociationController {
     }
 
     @PostMapping("/career/recommendation-exploration")
-    public ResponseEntity<HashMap<String, PageDTO<CareerWithSimilarityScoreDTO>>> getRecommendationExploreOtherCareer(@RequestBody  PageRequest request, Authentication authentication){
+    public ResponseEntity<HashMap<String, PageDTO<CareerWithSimilarityScoreDTO>>> getRecommendationExploreOtherCareer(@RequestBody PageRequest request, Authentication authentication) throws JsonProcessingException, AccessDeniedException {
         return ResponseEntity.ok(careerRecommendationService.getRecommendationExploreOtherCareer(request, authentication));
     }
 

@@ -9,6 +9,7 @@ import {
   ChoiceCareerRecommendationResponse,
 } from '@/features/careers/types';
 import { useRecommendationCategory } from '@/features/careers/hooks/useRecommendationCategory';
+import { toast } from 'react-toastify';
 
 interface SkillsContext {
   userSkillsList: Skills[];
@@ -54,6 +55,12 @@ const QuestionaireProvider = ({ children }: ProviderProps) => {
   const resultPostMutation = useMutation({
     mutationFn: (data: ResultBody): Promise<CareerRecommendationResponse | void> => {
       return resultPost(data);
+    },
+    onError: (error) => {
+      // Do something with the error
+      toast.error('Something went wrong with submitting the questionaire, please upload again');
+      console.error('Mutation error:', error);
+      // Prevent refetching
     },
   });
 

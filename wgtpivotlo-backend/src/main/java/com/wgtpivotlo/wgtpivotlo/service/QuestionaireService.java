@@ -25,19 +25,15 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class QuestionaireService {
-    private final CareerSkillAssociationRepository careerSkillAssociationRepository;
+    private final CareerRecommendationService careerRecommendationService;
     private final UserSkillsRepository userSkillsRepository;
     private final CareerRepository careerRepository;
 
     @Autowired
-    public QuestionaireService(CareerSkillAssociationRepository careerSkillAssociationRepository, UserSkillsRepository userSkillsRepository, CareerRepository careerRepository) {
-        this.careerSkillAssociationRepository = careerSkillAssociationRepository;
+    public QuestionaireService(CareerRecommendationService careerRecommendationService, UserSkillsRepository userSkillsRepository, CareerRepository careerRepository) {
+        this.careerRecommendationService = careerRecommendationService;
         this.userSkillsRepository = userSkillsRepository;
         this.careerRepository = careerRepository;
-    }
-
-    public List<String> getSectors(){
-        return careerRepository.findAllCareer();
     }
 
     @Transactional
@@ -47,7 +43,7 @@ public class QuestionaireService {
         }
 
         List<SkillIdWithProfiencyDTO> userSkills = questionaireRequest.getSkillIdWithProfiencyDTOList();
-
+        System.out.println(userSkills.toString());
         // get userId
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         long userId = userDetails.getId();
@@ -65,33 +61,7 @@ public class QuestionaireService {
             userSkillsRepository.insertByUserIdAndSkillIdAndProfiency(userId, userSkill.getSkillId(), userSkill.getProfiency().toString());
         }
 
-        Optional<HashMap<String, List<Object[]>>> mixedCareersResult= careerSkillAssociationRepository.recommend(userSkills,questionaireRequest.getCareerLevel(), PageRequest.of(0, 5), Optional.ofNullable(questionaireRequest.getSector()));
-
-        mixedCareersResult.orElseThrow(() -> new ResourceNotFoundException("No career found"));
-        HashMap<String, List<Object[]>> mixedCareers = mixedCareersResult.get();
-
-        HashMap<String, List<CareerWithSimilarityScoreDTO>> res = new HashMap<>();
-
-        for (HashMap.Entry<String, List<Object[]>> entry : mixedCareers.entrySet()) {
-            String key = entry.getKey();
-            List<Object[]> temp = entry.getValue();
-
-            List<CareerWithSimilarityScoreDTO> tempCareerWithSimilarityScore = temp
-                    .stream()
-                    .map((Object[] objects)-> {
-                        Career career = (Career) objects[0];
-                        Double similarityScore = (Double) objects[1];
-                        return CareerWithSimilarityScoreDTO
-                                .builder()
-                                .career(career)
-                                .similarityScore(String.format("%.2f", similarityScore))
-                                .build();
-                    }
-            ).toList();
-
-            res.put(key, tempCareerWithSimilarityScore);
-        }
-        return res;
+        return careerRecommendationService.getQuestionaireRecommendation(userSkills, questionaireRequest.getCareerLevel(),  PageRequest.of(0, 5), Optional.ofNullable(questionaireRequest.getSector()));
     }
 
 }

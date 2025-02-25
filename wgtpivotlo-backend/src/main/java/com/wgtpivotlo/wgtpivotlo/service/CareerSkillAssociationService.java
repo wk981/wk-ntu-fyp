@@ -14,10 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CareerSkillAssociationService {
@@ -32,6 +30,7 @@ public class CareerSkillAssociationService {
         this.mappingUtils = mappingUtils;
     }
 
+    // get career along with skills and profiency
     public Optional<CareerWithSkillsDTO> findByCareerId(Long career_id){
         Optional<Career> career = careerRepository.findById(career_id);
         List<CareerSkills> careerSkillsList = findCareerSkillsByCareerId(career_id);
@@ -46,15 +45,20 @@ public class CareerSkillAssociationService {
         return Optional.ofNullable(careerWithSkillsDTO);
     }
 
+    // get all career that contains skillIdList and return career along with skills and profiency
+    public List<CareerWithSkillsDTO> findAllCareerBySkillIdList(List<Long> skillIdList){
+        List<Career> careerList = careerRepository.findCareerSkillsBySkillIds(skillIdList);
+        List<CareerWithSkillsDTO> res = careerList.stream().map((career) ->{
+            List<CareerSkills> careerSkillsList = findCareerSkillsByCareerId(career.getCareerId());
+            return mappingUtils.mapSkillsIntoCareer(career, careerSkillsList);
+        }).toList();
+        return res;
+    }
+
     public List<CareerSkills> findCareerSkillsByCareerId(Long careerId){
         Optional<List<CareerSkills>> existingCareerSkillsList = careerSkillAssociationRepository.findByCareerIdsNative(Collections.singletonList(careerId));
         existingCareerSkillsList.orElseThrow(() -> new ResourceNotFoundException("No skills found for that career"));
         return existingCareerSkillsList.get();
     }
 
-    public List<Long> findSkillIdsByCareerId(Long careerId){
-        Optional<List<Long>> existingSkillIdList = careerSkillAssociationRepository.findSkillsIdByCareerId(careerId);
-        existingSkillIdList.orElseThrow(() -> new ResourceNotFoundException("No skills found for that career"));
-        return existingSkillIdList.get();
-    }
 }

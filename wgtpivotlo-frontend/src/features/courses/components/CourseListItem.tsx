@@ -95,11 +95,18 @@ export const CourseItem = React.forwardRef<HTMLDivElement, CourseItemInterface>(
           <div className="flex items-center gap-4 text-sm">
             <div className="flex items-center gap-1.5">
               <Star className="h-4 w-4 fill-primary text-primary" />
-              <span className="font-medium">{course.rating.toFixed(1)}/5</span>
+              <span className="font-medium">
+                {course.rating.toString() !== 'NaN' ? course.rating.toFixed(1) + '/5' : 'NaN'}
+              </span>
             </div>
             <div className="flex items-center gap-1.5 text-muted-foreground">
               <Users className="h-4 w-4" />
-              <span>{new Intl.NumberFormat().format(course.reviews_counts)} reviews</span>
+              <span>
+                {course.reviews_counts.toString() !== 'NaN'
+                  ? new Intl.NumberFormat().format(course.reviews_counts)
+                  : 'NaN'}{' '}
+                reviews
+              </span>
             </div>
           </div>
         </CardContent>

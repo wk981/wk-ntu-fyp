@@ -311,6 +311,14 @@ public class CareerRecommendationService {
                 skillsIdList = userSkills.stream().map((careerSkill) -> careerSkill.getSkill().getSkillId()).toList();
                 return new Parameters(skillIdToSkillLevelMap, skillsIdList);
             }
+            else if(!list.isEmpty() && list.get(0) instanceof SkillIdWithProfiencyDTO) {
+                List<SkillIdWithProfiencyDTO> skillIdWithProfiencyDTOList = (List<SkillIdWithProfiencyDTO>)  userOrCareerSkills;
+                for (SkillIdWithProfiencyDTO skillIdWithProfiencyDTO: skillIdWithProfiencyDTOList){
+                    skillIdToSkillLevelMap.put(skillIdWithProfiencyDTO.getSkillId(), skillIdWithProfiencyDTO.getProfiency());
+                }
+                skillsIdList = skillIdWithProfiencyDTOList.stream().map(SkillIdWithProfiencyDTO::getSkillId).toList();
+                return new Parameters(skillIdToSkillLevelMap, skillsIdList);
+            }
         }
         else{
             throw new RuntimeException("Bad use of getCareerSimilarityWithPaginationHelper");

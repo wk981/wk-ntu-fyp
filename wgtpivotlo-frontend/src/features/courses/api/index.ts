@@ -7,6 +7,7 @@ import {
   EditCourseStatusRequestDTO,
   TimelineCouseDTO,
 } from '../types';
+import { toast } from 'react-toastify';
 
 const courseStatusMap = {
   'In Progress': 'IN_PROGRESS',
@@ -54,6 +55,9 @@ export const getCoursePaginationBasedOnSkillId = async ({
   if (!response.ok) {
     const errorBody: ErrorResponse = (await response.json()) as ErrorResponse; // Parse the error response
     const errorMessage: string = errorBody.message || 'Something went wrong'; // Extract the error message
+    if (pageNumber == 1) {
+      toast.error('No courses found');
+    }
     throw Error(errorMessage); // Throw a new Error with the message
   }
   const json = response.json() as Promise<TimelineCouseDTO>;

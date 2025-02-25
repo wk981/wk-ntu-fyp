@@ -43,7 +43,7 @@ public class QuestionaireService {
         }
 
         List<SkillIdWithProfiencyDTO> userSkills = questionaireRequest.getSkillIdWithProfiencyDTOList();
-
+        System.out.println(userSkills.toString());
         // get userId
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         long userId = userDetails.getId();

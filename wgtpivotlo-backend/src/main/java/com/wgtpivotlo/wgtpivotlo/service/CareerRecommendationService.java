@@ -63,7 +63,7 @@ public class CareerRecommendationService {
         // get userId
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         long userId = userDetails.getId();
-        User user = userService.getUser(authentication);
+        User user = userService.getUserByAuthentication(authentication);
 
         // To put into getCareerSimilarityWithPagination
         Parameters parameters;
@@ -115,7 +115,7 @@ public class CareerRecommendationService {
         // get userId
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         long userId = userDetails.getId();
-        User user = userService.getUser(authentication);
+        User user = userService.getUserByAuthentication(authentication);
 
         Optional<Long> existingCareerId = user.getCareerId().describeConstable();
         existingCareerId.orElseThrow(() -> new ResourceNotFoundException("User has not specify career"));

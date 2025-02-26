@@ -6,8 +6,6 @@ import com.wgtpivotlo.wgtpivotlo.dto.SkillWIthCareerLevelFlowDTO;
 import com.wgtpivotlo.wgtpivotlo.dto.SkillWithProfiencyDTO;
 import com.wgtpivotlo.wgtpivotlo.enums.SkillLevel;
 import com.wgtpivotlo.wgtpivotlo.model.*;
-import com.wgtpivotlo.wgtpivotlo.repository.UserRepository;
-import com.wgtpivotlo.wgtpivotlo.repository.UserSkillsRepository;
 import com.wgtpivotlo.wgtpivotlo.security.UserDetailsImpl;
 import com.wgtpivotlo.wgtpivotlo.utils.SkillLevelHelper;
 import org.springframework.security.core.Authentication;
@@ -32,7 +30,7 @@ public class DashboardService {
 
     public DashboardDTO getUserDashboard(Authentication authentication) throws AccessDeniedException {
         Career userCareer = userService.getUserPreferenceCareer(authentication);
-        User user = userService.getUser(authentication);
+        User user = userService.getUserByAuthentication(authentication);
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         long userId = userDetails.getId();
 

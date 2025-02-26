@@ -11,7 +11,6 @@ import com.wgtpivotlo.wgtpivotlo.repository.CourseRepository;
 import com.wgtpivotlo.wgtpivotlo.repository.UserCourseHistoryRepository;
 import com.wgtpivotlo.wgtpivotlo.repository.UserRepository;
 import com.wgtpivotlo.wgtpivotlo.repository.UserSkillsRepository;
-import com.wgtpivotlo.wgtpivotlo.security.UserDetailsImpl;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -46,7 +45,7 @@ public class UserCourseHistoryService {
 
         // Get userId
         log.info("Step 1: Get UserId");
-        User user = userService.getUser(authentication);
+        User user = userService.getUserByAuthentication(authentication);
 
         // Check if course id is valid
         log.info("Step 2: Check if course is valid");
@@ -89,7 +88,7 @@ public class UserCourseHistoryService {
 
         // Get userId
         log.info("Step 1: Get UserId");
-        User user = userService.getUser(authentication);
+        User user = userService.getUserByAuthentication(authentication);
 
         // Check if course id is valid
         log.info("Step 2: Check if course is valid");
@@ -113,7 +112,7 @@ public class UserCourseHistoryService {
     public Optional<List<CourseWithStatusDTO>> getUserCourseHistory(Authentication authentication, SkillLevel skillLevel, CourseStatus courseStatus) throws AccessDeniedException {
         // Get userId
         log.info("Step 1: Get UserId");
-        User user = userService.getUser(authentication);
+        User user = userService.getUserByAuthentication(authentication);
         String courseStatusString = (courseStatus != null) ? courseStatus.toString() : null;
 
         Optional<List<UserCourseHistory>> existingCourseHistory = userCourseHistoryRepository.findByUserIdAndCourseStatus(user.getUser_id(), Optional.ofNullable(courseStatusString));

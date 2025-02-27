@@ -16,12 +16,20 @@ import { BreadcrumbCustom } from '@/components/breadcrumpcustom';
 import NotFound from './routes/NotFound';
 import { CourseHistory } from './routes/Dashboard/CourseHistory';
 import { Home } from './routes/Home';
-import { Settings } from './routes/auth/settings';
+import { EditAccountProvider } from '@/features/auth/provider/EditAccountSettingsProvider';
+import { Security } from './routes/Settings/Security';
+import { AccountSettings } from './routes/Settings';
 
 const QuestionaireLayout = () => (
   <QuestionaireProvider>
     <Outlet />
   </QuestionaireProvider>
+);
+
+const SettingsLayoutWrapper = () => (
+  <EditAccountProvider>
+    <Outlet />
+  </EditAccountProvider>
 );
 
 const CommonLayout = () => (
@@ -45,7 +53,6 @@ export const AppRouter = () => {
             <Route path="register" element={<Register />} />
             <Route path="logout" element={<Logout />} />
           </Route>
-          <Route path="account-settings" element={<Settings />} />
           <Route element={<PrivateRoute />}>
             <Route element={<CommonLayout />}>
               <Route path="questionaire" element={<QuestionaireLayout />}>
@@ -54,6 +61,10 @@ export const AppRouter = () => {
                 <Route path="questions" element={<Questions />} />
                 <Route path="result" element={<Result />} />
                 <Route path="*" element={<NotFound />} /> {/* Handle unknown nested routes */}
+              </Route>
+              <Route path="settings" element={<SettingsLayoutWrapper />}>
+                <Route index element={<AccountSettings />} />
+                <Route path="security" element={<Security />} />
               </Route>
 
               <Route path="explore/timeline" element={<LearningTimeline />} />

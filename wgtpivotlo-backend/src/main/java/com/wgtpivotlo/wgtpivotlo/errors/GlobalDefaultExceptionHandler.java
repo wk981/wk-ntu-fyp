@@ -1,11 +1,9 @@
 package com.wgtpivotlo.wgtpivotlo.errors;
 
-import com.wgtpivotlo.wgtpivotlo.errors.exceptions.DuplicateException;
-import com.wgtpivotlo.wgtpivotlo.errors.exceptions.PageItemsOutOfBoundException;
-import com.wgtpivotlo.wgtpivotlo.errors.exceptions.ResourceNotFoundException;
-import com.wgtpivotlo.wgtpivotlo.errors.exceptions.UserExists;
+import com.wgtpivotlo.wgtpivotlo.errors.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.coyote.BadRequestException;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -40,8 +38,8 @@ public class GlobalDefaultExceptionHandler extends ResponseEntityExceptionHandle
         String errorMessages = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(fieldError -> fieldError.getField() + ": " + fieldError.getDefaultMessage())
-                .collect(Collectors.joining("; "));
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.joining(", "));
 
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .status(HttpStatus.BAD_REQUEST)
@@ -141,6 +139,12 @@ public class GlobalDefaultExceptionHandler extends ResponseEntityExceptionHandle
         return buildResponseEntity(errorResponse);
     }
 
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    public ResponseEntity<Object> handle
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<Object> handleInvalidPasswordException(HttpServletRequest req, InvalidPasswordException ex){
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(HttpStatus.BAD_REQUEST)
+                .message(ex.getMessage())
+                .build();
+        return buildResponseEntity(errorResponse);
+    }
 }

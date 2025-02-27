@@ -2,7 +2,7 @@ import { loginBody, loginPost, logoutPost, meGet, registerBody, registerPost } f
 import { User } from '@/features/auth/types';
 import { Response } from '@/types';
 import { ProviderProps } from '@/utils';
-import { useMutation, UseMutationResult } from '@tanstack/react-query';
+import { UseMutateAsyncFunction, useMutation, UseMutationResult } from '@tanstack/react-query';
 import { createContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
@@ -17,6 +17,7 @@ export interface AuthContextInterface {
   setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
   isLoginLoading: boolean;
   isRegisteringLoading: boolean;
+  getMeAsync: UseMutateAsyncFunction<User, Error, void, unknown>;
 }
 
 const AuthContext = createContext<AuthContextInterface | undefined>(undefined);
@@ -78,12 +79,12 @@ const AuthProvider = ({ children }: ProviderProps) => {
       // Handle any errors from either login or fetching user data
       console.log(error);
       const err = error as Response; // Cast error to responseMessage
-      toast(err?.message || 'An error occurred'); // Show error message
+      toast.error(err?.message || 'An error occurred'); // Show error message
       return false;
     }
   };
 
-  const registerUser = async (body: registerBody) => {
+  const registerUser = async (body: registerBody): Promise<boolean> => {
     try {
       await registerMutation.mutateAsync(body);
       return true;
@@ -91,7 +92,7 @@ const AuthProvider = ({ children }: ProviderProps) => {
       // Handle any errors from either login or fetching user data
       console.log(error);
       const err = error as Response; // Cast error to responseMessage
-      toast(err?.message || 'An error occurred'); // Show error message
+      toast.error(err?.message || 'An error occurred'); // Show error message
       return false;
     }
   };
@@ -121,6 +122,7 @@ const AuthProvider = ({ children }: ProviderProps) => {
     setUser,
     isLoginLoading: loginMutation.isPending,
     isRegisteringLoading: registerMutation.isPending,
+    getMeAsync: meMutation.mutateAsync,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

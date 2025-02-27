@@ -1,9 +1,11 @@
 package com.wgtpivotlo.wgtpivotlo.controller;
 
 import com.wgtpivotlo.wgtpivotlo.dto.MessageDTO;
+import com.wgtpivotlo.wgtpivotlo.dto.UserUpdatePasswordRequest;
 import com.wgtpivotlo.wgtpivotlo.dto.UserUpdateRequest;
 import com.wgtpivotlo.wgtpivotlo.service.UserService;
 import jakarta.validation.Valid;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -28,6 +30,13 @@ public class UserController {
     public ResponseEntity<MessageDTO> updateUser(@Valid @RequestBody UserUpdateRequest request, Authentication authentication) throws AccessDeniedException {
         userService.updateUser(request,authentication);
         MessageDTO message = MessageDTO.builder().message("Profile updated successfully").build();
+        return ResponseEntity.ok(message);
+    }
+
+    @PostMapping("/update-password")
+    public ResponseEntity<MessageDTO> updatePassword(@Valid @RequestBody UserUpdatePasswordRequest request, Authentication authentication) throws AccessDeniedException, BadRequestException {
+        userService.updatePassword(request,authentication);
+        MessageDTO message = MessageDTO.builder().message("Password updated successfully").build();
         return ResponseEntity.ok(message);
     }
 }

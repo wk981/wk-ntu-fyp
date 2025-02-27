@@ -44,6 +44,39 @@ const standardRegisterSchema = z.intersection(usernameSchema, confirmPasswordSch
 
 export const registerFormSchema = z.intersection(standardRegisterSchema, emailSchema);
 
+export const userEmailFormSchema = z.intersection(usernameSchema, emailSchema);
+
+const passwordValidation = z
+  .string()
+  .min(8, 'Password must be at least 8 characters')
+  .regex(/[A-Z]/, 'Password must include at least one uppercase letter')
+  .regex(/[a-z]/, 'Password must include at least one lowercase letter')
+  .regex(/[0-9]/, 'Password must include at least one number')
+  .regex(/[^A-Za-z0-9]/, 'Password must include at least one special character');
+
+export const changePasswordSchema = z
+  .object({
+    currentPassword: passwordValidation,
+    password: passwordValidation,
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword'],
+  });
+
+const emailValidator = z.string().email();
+
+export const optionalUserEmailFormSchema = z
+  .object({
+    email: z.string().refine((v) => (v ? emailValidator.safeParse(v).success : true), 'Invalid email'),
+    username: z.string().min(3).optional(),
+  })
+  .partial()
+  .refine(({ email, username }) => email || username, {
+    message: 'At least one field should be provided (or both).',
+  });
+
 export interface User {
   id: number;
   email: string;
@@ -51,4 +84,21 @@ export interface User {
   role: string[];
   pic: string;
   isCareerPreferenceSet: boolean;
+}
+
+export interface UpdateProfileRequest {
+  userId: number;
+  newEmail: string;
+  newUsername: string;
+}
+
+export interface FormProps {
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface UpdatePasswordRequest {
+  userId: number;
+  currentPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
 }

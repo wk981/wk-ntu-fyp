@@ -1,9 +1,11 @@
 package com.wgtpivotlo.wgtpivotlo.service;
 
+import com.wgtpivotlo.wgtpivotlo.dto.UserUpdatePasswordRequest;
 import com.wgtpivotlo.wgtpivotlo.dto.UserUpdateRequest;
 import com.wgtpivotlo.wgtpivotlo.enums.Role;
 import com.wgtpivotlo.wgtpivotlo.enums.SkillLevel;
 import com.wgtpivotlo.wgtpivotlo.errors.exceptions.DuplicateException;
+import com.wgtpivotlo.wgtpivotlo.errors.exceptions.InvalidPasswordException;
 import com.wgtpivotlo.wgtpivotlo.errors.exceptions.ResourceNotFoundException;
 import com.wgtpivotlo.wgtpivotlo.model.Career;
 import com.wgtpivotlo.wgtpivotlo.model.User;
@@ -14,6 +16,7 @@ import com.wgtpivotlo.wgtpivotlo.repository.UserSkillsRepository;
 import com.wgtpivotlo.wgtpivotlo.security.UserDetailsImpl;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -136,41 +139,32 @@ public class UserService {
 
     @Transactional
     public void updateUser(UserUpdateRequest request, Authentication authentication) throws AccessDeniedException {
-        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
-            throw new AccessDeniedException("Access Denied");
-        }
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        long sessionUserId = userDetails.getId();
-        Role userRole = userDetails.getRole();
-
-        if(sessionUserId != request.getUserId() && userRole != Role.ADMIN){
-            throw new AccessDeniedException("Access Denied");
-        }
+        validateUserAccess(request.getUserId(), authentication);
 
         LocalDateTime updatedTime = null;
         User user = getUserByUserId(request.getUserId());
 
-        if(request.getNewEmail() != null){
+        if(request.getNewEmail() != null && !request.getNewEmail().isEmpty()){
             String newEmail = request.getNewEmail();
             if (Objects.equals(newEmail, user.getEmail())){
                 throw new DuplicateException("Same email");
             }
             Optional<User> existingEmail = userRepository.findByEmail(newEmail);
             if(existingEmail.isPresent()){
-                throw new DuplicateException(newEmail + "has been taken");
+                throw new DuplicateException(newEmail + " has been taken");
             }
             user.setEmail(request.getNewEmail());
             updatedTime = LocalDateTime.now(); // update to current time
         }
 
-        if(request.getNewUsername() != null){
+        if(request.getNewUsername() != null && !request.getNewUsername().isEmpty()){
             String newUsername = request.getNewUsername();
             if (Objects.equals(newUsername, user.getUsername())){
                 throw new DuplicateException("Same username");
             }
             Optional<User> existingEmail = userRepository.findByUsername(newUsername);
             if(existingEmail.isPresent()){
-                throw new DuplicateException(newUsername + "has been taken");
+                throw new DuplicateException(newUsername + " has been taken");
             }
             user.setUsername(request.getNewUsername());
             updatedTime = LocalDateTime.now(); // update to current time
@@ -184,14 +178,44 @@ public class UserService {
     }
 
     @Transactional
-    public void updatePasswordByUserId(String newPassword, long userId){
-        User user = getUserByUserId(userId);
-        String encryptedNewPassword = passwordEncoder.encode(newPassword);
-        if (Objects.equals(encryptedNewPassword, user.getPassword())){
-            throw new DuplicateException("Same password");
+    public void updatePassword(UserUpdatePasswordRequest request, Authentication authentication) throws AccessDeniedException, BadRequestException {
+        validateUserAccess(request.getUserId(), authentication);
+        User user = getUserByUserId(request.getUserId());
+
+        if (!Objects.equals(request.getNewPassword(), request.getConfirmNewPassword())){
+            throw new BadRequestException("Password does not match");
         }
+
+        String encryptedNewPassword = passwordEncoder.encode(request.getNewPassword());
+
+        // Check if the current password entered is correct.
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+            throw new InvalidPasswordException("Your current password is incorrect. Please enter the correct current password to change it.");
+        }
+
+        // Check if the new password is the same as the current (stored) password.
+        if (passwordEncoder.matches(request.getNewPassword(), user.getPassword())) {
+            throw new DuplicateException("Your new password cannot be the same as your current password.");
+        }
+
+
         user.setPassword(encryptedNewPassword);
+        user.setUpdated_on(LocalDateTime.now());
         userRepository.save(user);
+    }
+
+    private void validateUserAccess(long userId, Authentication authentication) throws AccessDeniedException {
+        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
+            throw new AccessDeniedException("Access Denied");
+        }
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        long sessionUserId = userDetails.getId();
+        Role userRole = userDetails.getRole();
+
+        if(sessionUserId != userId && userRole != Role.ADMIN){
+            throw new AccessDeniedException("Access Denied");
+        }
+
     }
 
 }

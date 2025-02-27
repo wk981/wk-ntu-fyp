@@ -8,6 +8,7 @@ import { loginFormSchema } from '../types';
 import { useAuth } from '../hook/useAuth';
 import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
+import { loginBody } from '../api';
 
 export const LoginForm = () => {
   const inputClassName = 'text-base font-normal';
@@ -19,9 +20,13 @@ export const LoginForm = () => {
 
   const onSubmit = async (values: z.infer<typeof loginFormSchema>) => {
     try {
-      const status = await loginUser(values);
+      const body: loginBody = {
+        username: values.username,
+        password: values.password,
+      };
+      const status = await loginUser(body);
       if (status) {
-        toast('Logged In Successfully');
+        toast.success('Logged In Successfully');
         await navigate('/');
       }
     } catch (error) {

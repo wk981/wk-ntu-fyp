@@ -6,6 +6,7 @@ import { capitalizeEveryFirstChar, capitalizeFirstChar } from '@/utils';
 import { ProgressCircle } from './ProgressCircle';
 import { SkillsToImproveProgressItem } from './SkillsToImproveProgressItem';
 import { LoadingSpinnerWrapper } from '@/components/loading-spinner';
+import { BadgeWithTooltip } from '@/components/BadgeWithPopUpInfo';
 
 export const DashboardComponent = () => {
   const { dashboardData, isDashBoardSuccess, isDashboardLoading } = useDashboardQuery();
@@ -63,7 +64,9 @@ export const DashboardComponent = () => {
                   return (
                     <li key={index} className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
-                        <Badge variant="secondary">{capitalizeEveryFirstChar(skill.skillDTO.name)}</Badge>
+                        <Badge className="cursor-pointer" variant="secondary">
+                          {capitalizeEveryFirstChar(skill.skillDTO.name)}
+                        </Badge>
                         <span className="text-sm text-muted-foreground">
                           {skill.skillFlow[0]} → {skill.skillFlow[skill.skillFlow.length - 1]}
                         </span>
@@ -86,9 +89,14 @@ export const DashboardComponent = () => {
           <CardContent>
             <div className="max-h-60 overflow-y-auto">
               {dashboardData?.userSkills.map((skill, index) => (
-                <Badge key={index} className="h-[40px] rounded-full py-2 px-4 mx-1 my-1 text-sm">
-                  {capitalizeEveryFirstChar(skill.name)}
-                </Badge>
+                <BadgeWithTooltip
+                  key={index}
+                  badgeStyle={{
+                    className: 'h-[30px] rounded-full py-2 px-4 mx-1 my-1 text-sm cursor-pointer font-normal',
+                  }}
+                  text={capitalizeEveryFirstChar(skill.name)}
+                  tooltipContent={capitalizeEveryFirstChar(skill.profiency)}
+                />
               ))}
             </div>
           </CardContent>

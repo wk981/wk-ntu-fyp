@@ -26,8 +26,9 @@ export const RegisterForm = () => {
         email: values.email,
       };
       const status = await registerUser(body);
+      console.log(status);
       if (status) {
-        toast('Registered Successfully');
+        toast.success('Registered Successfully');
         await navigate('/auth/login');
       }
     } catch (error) {

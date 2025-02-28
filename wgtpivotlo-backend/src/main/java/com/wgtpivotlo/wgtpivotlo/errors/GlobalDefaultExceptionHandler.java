@@ -1,24 +1,27 @@
 package com.wgtpivotlo.wgtpivotlo.errors;
 
-import com.wgtpivotlo.wgtpivotlo.errors.exceptions.PageItemsOutOfBoundException;
-import com.wgtpivotlo.wgtpivotlo.errors.exceptions.ResourceNotFoundException;
-import com.wgtpivotlo.wgtpivotlo.errors.exceptions.UserExists;
+import com.wgtpivotlo.wgtpivotlo.errors.exceptions.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.coyote.BadRequestException;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.nio.file.AccessDeniedException;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -28,6 +31,21 @@ public class GlobalDefaultExceptionHandler extends ResponseEntityExceptionHandle
     private ResponseEntity<Object> buildResponseEntity(ErrorResponse errorResponse){
         HttpHeaders headers = new HttpHeaders();
         return new ResponseEntity<Object>(errorResponse,headers, errorResponse.getStatus());
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        String errorMessages = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.joining(", "));
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(HttpStatus.BAD_REQUEST)
+                .message(errorMessages)
+                .build();
+        return buildResponseEntity(errorResponse);
     }
 
     // No resource
@@ -108,6 +126,24 @@ public class GlobalDefaultExceptionHandler extends ResponseEntityExceptionHandle
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .message("Something went wrong with database operation")
+                .build();
+        return buildResponseEntity(errorResponse);
+    }
+
+    @ExceptionHandler(DuplicateException.class)
+    public ResponseEntity<Object> handleDuplicateException(HttpServletRequest req, DuplicateException ex){
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(HttpStatus.CONFLICT)
+                .message(ex.getMessage())
+                .build();
+        return buildResponseEntity(errorResponse);
+    }
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<Object> handleInvalidPasswordException(HttpServletRequest req, InvalidPasswordException ex){
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .status(HttpStatus.BAD_REQUEST)
+                .message(ex.getMessage())
                 .build();
         return buildResponseEntity(errorResponse);
     }

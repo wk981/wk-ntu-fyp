@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -34,17 +35,20 @@ export const LearningTimeline = () => {
       <h1 className="text-2xl font-bold pb-3 text-primary">Learning Timeline</h1>
       {skillsData && skillsData.length > 0 ? (
         <Tabs defaultValue={skillsData[0].skillId.toString()} className="w-full overflow-auto">
-          <TabsList className="overflow-x-auto overflow-y-hidden w-full flex justify-start">
-            {skillsData.map((skill) => (
-              <TabsTrigger
-                key={skill.skillId}
-                value={skill.skillId.toString()}
-                className="px-3 py-1.5 text-sm font-medium transition-all"
-              >
-                {capitalizeEveryFirstChar(skill.name)}
-              </TabsTrigger>
-            ))}
-          </TabsList>
+          <ScrollArea className="w-full whitespace-nowrap rounded-md border">
+            <TabsList className="inline-flex items-center justify-center">
+              {skillsData.map((skill) => (
+                <TabsTrigger
+                  key={skill.skillId}
+                  value={skill.skillId.toString()}
+                  className="px-3 py-1.5 text-sm font-medium transition-all"
+                >
+                  {capitalizeEveryFirstChar(skill.name)}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            <ScrollBar orientation="horizontal" />
+          </ScrollArea>
           <Button className="mt-2" variant="outline" onClick={handleShowFiltersClick}>
             {!showFilters ? 'Show Filters' : 'Hide Filters'}
           </Button>

@@ -1,5 +1,6 @@
 import { LoadingSpinnerComponent } from '@/components/loading-spinner';
 import { Preview } from '@/components/preview';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useExploreCareer } from '@/features/careers/hooks/useExploreCareer';
 import { usePreference } from '@/features/careers/hooks/usePreference';
 import { useRecommendationCategory } from '@/features/careers/hooks/useRecommendationCategory';
@@ -64,13 +65,18 @@ export const ExploreCareer = () => {
     return null; // Prevent rendering while redirecting
   }
 
+  if (isExploringLoading) {
+    return (
+      <div className="space-y-4">
+        <Skeleton className="h-8 w-64" />
+        <Skeleton className="h-64 w-full" />
+        <Skeleton className="h-8 w-64" />
+        <Skeleton className="h-64 w-full" />
+      </div>
+    );
+  }
   return (
-    <div className="m-auto min-h-[calc(100vh-65px)] overflow-auto md:px-4">
-      {(isExploringLoading || isChoiceLoading) && (
-        <div className="flex items-center w-full justify-center">
-          <LoadingSpinnerComponent />
-        </div>
-      )}
+    <div className="m-auto overflow-auto md:px-4">
       {data && (categorySearchParams === '' || !categorySearchParams) ? (
         <>
           <Preview
@@ -106,6 +112,7 @@ export const ExploreCareer = () => {
               checkedId={checkedId}
               handleHeartButtonClick={handleHeartButtonClick}
             />
+            {isChoiceLoading && <LoadingSpinnerComponent />}
           </>
         )
       )}

@@ -18,7 +18,7 @@ export const SettingsLayout = ({ title, description, children }: SettingsLayoutP
       {isLoading && (
         <LoadingSpinnerWrapper className="fixed z-50 flex justify-center items-center bg-inherit"></LoadingSpinnerWrapper>
       )}
-      <div className="container bg-inherit h-full mx-auto">
+      <div className="container bg-inherit h-full">
         <div className="grid grid-cols-1 md:grid-cols-4 md:gap-6">
           <SettingSideBar />
           <Card className="w-full col-span-3">

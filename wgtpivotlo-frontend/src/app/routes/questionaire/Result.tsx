@@ -4,6 +4,7 @@ import { Preview } from '@/components/preview';
 import { useQuestionaire } from '@/features/questionaire/hook/useQuestionaire';
 import { FetchChoiceCareerRecommendationParams } from '@/features/questionaire/contexts/QuestionaireProvider';
 import { usePreference } from '@/features/careers/hooks/usePreference';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export const Result = () => {
   const {
@@ -14,6 +15,7 @@ export const Result = () => {
     page,
     setPage,
     questionaireFormResults,
+    isResultLoading,
   } = useQuestionaire();
   const { checkedId, handleHeartButtonClick } = usePreference();
 
@@ -67,6 +69,17 @@ export const Result = () => {
 
   if (!results) {
     return null; // Prevent rendering while redirecting
+  }
+
+  if (isResultLoading) {
+    return (
+      <div className="space-y-4">
+        <Skeleton className="h-8 w-64" />
+        <Skeleton className="h-64 w-full" />
+        <Skeleton className="h-8 w-64" />
+        <Skeleton className="h-64 w-full" />
+      </div>
+    );
   }
 
   return (

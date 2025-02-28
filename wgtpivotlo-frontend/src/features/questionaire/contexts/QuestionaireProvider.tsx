@@ -30,6 +30,7 @@ interface SkillsContext {
   setCategoryResult: React.Dispatch<React.SetStateAction<CareerWithSimilarityScoreDTO[] | undefined>>;
   page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
+  isResultLoading: boolean;
 }
 
 export interface FetchChoiceCareerRecommendationParams {
@@ -78,6 +79,7 @@ const QuestionaireProvider = ({ children }: ProviderProps) => {
     page,
     setPage,
     fetchChoiceCareerRecommendation,
+    isResultLoading: resultPostMutation.isPending,
   };
 
   return <QuestionaireContext.Provider value={value}>{children}</QuestionaireContext.Provider>;

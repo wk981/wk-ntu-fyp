@@ -3,7 +3,7 @@ import { SettingsLayout } from '@/features/auth/components/SettingsLayout';
 export const Security = () => {
   return (
     <>
-      <SettingsLayout title={'Account'} description="Update your account settings.">
+      <SettingsLayout title={'Security'} description="Update your account security.">
         <ChangePasswordForm />
       </SettingsLayout>
     </>

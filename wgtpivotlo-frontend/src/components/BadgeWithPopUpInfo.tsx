@@ -1,24 +1,29 @@
-import * as React from 'react';
-import { Badge, BadgeProps } from '@/components/ui/badge';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Button, ButtonProps } from './ui/button';
+import { useEffect, useState } from 'react';
 
 interface BadgeWithTooltipProps {
   text: string;
   tooltipContent: string;
-  badgeStyle: BadgeProps;
+  badgeStyle?: ButtonProps;
 }
-
 export function BadgeWithTooltip({ text, tooltipContent, badgeStyle }: BadgeWithTooltipProps) {
-  const [isMobile, setIsMobile] = React.useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const breakpoint = 768;
 
-  React.useEffect(() => {
+  useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < breakpoint);
     };
+
+    // Initial check
     checkMobile();
+
+    // Add event listener
     window.addEventListener('resize', checkMobile);
+
+    // Cleanup
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
@@ -26,11 +31,11 @@ export function BadgeWithTooltip({ text, tooltipContent, badgeStyle }: BadgeWith
     return (
       <Popover>
         <PopoverTrigger asChild>
-          <Badge className="cursor-pointer" {...badgeStyle}>
+          <Button className="cursor-pointer" {...badgeStyle}>
             {text}
-          </Badge>
+          </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-auto">
+        <PopoverContent className="w-auto p-2 z-50">
           <p>{tooltipContent}</p>
         </PopoverContent>
       </Popover>
@@ -39,11 +44,14 @@ export function BadgeWithTooltip({ text, tooltipContent, badgeStyle }: BadgeWith
 
   return (
     <TooltipProvider>
-      <Tooltip>
+      <Tooltip delayDuration={100}>
         <TooltipTrigger asChild>
-          <Badge {...badgeStyle}>{text}</Badge>
+          <Button {...badgeStyle}>{text}</Button>
         </TooltipTrigger>
-        <TooltipContent>
+        <TooltipContent
+          className="z-50 rounded-lg bg-white px-4 py-2 border-2 text-sm font-medium text-black shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-shadow hover:shadow-[0_4px_12px_rgba(0,0,0,0.12)]"
+          sideOffset={5}
+        >
           <p>{tooltipContent}</p>
         </TooltipContent>
       </Tooltip>

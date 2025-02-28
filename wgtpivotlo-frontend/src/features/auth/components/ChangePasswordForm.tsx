@@ -50,7 +50,12 @@ export const ChangePasswordForm = () => {
               <FormItem className="space-y-2">
                 <FormLabel>Current Password</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="Enter your current password here" {...field} />
+                  <Input
+                    type="password"
+                    autoComplete="current-password"
+                    placeholder="Enter your current password here"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage className="text-sm" />
               </FormItem>
@@ -64,7 +69,12 @@ export const ChangePasswordForm = () => {
                 {' '}
                 <FormLabel>New Password</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="Enter your new password here" {...field} />
+                  <Input
+                    type="password"
+                    autoComplete="current-password"
+                    placeholder="Enter your new password here"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage className="text-sm" />
               </FormItem>
@@ -77,7 +87,12 @@ export const ChangePasswordForm = () => {
               <FormItem className="space-y-2">
                 <FormLabel>Confirm Password</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="Please Confirm your password" {...field} />
+                  <Input
+                    type="password"
+                    autoComplete="current-password"
+                    placeholder="Please Confirm your password"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage className="text-sm" />
               </FormItem>
@@ -85,7 +100,9 @@ export const ChangePasswordForm = () => {
           />
         </div>
         <div>
-          <Button type="submit">Save Changes</Button>
+          <Button type="submit" disabled={!form.formState.isValid}>
+            Save Changes
+          </Button>
         </div>
       </form>
     </Form>

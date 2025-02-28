@@ -18,11 +18,11 @@ export const SettingsLayout = ({ title, description, children }: SettingsLayoutP
       {isLoading && (
         <LoadingSpinnerWrapper className="fixed z-50 flex justify-center items-center bg-inherit"></LoadingSpinnerWrapper>
       )}
-      <div className="container bg-inherit h-full">
-        <div className="grid grid-cols-5 gap-6">
+      <div className="container bg-inherit h-full mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-4 md:gap-6">
           <SettingSideBar />
-          <Card className="w-full col-span-4">
-            <CardHeader className="text-lg font-thin">
+          <Card className="w-full col-span-3">
+            <CardHeader className="text-lg font-thin space-y-2">
               <CardTitle>{title}</CardTitle>
               <CardDescription>{description}</CardDescription>
               <Separator />

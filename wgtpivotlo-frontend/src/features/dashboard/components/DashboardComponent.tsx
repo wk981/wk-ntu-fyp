@@ -64,7 +64,9 @@ export const DashboardComponent = () => {
                   return (
                     <li key={index} className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
-                        <Badge variant="secondary">{capitalizeEveryFirstChar(skill.skillDTO.name)}</Badge>
+                        <Badge className="cursor-pointer" variant="secondary">
+                          {capitalizeEveryFirstChar(skill.skillDTO.name)}
+                        </Badge>
                         <span className="text-sm text-muted-foreground">
                           {skill.skillFlow[0]} → {skill.skillFlow[skill.skillFlow.length - 1]}
                         </span>
@@ -89,7 +91,9 @@ export const DashboardComponent = () => {
               {dashboardData?.userSkills.map((skill, index) => (
                 <BadgeWithTooltip
                   key={index}
-                  badgeStyle={{ className: 'h-[40px] rounded-full py-2 px-4 mx-1 my-1 text-sm' }}
+                  badgeStyle={{
+                    className: 'h-[30px] rounded-full py-2 px-4 mx-1 my-1 text-sm cursor-pointer font-normal',
+                  }}
                   text={capitalizeEveryFirstChar(skill.name)}
                   tooltipContent={capitalizeEveryFirstChar(skill.profiency)}
                 />

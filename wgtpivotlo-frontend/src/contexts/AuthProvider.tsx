@@ -108,7 +108,7 @@ const AuthProvider = ({ children }: ProviderProps) => {
   };
 
   useEffect(() => {
-    meMutation.mutate();
+    void meMutation.mutateAsync();
   }, []);
 
   const value = {

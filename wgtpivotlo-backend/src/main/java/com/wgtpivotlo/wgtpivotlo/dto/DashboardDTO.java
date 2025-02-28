@@ -15,10 +15,8 @@ import java.util.Map;
 @Setter
 @Builder
 public class DashboardDTO {
-    String username;
-    String pic;
     double careerProgression;
     List<SkillWithProfiencyDTO> userSkills;
-    Career career;
+    String careerTitle;
     List<SkillWIthCareerLevelFlowDTO> skillGap;
 }

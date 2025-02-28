@@ -7,10 +7,12 @@ import { ProgressCircle } from './ProgressCircle';
 import { SkillsToImproveProgressItem } from './SkillsToImproveProgressItem';
 import { LoadingSpinnerWrapper } from '@/components/loading-spinner';
 import { BadgeWithTooltip } from '@/components/BadgeWithPopUpInfo';
+import { useAuth } from '@/features/auth/hook/useAuth';
 
 export const DashboardComponent = () => {
   const { dashboardData, isDashBoardSuccess, isDashboardLoading } = useDashboardQuery();
-  const avatarImage = dashboardData?.pic || 'https://github.com/shadcn.png';
+  const {user} = useAuth();
+  const avatarImage = user?.pic || 'https://github.com/shadcn.png';
   if (isDashboardLoading) {
     return (
       <div className="min-h-[calc(100vh-65px)]">
@@ -29,15 +31,15 @@ export const DashboardComponent = () => {
           </CardHeader>
           <CardContent className="flex flex-col items-center justify-center">
             <Avatar className="h-[100px] w-[100px] my-4">
-              <AvatarImage src={avatarImage} alt={dashboardData?.username} />
-              <AvatarFallback>{dashboardData?.username && capitalizeFirstChar(dashboardData?.username)}</AvatarFallback>
+              <AvatarImage src={avatarImage} alt={user?.username} />
+              <AvatarFallback>{user?.username && capitalizeFirstChar(user?.username)}</AvatarFallback>
             </Avatar>
 
             <h2 className="text-xl font-bold">
-              {dashboardData?.username && capitalizeFirstChar(dashboardData?.username)}
+              {user?.username && capitalizeFirstChar(user?.username)}
             </h2>
             <p className="text-muted-foreground">
-              Aspiring {dashboardData?.career.title && capitalizeEveryFirstChar(dashboardData?.career.title)}
+              Aspiring {dashboardData?.careerTitle && capitalizeEveryFirstChar(dashboardData?.careerTitle)}
             </p>
           </CardContent>
         </Card>
@@ -60,7 +62,6 @@ export const DashboardComponent = () => {
           <CardContent>
             <ul className="space-y-4">
               {dashboardData?.skillGap.map((skill, index) => {
-                if (skill.skillFlow[0] !== skill.skillFlow[skill.skillFlow.length - 1]) {
                   return (
                     <li key={index} className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
@@ -71,11 +72,10 @@ export const DashboardComponent = () => {
                           {skill.skillFlow[0]} → {skill.skillFlow[skill.skillFlow.length - 1]}
                         </span>
                       </div>
-                      <SkillsToImproveProgressItem skillFlowList={skill.skillFlow} />
+                      <SkillsToImproveProgressItem skillFlowList={skill.skillFlow} inSkillSet={skill.inSkillset}/>
                     </li>
                   );
-                }
-                return null; // Ensures no undefined elements in the list
+                
               })}
             </ul>
           </CardContent>

@@ -12,4 +12,5 @@ import java.util.List;
 public class SkillWIthCareerLevelFlowDTO {
     SkillDTO skillDTO;
     List<String> skillFlow;
+    Boolean inSkillset;
 }

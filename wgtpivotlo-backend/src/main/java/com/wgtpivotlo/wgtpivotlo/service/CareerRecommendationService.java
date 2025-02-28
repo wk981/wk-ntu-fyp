@@ -91,9 +91,9 @@ public class CareerRecommendationService {
         Page<CareerWithSimilarityScoreDTO> result = getCareerSimilarityWithPagination(
                 parameters.getSkillMap(),
                 parameters.getSkillIds(),
-                Optional.of(request.getCareerLevel()),
-                Optional.of(request.getType()),
-                Optional.of(request.getSector()),
+                Optional.ofNullable(request.getCareerLevel()),
+                Optional.ofNullable(request.getType()),
+                Optional.ofNullable(request.getSector()),
                 pageable
         );
 

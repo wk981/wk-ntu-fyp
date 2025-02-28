@@ -79,7 +79,7 @@ const QuestionaireProvider = ({ children }: ProviderProps) => {
     page,
     setPage,
     fetchChoiceCareerRecommendation,
-    isResultLoading: resultPostMutation.isPending
+    isResultLoading: resultPostMutation.isPending,
   };
 
   return <QuestionaireContext.Provider value={value}>{children}</QuestionaireContext.Provider>;

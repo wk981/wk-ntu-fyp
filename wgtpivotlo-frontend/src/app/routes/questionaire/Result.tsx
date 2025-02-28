@@ -15,7 +15,7 @@ export const Result = () => {
     page,
     setPage,
     questionaireFormResults,
-    isResultLoading
+    isResultLoading,
   } = useQuestionaire();
   const { checkedId, handleHeartButtonClick } = usePreference();
 
@@ -71,7 +71,7 @@ export const Result = () => {
     return null; // Prevent rendering while redirecting
   }
 
-  if(isResultLoading){
+  if (isResultLoading) {
     return (
       <div className="space-y-4">
         <Skeleton className="h-8 w-64" />

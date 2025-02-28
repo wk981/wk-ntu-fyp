@@ -23,14 +23,13 @@ export const SkillsToImproveProgressItem = ({ skillFlowList, inSkillSet }: Skill
   const targetLevel = proficiencyToNumber(skillFlowList[skillFlowList.length - 1]);
 
   // Normalize progress relative to the target
-  const computeSkillGapProgress = (startLevel: number, targetLevel: number, inSkillSet: boolean) =>{
-    if (startLevel === targetLevel && inSkillSet){
-      return 100
-    }
-    else{
+  const computeSkillGapProgress = (startLevel: number, targetLevel: number, inSkillSet: boolean) => {
+    if (startLevel === targetLevel && inSkillSet) {
+      return 100;
+    } else {
       return (startLevel / targetLevel) * 100;
     }
-  }
+  };
 
-  return <Progress value={computeSkillGapProgress(startLevel, targetLevel,inSkillSet)} className="w-1/3" />;
+  return <Progress value={computeSkillGapProgress(startLevel, targetLevel, inSkillSet)} className="w-1/3" />;
 };

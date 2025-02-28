@@ -11,7 +11,7 @@ import { useAuth } from '@/features/auth/hook/useAuth';
 
 export const DashboardComponent = () => {
   const { dashboardData, isDashBoardSuccess, isDashboardLoading } = useDashboardQuery();
-  const {user} = useAuth();
+  const { user } = useAuth();
   const avatarImage = user?.pic || 'https://github.com/shadcn.png';
   if (isDashboardLoading) {
     return (
@@ -35,9 +35,7 @@ export const DashboardComponent = () => {
               <AvatarFallback>{user?.username && capitalizeFirstChar(user?.username)}</AvatarFallback>
             </Avatar>
 
-            <h2 className="text-xl font-bold">
-              {user?.username && capitalizeFirstChar(user?.username)}
-            </h2>
+            <h2 className="text-xl font-bold">{user?.username && capitalizeFirstChar(user?.username)}</h2>
             <p className="text-muted-foreground">
               Aspiring {dashboardData?.careerTitle && capitalizeEveryFirstChar(dashboardData?.careerTitle)}
             </p>
@@ -62,20 +60,19 @@ export const DashboardComponent = () => {
           <CardContent>
             <ul className="space-y-4">
               {dashboardData?.skillGap.map((skill, index) => {
-                  return (
-                    <li key={index} className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        <Badge className="cursor-pointer" variant="secondary">
-                          {capitalizeEveryFirstChar(skill.skillDTO.name)}
-                        </Badge>
-                        <span className="text-sm text-muted-foreground">
-                          {skill.skillFlow[0]} → {skill.skillFlow[skill.skillFlow.length - 1]}
-                        </span>
-                      </div>
-                      <SkillsToImproveProgressItem skillFlowList={skill.skillFlow} inSkillSet={skill.inSkillset}/>
-                    </li>
-                  );
-                
+                return (
+                  <li key={index} className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <Badge className="cursor-pointer" variant="secondary">
+                        {capitalizeEveryFirstChar(skill.skillDTO.name)}
+                      </Badge>
+                      <span className="text-sm text-muted-foreground">
+                        {skill.skillFlow[0]} → {skill.skillFlow[skill.skillFlow.length - 1]}
+                      </span>
+                    </div>
+                    <SkillsToImproveProgressItem skillFlowList={skill.skillFlow} inSkillSet={skill.inSkillset} />
+                  </li>
+                );
               })}
             </ul>
           </CardContent>

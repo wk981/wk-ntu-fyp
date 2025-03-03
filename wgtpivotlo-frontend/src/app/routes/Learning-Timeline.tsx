@@ -4,7 +4,7 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { usePreference } from '@/features/careers/hooks/usePreference';
-import { CourseList } from '@/features/courses/components/CourseList';
+import { CourseList } from '@/features/courses/components/Course-list';
 import { capitalizeEveryFirstChar } from '@/utils';
 import { useState } from 'react';
 
@@ -12,7 +12,6 @@ export const LearningTimeline = () => {
   const { getCareerPreference } = usePreference(true);
   const { data, isLoading } = getCareerPreference;
   const [showFilters, setShowFilters] = useState<boolean>(false);
-  const [availableDifficulties, setAvailableDifficulties] = useState<Set<string>>(new Set<string>());
   const [skillLevelFilter, setSkillLevelFilter] = useState('Show all');
 
   const handleShowFiltersClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -31,12 +30,12 @@ export const LearningTimeline = () => {
   }
 
   return (
-    <div className="md:px-4 h-full mx-auto max-w-[1280px] overflow-hidden">
-      <h1 className="text-2xl font-bold pb-3 text-primary">Learning Timeline</h1>
+    <div className="w-full mx-auto h-full">
+      <h1 className="text-2xl font-bold tracking-tight pb-3">Learning Timeline</h1>
       {skillsData && skillsData.length > 0 ? (
-        <Tabs defaultValue={skillsData[0].skillId.toString()} className="w-full overflow-auto">
+        <Tabs defaultValue={skillsData[0].skillId.toString()} className="w-full">
           <ScrollArea className="w-full whitespace-nowrap rounded-md border">
-            <TabsList className="inline-flex items-center justify-center">
+            <TabsList className="inline-flex h-10 items-center justify-start p-1 w-full">
               {skillsData.map((skill) => (
                 <TabsTrigger
                   key={skill.skillId}
@@ -49,21 +48,19 @@ export const LearningTimeline = () => {
             </TabsList>
             <ScrollBar orientation="horizontal" />
           </ScrollArea>
-          <Button className="mt-2" variant="outline" onClick={handleShowFiltersClick}>
+          <Button className="my-2" variant="outline" onClick={handleShowFiltersClick}>
             {!showFilters ? 'Show Filters' : 'Hide Filters'}
           </Button>
           {showFilters && (
-            <FilterSection availableDifficulties={availableDifficulties} onValueChange={handleValueChange} />
+            <FilterSection
+              availableDifficulties={['Beginner', 'Intermediate', 'Advanced']}
+              onValueChange={handleValueChange}
+            />
           )}
           {skillsData.map((skill) => (
-            <TabsContent className="h-full" key={skill.skillId} value={skill.skillId.toString()}>
-              <h2 className="text-lg font-bold mb-2">{capitalizeEveryFirstChar(skill.name)} Courses</h2>
-              <CourseList
-                skill={skill}
-                careerId={data?.career?.careerId}
-                setAvailableDifficulties={setAvailableDifficulties}
-                skillLevelFilter={skillLevelFilter}
-              />
+            <TabsContent key={skill.skillId} value={skill.skillId.toString()} className="mt-1">
+              <h2 className="text-2xl font-semibold">{capitalizeEveryFirstChar(skill.name)} Courses</h2>
+              <CourseList skill={skill} careerId={data?.career?.careerId} skillLevelFilter={skillLevelFilter} />
             </TabsContent>
           ))}
         </Tabs>
@@ -83,13 +80,13 @@ const LoadingSkeleton = () => (
 );
 
 interface FilterSectionProps {
-  availableDifficulties: Set<string>;
+  availableDifficulties: string[];
   onValueChange: (value: string) => void;
 }
 
 const FilterSection = ({ availableDifficulties, onValueChange }: FilterSectionProps) => (
-  <div className="bg-[#F1F5F9] border-[#E2E8F0] border-2 rounded-lg px-6 py-4 flex flex-col gap-4 mt-2">
-    {availableDifficulties.size > 0 && (
+  <div className="bg-[#F1F5F9] border-[#E2E8F0] border-2 rounded-lg px-6 py-4 flex flex-col gap-4">
+    {availableDifficulties.length > 0 && (
       <div>
         <label className="font-bold text-sm">Course Difficulty:</label>
         <Select onValueChange={onValueChange} defaultValue="Show all">

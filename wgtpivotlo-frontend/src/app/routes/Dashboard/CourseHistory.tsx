@@ -1,5 +1,5 @@
 import { LoadingSpinnerComponent } from '@/components/loading-spinner';
-import { CourseItem } from '@/features/courses/components/CourseListItem';
+import { CourseItem } from '@/features/courses/components/Course-list-item';
 import { useCourseHistory } from '@/features/courses/hook/useCourseHistory';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useState } from 'react';

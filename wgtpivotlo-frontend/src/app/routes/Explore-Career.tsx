@@ -1,85 +1,30 @@
-import { LoadingSpinnerComponent } from '@/components/loading-spinner';
-import { Preview } from '@/components/preview';
-import { Skeleton } from '@/components/ui/skeleton';
+import { CareerPreview } from '@/features/careers/components/career-preview';
+import { CareerPreviewLoading } from '@/features/careers/components/CareerPreviewLoading';
 import { useExploreCareer } from '@/features/careers/hooks/useExploreCareer';
 import { usePreference } from '@/features/careers/hooks/usePreference';
-import { useRecommendationCategory } from '@/features/careers/hooks/useRecommendationCategory';
-import { FetchChoiceCareerRecommendationParams } from '@/features/questionaire/contexts/QuestionaireProvider';
-import { useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export const ExploreCareer = () => {
   const { data, isLoading: isExploringLoading } = useExploreCareer();
-
+  const navigate = useNavigate();
   const { checkedId, handleHeartButtonClick } = usePreference();
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const categorySearchParams = searchParams.get('category');
-  const {
-    categoryResult,
-    setCategoryResult,
-    page,
-    setPage,
-    choiceCareerRecommendationPostMutation,
-    fetchChoiceCareerRecommendation,
-  } = useRecommendationCategory();
-  const { isPending: isChoiceLoading } = choiceCareerRecommendationPostMutation;
 
   const onClick = (category: string) => {
-    setSearchParams({ category: category.toLowerCase() });
-    setPage(1);
+    void navigate(category);
   };
 
   const backButtonOnClick = () => {
-    setSearchParams({});
-    setPage(1);
-    setCategoryResult(undefined);
+    void navigate('explore/career/');
   };
-
-  const interSectionAction = () => {
-    console.log('intersected');
-    setPage((prevPage) => prevPage + 1); // Increment the page
-  };
-
-  useEffect(() => {
-    if (categorySearchParams === '' || categorySearchParams === null) {
-      setPage(1);
-      setCategoryResult(undefined);
-    }
-  }, [categorySearchParams]);
-
-  useEffect(() => {
-    const fetchRecommendations = async () => {
-      if (!categorySearchParams) return; // Exit if no category selected
-      const params: FetchChoiceCareerRecommendationParams = {
-        category: categorySearchParams,
-        pageNumber: page,
-      };
-      await fetchChoiceCareerRecommendation(params);
-    };
-
-    fetchRecommendations().catch((err) => console.log(err));
-  }, [page, categorySearchParams]); // Trigger when `page` or `categorySearchParams` changes
-
-  if (!data) {
-    return null; // Prevent rendering while redirecting
-  }
 
   if (isExploringLoading) {
-    return (
-      <div className="space-y-4">
-        <Skeleton className="h-8 w-64" />
-        <Skeleton className="h-64 w-full" />
-        <Skeleton className="h-8 w-64" />
-        <Skeleton className="h-64 w-full" />
-      </div>
-    );
+    return <CareerPreviewLoading />;
   }
   return (
-    <div className="m-auto overflow-auto md:px-4">
-      {data && (categorySearchParams === '' || !categorySearchParams) ? (
+    <div className="container mx-auto md:px-4 ">
+      {data && (
         <>
-          <Preview
+          <CareerPreview
             category={'user'}
             data={data?.user.data}
             onClick={onClick}
@@ -87,7 +32,7 @@ export const ExploreCareer = () => {
             checkedId={checkedId}
             handleHeartButtonClick={handleHeartButtonClick}
           />
-          <Preview
+          <CareerPreview
             category={'career'}
             data={data?.career.data}
             onClick={onClick}
@@ -96,25 +41,6 @@ export const ExploreCareer = () => {
             handleHeartButtonClick={handleHeartButtonClick}
           />
         </>
-      ) : (
-        categorySearchParams &&
-        categoryResult && (
-          <>
-            <Preview
-              category={categorySearchParams}
-              data={categoryResult}
-              onClick={onClick}
-              seeMore={false}
-              back={true}
-              layout="grid"
-              backButtonOnClick={backButtonOnClick}
-              intersectionAction={interSectionAction}
-              checkedId={checkedId}
-              handleHeartButtonClick={handleHeartButtonClick}
-            />
-            {isChoiceLoading && <LoadingSpinnerComponent />}
-          </>
-        )
       )}
     </div>
   );

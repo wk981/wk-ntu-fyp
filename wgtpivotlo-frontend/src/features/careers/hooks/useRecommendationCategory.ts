@@ -6,13 +6,23 @@ import {
   ChoiceCareerRecommendationRequest,
 } from '../types';
 import { choiceCareerRecommendation } from '../api';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FetchChoiceCareerRecommendationParams } from '@/features/questionaire/contexts/QuestionaireProvider';
+import { ResultBody } from '@/features/questionaire/api';
 
-export const useRecommendationCategory = () => {
+interface UseRecommendationCategoryInterface {
+  category: string | undefined;
+  questionaireFormResults?: ResultBody;
+}
+
+export const useRecommendationCategory = ({
+  category,
+  questionaireFormResults,
+}: UseRecommendationCategoryInterface) => {
   const [categoryResult, setCategoryResult] = useState<CareerWithSimilarityScoreDTO[] | undefined>(undefined);
   const [totalPage, setTotalPage] = useState<number | undefined>(undefined);
   const [page, setPage] = useState<number>(1);
+  const [hasMore, setHasMore] = useState<boolean>(true);
 
   const choiceCareerRecommendationPostMutation = useMutation({
     mutationFn: ({ data, pageNumber }: ChoiceCareerRecommendationParams) => {
@@ -32,7 +42,8 @@ export const useRecommendationCategory = () => {
     questionaireFormResults,
   }: FetchChoiceCareerRecommendationParams) => {
     try {
-      if (totalPage && totalPage === pageNumber) {
+      if (totalPage && totalPage <= pageNumber) {
+        setHasMore(false);
         return;
       }
       const data: ChoiceCareerRecommendationRequest = {
@@ -55,18 +66,37 @@ export const useRecommendationCategory = () => {
       const response = await choiceCareerRecommendationPostMutation.mutateAsync(body);
 
       if (response) {
-        setCategoryResult((prevState) => [
-          ...(prevState || []),
-          ...(Array.isArray(response?.data) ? response.data : response?.data ? [response.data] : []),
-        ]);
-        if (!totalPage) {
-          setTotalPage(response?.totalPage);
+        setCategoryResult((prevState) => {
+          const prevItems = prevState || [];
+          const newItems = Array.isArray(response?.data) ? response.data : response?.data ? [response.data] : [];
+          // Filter out items that are already in the state (based on a unique id)
+          const filteredNewItems = newItems.filter(
+            (newItem) => !prevItems.some((prevItem) => prevItem.career.careerId === newItem.career.careerId)
+          );
+          return [...prevItems, ...filteredNewItems];
+        });
+
+        // Update totalPage only if it actually changed
+        if (response?.totalPage && response.totalPage !== totalPage) {
+          setTotalPage(response.totalPage);
         }
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (!category) return;
+    if (!hasMore) return;
+    // For instance, if you do need to check totalPage here:
+    const params = {
+      category,
+      pageNumber: page,
+      questionaireFormResults: questionaireFormResults ?? undefined,
+    };
+    void fetchChoiceCareerRecommendation(params);
+  }, [page, category]);
 
   return {
     categoryResult,
@@ -77,5 +107,7 @@ export const useRecommendationCategory = () => {
     setPage,
     choiceCareerRecommendationPostMutation,
     fetchChoiceCareerRecommendation,
+    isCategoryLoading: choiceCareerRecommendationPostMutation.isPending,
+    hasMore,
   };
 };

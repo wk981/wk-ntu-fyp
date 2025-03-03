@@ -29,17 +29,13 @@ import java.util.stream.Collectors;
 public class CourseRecommendationService {
     private final UserSkillsRepository userSkillsRepository;
     private final CareerSkillAssociationRepository careerSkillAssociationRepository;
-    private final CareerRepository careerRepository;
     private final CourseRepository courseRepository;
-    private final SkillLevelHelper skillLevelHelper;
 
     @Autowired
-    public CourseRecommendationService(UserSkillsRepository userSkillsRepository, CareerSkillAssociationRepository careerSkillAssociationRepository, CareerRepository careerRepository, CourseRepository courseRepository, SkillLevelHelper skillLevelHelper) {
+    public CourseRecommendationService(UserSkillsRepository userSkillsRepository, CareerSkillAssociationRepository careerSkillAssociationRepository, CourseRepository courseRepository) {
         this.userSkillsRepository = userSkillsRepository;
         this.careerSkillAssociationRepository = careerSkillAssociationRepository;
-        this.careerRepository = careerRepository;
         this.courseRepository = courseRepository;
-        this.skillLevelHelper = skillLevelHelper;
     }
 
     public HashMap<String, Object> findPaginatedTimelineCourseBySkillId(long skillId, long careerId, Optional<SkillLevel> skillLevelFilter, int pageNumber, int pageSize, Authentication authentication) throws AccessDeniedException {
@@ -51,25 +47,19 @@ public class CourseRecommendationService {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         long userId = userDetails.getId();
 
-        log.info("Step 2: Check whether skillId exists for user");
-        Optional<UserSkills> existingUserSkill = userSkillsRepository.findByUserIdAndSkillId(userId,skillId);
-
-        log.info("Step 3: Get Skill Level for the career");
+        log.info("Step 2: Get Skill Level for the career");
         Optional<CareerSkills> existCareerSkills =  careerSkillAssociationRepository.findCareerSkillsByCareerIdAndSkillId(careerId,skillId);
         existCareerSkills.orElseThrow(() -> new ResourceNotFoundException("No skill found for career"));
-        SkillLevel careerSkillLevel = existCareerSkills.get().getProfiency();
-
-        List<String> recommendedSkillLevelsFlow = skillLevelHelper.getSkillLevelFlow(existingUserSkill, careerSkillLevel);
 
         int correctedPageNumber = (pageNumber > 0) ? pageNumber - 1 : 0;
         Pageable skillPageWithElements = PageRequest.of(correctedPageNumber, pageSize, Sort.by("rating").descending());
         Optional<String> filterBySkillLevel = skillLevelFilter.map(Object::toString);
 
 
-        log.info("Step 4: Making a query to get course based on skillId and skill level flow");
-        Page<Object[]> paginatedCourses = courseRepository.findByCourseBySkillIdSortedByProficiency(skillId, recommendedSkillLevelsFlow, filterBySkillLevel,skillPageWithElements);
+        log.info("Step 3 Making a query to get course based on skillId and skill level flow");
+        Page<Object[]> paginatedCourses = courseRepository.findByCourseBySkillIdSortedByProficiency(skillId, filterBySkillLevel,skillPageWithElements);
 
-        List<CourseWithProfiencyDTO> courseWithProfiencyDTOS = (List<CourseWithProfiencyDTO>) paginatedCourses.getContent().stream().map((objects -> (CourseWithProfiencyDTO) CourseWithProfiencyDTO.builder()
+        List<CourseWithProfiencyDTO> courseWithProfiencyDTOS = paginatedCourses.getContent().stream().map((objects -> (CourseWithProfiencyDTO) CourseWithProfiencyDTO.builder()
                 .course_id((Long) objects[0])             // course_id (long)
                 .name((String) objects[1])               // name (String)
                 .link((String) objects[2])               // link (String)
@@ -85,10 +75,9 @@ public class CourseRecommendationService {
             throw new PageItemsOutOfBoundException("Page number out of bounds");
         }
 
-        log.info("Step 5: Tidying up body and pagination");
+        log.info("Step 4: Tidying up body and pagination");
         HashMap<String, Object> res = new HashMap<>();
         res.put("pageDTO", new PageDTO<>(paginatedCourses.getTotalPages(), pageNumber, courseWithProfiencyDTOS));
-        res.put("availableSkillLevels", recommendedSkillLevelsFlow);
         return res;
     }
 

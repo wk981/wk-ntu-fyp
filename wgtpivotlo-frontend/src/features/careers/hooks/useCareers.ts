@@ -9,6 +9,7 @@ export const useCareers = (careerId: number) => {
   const careerQuery = useQuery({
     queryKey: ['career', careerId],
     queryFn: () => getCareer(careerId),
+    enabled: false, // Disable automatic query execution
   });
 
   useEffect(() => {
@@ -17,5 +18,7 @@ export const useCareers = (careerId: number) => {
     }
   }, [careerQuery]);
 
-  return { careerQuery, careerWithSkills };
+  // Create a function to manually trigger the query.
+
+  return { careerQuery, careerWithSkills, refetch: careerQuery.refetch };
 };

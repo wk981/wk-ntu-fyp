@@ -37,6 +37,5 @@ export const useCourseQueryBySkillPaginated = ({
     isFetchingCourses: isFetching,
     error,
     isError,
-    availableFilters: data?.pages.flatMap((page) => page.availableSkillLevels),
   };
 };

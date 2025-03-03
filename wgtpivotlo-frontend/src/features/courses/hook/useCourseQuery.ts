@@ -1,11 +1,22 @@
 import { useQuery } from '@tanstack/react-query';
 import { getCourseById } from '../api';
+import { CourseWithSkillsDTO } from '../types';
+import { useEffect, useState } from 'react';
 
 export const useCourseQuery = (id: number) => {
-  const getCourse = useQuery({
+  const [courseWithSkills, setCourseWithSkills] = useState<CourseWithSkillsDTO | undefined>();
+
+  const courseQuery = useQuery({
     queryKey: ['course', id],
     queryFn: () => getCourseById(id),
+    enabled: false, // Disable automatic query execution
   });
 
-  return { getCourse };
+  useEffect(() => {
+    if (courseQuery.isSuccess) {
+      setCourseWithSkills(courseQuery.data);
+    }
+  }, [courseQuery]);
+
+  return { courseWithSkills, courseQuery, refetch: courseQuery.refetch };
 };

@@ -19,6 +19,8 @@ import { Home } from './routes/Home';
 import { EditAccountProvider } from '@/features/auth/provider/EditAccountSettingsProvider';
 import { Security } from './routes/Settings/Security';
 import { AccountSettings } from './routes/Settings';
+import { ExploreCareerCategory } from './routes/Explore-Career-Category';
+import { ResultCategory } from './routes/questionaire/Result-Category';
 
 const QuestionaireLayout = () => (
   <QuestionaireProvider>
@@ -44,7 +46,7 @@ const CommonLayout = () => (
 export const AppRouter = () => {
   return (
     <Router>
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+      <div className="min-h-screen">
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -60,6 +62,7 @@ export const AppRouter = () => {
                 <Route path="upload" element={<UploadResume />} />
                 <Route path="questions" element={<Questions />} />
                 <Route path="result" element={<Result />} />
+                <Route path="result/:category" element={<ResultCategory />} />
                 <Route path="*" element={<NotFound />} /> {/* Handle unknown nested routes */}
               </Route>
               <Route path="settings" element={<SettingsLayoutWrapper />}>
@@ -69,6 +72,7 @@ export const AppRouter = () => {
 
               <Route path="explore/timeline" element={<LearningTimeline />} />
               <Route path="explore/career" element={<ExploreCareer />} />
+              <Route path="explore/career/:category" element={<ExploreCareerCategory />} />
               <Route path="resume" element={<DownloadResume />} />
               <Route path="history" element={<CourseHistory />} />
             </Route>

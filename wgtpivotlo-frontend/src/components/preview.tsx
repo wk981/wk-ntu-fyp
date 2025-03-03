@@ -120,7 +120,7 @@ const PreviewList = ({
             />
           ))}
       </div>
-      <ScrollBar orientation="horizontal" />
+      <ScrollBar orientation={`${layout === 'flex' ? 'horizontal' : 'vertical'}`} />
     </ScrollArea>
   );
 };

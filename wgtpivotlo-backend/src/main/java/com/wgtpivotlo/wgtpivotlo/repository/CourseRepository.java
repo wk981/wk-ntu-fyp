@@ -25,7 +25,7 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
     @Query(value = "SELECT c.*, cs.profiency FROM course c " +
             "INNER JOIN course_skill cs ON c.course_id = cs.course_id " +
             "WHERE cs.skill_id = :skillId " +
-            "AND (cs.profiency IN :recommendedSkillLevels) " + // Filter by levels
+//            "AND (cs.profiency IN :recommendedSkillLevels) " + // Filter by levels
             "AND (:filterBySkillLevel is null or cs.profiency = :filterBySkillLevel)" +
             "ORDER BY CASE " +
             "  WHEN cs.profiency = 'Beginner' THEN 1 " +
@@ -35,12 +35,13 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
             countQuery = "SELECT count(*) FROM course c " +
                     "INNER JOIN course_skill cs ON c.course_id = cs.course_id " +
                     "WHERE cs.skill_id = :skillId " +
-                    "AND (cs.profiency IN :recommendedSkillLevels)" +
+//                    "AND (cs.profiency IN :recommendedSkillLevels)" +
                     "AND (:filterBySkillLevel is null or cs.profiency = :filterBySkillLevel)",
             nativeQuery = true)
     Page<Object[]> findByCourseBySkillIdSortedByProficiency(
             @Param("skillId") long skillId,
-            @Param("recommendedSkillLevels") List<String> recommendedSkillLevels, // List of levels to filter
             @Param("filterBySkillLevel") Optional<String> filterBySkillLevel,
             Pageable pageable);
+
+    // removed @Param recommendedSkillLevels
 }

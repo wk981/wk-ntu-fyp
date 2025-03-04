@@ -20,10 +20,10 @@ import java.util.Date;
 public abstract class SuperClass {
 
     @CreatedDate
-    @Column(name="created_on", nullable = false, updatable = false)
-    private Date created_on;
+    @Column(name="created_on", nullable = false, updatable = true)
+    private LocalDateTime created_on;
 
     @LastModifiedDate
-    @Column(name="updated_on", nullable = false, updatable = false)
+    @Column(name="updated_on", nullable = false, updatable = true)
     private LocalDateTime updated_on;
 }

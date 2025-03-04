@@ -1,6 +1,6 @@
 package com.wgtpivotlo.wgtpivotlo.enums;
 
 public enum Role {
-    ADMIN,
-    USER
+    ROLE_ADMIN,
+    ROLE_USER
 }

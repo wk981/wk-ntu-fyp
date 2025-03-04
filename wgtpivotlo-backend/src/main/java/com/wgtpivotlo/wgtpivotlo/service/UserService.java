@@ -198,7 +198,6 @@ public class UserService {
             throw new DuplicateException("Your new password cannot be the same as your current password.");
         }
 
-
         user.setPassword(encryptedNewPassword);
         user.setUpdated_on(LocalDateTime.now());
         userRepository.save(user);
@@ -212,7 +211,7 @@ public class UserService {
         long sessionUserId = userDetails.getId();
         Role userRole = userDetails.getRole();
 
-        if(sessionUserId != userId && userRole != Role.ADMIN){
+        if(sessionUserId != userId && userRole != Role.ROLE_ADMIN){
             throw new AccessDeniedException("Access Denied");
         }
 

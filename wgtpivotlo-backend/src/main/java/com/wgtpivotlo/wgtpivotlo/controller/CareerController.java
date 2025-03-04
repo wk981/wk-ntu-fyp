@@ -1,15 +1,18 @@
 package com.wgtpivotlo.wgtpivotlo.controller;
 
+import com.wgtpivotlo.wgtpivotlo.dto.AddCareerRequest;
+import com.wgtpivotlo.wgtpivotlo.dto.MessageDTO;
 import com.wgtpivotlo.wgtpivotlo.dto.PageDTO;
+import com.wgtpivotlo.wgtpivotlo.dto.UpdateCareerRequest;
 import com.wgtpivotlo.wgtpivotlo.model.Career;
 import com.wgtpivotlo.wgtpivotlo.service.CareerService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -31,6 +34,27 @@ public class CareerController {
             @RequestParam(required = false) String sector,
             @RequestParam(required = false) String careerLevel){
         return ResponseEntity.ok(careerService.findAllPaginationCareer(pageNumber, pageSize, Optional.ofNullable(title), Optional.ofNullable(sector), Optional.ofNullable(careerLevel)));
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<MessageDTO> addCareer(@RequestPart("careerBody") @Valid AddCareerRequest request, @RequestPart("thumbnail") MultipartFile thumbnail) throws BadRequestException {
+        careerService.addCareer(request,thumbnail);
+        MessageDTO msg = MessageDTO.builder().message("Success").build();
+        return ResponseEntity.ok(msg);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<MessageDTO> updateCareer(@RequestPart("careerBody") UpdateCareerRequest request, @RequestPart("thumbnail") MultipartFile thumbnail, @PathVariable long id) throws BadRequestException {
+        careerService.updateCareer(request,thumbnail, id);
+        MessageDTO msg = MessageDTO.builder().message("Success").build();
+        return ResponseEntity.ok(msg);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MessageDTO> deleteCareer(@PathVariable long id){
+        careerService.deleteCareerId(id);
+        MessageDTO msg = MessageDTO.builder().message("Success").build();
+        return ResponseEntity.ok(msg);
     }
 
 }

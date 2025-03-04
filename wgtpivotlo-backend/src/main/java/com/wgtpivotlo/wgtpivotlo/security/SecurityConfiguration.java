@@ -41,9 +41,12 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((authorize) ->
-                authorize.requestMatchers(HttpMethod.GET, "/**").permitAll()
+                authorize
                         .requestMatchers(HttpMethod.POST, "/api/login", "/api/register").permitAll()
                         .requestMatchers("/api/me").authenticated()
+                        .requestMatchers(HttpMethod.POST,"/api/v1/career/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT,"/api/v1/career/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE,"/api/v1/career/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
         )
         .csrf(AbstractHttpConfigurer::disable)

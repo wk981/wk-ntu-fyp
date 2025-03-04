@@ -1,13 +1,16 @@
 package com.wgtpivotlo.wgtpivotlo.controller;
 
-import com.wgtpivotlo.wgtpivotlo.dto.PageDTO;
-import com.wgtpivotlo.wgtpivotlo.dto.SkillDTO;
+import com.wgtpivotlo.wgtpivotlo.dto.*;
 import com.wgtpivotlo.wgtpivotlo.model.Skill;
 import com.wgtpivotlo.wgtpivotlo.service.SkillService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,13 +35,29 @@ public class SkillController {
     }
 
     @GetMapping("/{id}")
-    public Optional<Skill> getSkillId(@PathVariable long id){
-        return skillService.findId(id);
+    public ResponseEntity<Skill> getSkillId(@PathVariable long id){
+        return ResponseEntity.ok(skillService.findId(id));
     }
 
     @PostMapping("/")
-    public ResponseEntity<String> createNewSkill(){
-        return ResponseEntity.status(201).body("Created");
+    public ResponseEntity<MessageDTO> createSkill(@RequestPart("skillBody") @Valid AddSkillRequest request, @RequestPart("thumbnail") MultipartFile thumbnail) throws BadRequestException {
+        skillService.createSkill(request, thumbnail);
+        MessageDTO msg = MessageDTO.builder().message("Success").build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(msg);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<MessageDTO> updateSkill(@RequestPart("skillBody") UpdateSkillRequest request, @RequestPart("thumbnail") MultipartFile thumbnail, @PathVariable long id) throws BadRequestException {
+        skillService.updateSkill(request, thumbnail, id);
+        MessageDTO msg = MessageDTO.builder().message("Success").build();
+        return ResponseEntity.ok(msg);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<MessageDTO> deleteSkill(@PathVariable long id){
+        skillService.deleteCareerId(id);
+        MessageDTO msg = MessageDTO.builder().message("Success").build();
+        return ResponseEntity.ok(msg);
     }
 
     @GetMapping("/search")

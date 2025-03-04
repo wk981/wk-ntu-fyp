@@ -10,6 +10,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,7 +42,7 @@ public class CareerController {
     public ResponseEntity<MessageDTO> addCareer(@RequestPart("careerBody") @Valid AddCareerRequest request, @RequestPart("thumbnail") MultipartFile thumbnail) throws BadRequestException {
         careerService.addCareer(request,thumbnail);
         MessageDTO msg = MessageDTO.builder().message("Success").build();
-        return ResponseEntity.ok(msg);
+        return ResponseEntity.status(HttpStatus.CREATED).body(msg);
     }
 
     @PutMapping("/{id}")

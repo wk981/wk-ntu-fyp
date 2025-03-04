@@ -61,7 +61,7 @@ public class FileService {
         return output;
     }
 
-    private static Set<String> allowedFileSet = new HashSet<>() {{
+    private static final Set<String> allowedFileSet = new HashSet<>() {{
         add("application/msword");
         add("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         add("application/vnd.openxmlformats-officedocument.wordprocessingml.template");
@@ -70,7 +70,6 @@ public class FileService {
         add("application/pdf");
     }};
 
-    // TODO: Need to improve the search
     public Set<SkillDTO> processFile(MultipartFile multiPartFile) throws IOException, InvalidFormatException {
         String contentType = multiPartFile.getContentType();
         if(!allowedFileSet.contains(contentType)){
@@ -78,15 +77,14 @@ public class FileService {
         }
         List<String> resumeLines = convertFileIntoStringList(multiPartFile);
 
-        // Define keywords to identify skill categories
-        List<String> keywords = List.of("Languages", "Programming", "Framework", "Databases", "DevOps", "Version Control", "Operating System");
-
         // Regex to extract text after the colon
-        String regex = "(?<=:).*";
-        Pattern pattern = Pattern.compile(regex);
+        String semiColonRegex = "(?<=:).*";
+        Pattern pattern = Pattern.compile(semiColonRegex);
 
-        List<String> skills = resumeLines.stream()
-                .filter(line -> keywords.stream().anyMatch(line::contains)) // Keep only lines with specific keywords
+        List<String> skillSection = extractSection(resumeLines, "SKILL");
+
+        List<String> skills = skillSection
+                .stream()
                 .map(pattern::matcher) // Apply regex
                 .filter(Matcher::find) // Check if the line contains skills
                 .map(matcher -> matcher.group().trim()) // Extract text after colon
@@ -95,13 +93,6 @@ public class FileService {
                 .filter(skill -> !skill.isEmpty()) // Remove empty entries
                 .toList();
 
-        // Note: For debugging
-//        HashMap<String, Skill> res = new HashMap<>();
-//
-//        for(String skill: skills){
-//            Skill query = skillRepository.findNameUsingTriageAndIgnoreCase(skill.toLowerCase().replace(" ", ""));
-//            res.put(skill, query);
-//        }
         Set<Skill> skillSet = skills.stream()
                 .map(s ->
                     skillRepository.findNameUsingTriageAndIgnoreCase(s.toLowerCase().replace(" ", ""))
@@ -120,40 +111,6 @@ public class FileService {
         return res;
     }
 
-    private List<String> convertFileIntoStringList(MultipartFile multiPartFile) throws IOException, InvalidFormatException {
-        FileFormat fileFormat = MultiPartFileConverter.getFileFormat(multiPartFile.getContentType());
-        File file = MultiPartFileConverter.converMultiPartFileToFile(multiPartFile);
-        List<String> res = List.of();
-        switch(fileFormat){
-            case FileFormat.PDF:
-                PDDocument pdfDocument = Loader.loadPDF((File) file);
-                PDFTextStripper stripper = new PDFTextStripper();
-                String text = stripper.getText(pdfDocument);
-                String[] pdfParagraphs = text.split("\n\\s*\n");
-                res = Arrays.stream(pdfParagraphs)
-                        .filter(Objects::nonNull)     // Exclude null values
-                        .map(String::trim)
-                        .filter(Objects::nonNull)
-                        .filter(s -> !s.isEmpty())    // Exclude empty strings
-                        .filter(s -> !s.isBlank())
-                        .filter(s -> !s.contains(" "))
-                        .toList();
-            case FileFormat.DOC:
-                XWPFDocument msDocument = new XWPFDocument(OPCPackage.open(file));
-                List<XWPFParagraph> msParagraphs = msDocument.getParagraphs();
-                res = msParagraphs.stream()
-                        .map(XWPFParagraph::getText) // Extract text
-                        .filter(Objects::nonNull)    // Exclude null text
-                        .map(String::trim)           // Trim whitespace
-                        .filter(s -> !s.isEmpty())   // Exclude empty strings
-                        .filter(s -> !s.isBlank())
-                        .filter(s -> !s.contains(" "))
-                        .toList();
-        }
-        MultiPartFileConverter.handleDeleteFile(file);
-        return res;
-    }
-
     public byte[] generateUserResume(Authentication authentication) throws Exception {
         if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
             throw new AccessDeniedException("Access Denied");
@@ -168,6 +125,42 @@ public class FileService {
 
         return generateFile(exitingUserSkillsList.get());
 
+    }
+
+    private List<String> convertFileIntoStringList(MultipartFile multiPartFile) throws IOException, InvalidFormatException {
+        FileFormat fileFormat = MultiPartFileConverter.getFileFormat(multiPartFile.getContentType());
+        File file = MultiPartFileConverter.converMultiPartFileToFile(multiPartFile);
+        List<String> res = List.of();
+        switch(fileFormat){
+            case PDF:
+                PDDocument pdfDocument = Loader.loadPDF(file);
+                PDFTextStripper stripper = new PDFTextStripper();
+                String text = stripper.getText(pdfDocument);
+                String[] pdfParagraphs = text.replace("\r", "").split("\n");
+                res = Arrays.stream(pdfParagraphs)
+                        .filter(Objects::nonNull)     // Exclude null values
+                        .map(String::trim)
+                        .filter(s -> !s.isEmpty())    // Exclude empty strings
+                        .filter(s -> !s.isBlank())
+                        .filter(s -> !s.contains(" "))
+                        .toList();
+                break;
+
+            case DOC:
+                XWPFDocument msDocument = new XWPFDocument(OPCPackage.open(file));
+                List<XWPFParagraph> msParagraphs = msDocument.getParagraphs();
+                res = msParagraphs.stream()
+                        .map(XWPFParagraph::getText) // Extract text
+                        .filter(Objects::nonNull)    // Exclude null text
+                        .map(String::trim)           // Trim whitespace
+                        .filter(s -> !s.isEmpty())   // Exclude empty strings
+                        .filter(s -> !s.isBlank())
+                        .filter(s -> !s.contains(" "))
+                        .toList();
+                break;
+        }
+        MultiPartFileConverter.handleDeleteFile(file);
+        return res;
     }
 
     private byte[] generateFile(List<UserSkills> userSkillsList) throws IOException, XmlException {
@@ -340,5 +333,36 @@ public class FileService {
 
         // Close the document
         document.close();
+    }
+
+    private List<String> extractSection(List<String> resumeLines, String sectionHeaderPattern){
+        List<String> section = new ArrayList<>();
+
+        // Loop through each line to detect sections.
+        // A section starts with a header line (a line that is fully uppercase)
+        // that also matches the given pattern. Once a header is found, we add all
+        // subsequent non-header lines (lines that are not fully uppercase) to the section,
+        // until we encounter the next header. This approach groups contiguous lines
+
+        // Note: header segmentation algorithm.
+        for(int i = 0; i < resumeLines.size(); i++){
+            String line = resumeLines.get(i);
+            if(line.equals(line.toUpperCase())){ // Only process section when the section header is capital
+                Pattern p = Pattern.compile(sectionHeaderPattern);
+                Matcher m = p.matcher(line);
+                if(m.find()){
+                    for(int j = i+1; j < resumeLines.size(); j++){
+                        String jLine = resumeLines.get(j);
+                        if(!jLine.equals(jLine.toUpperCase())){
+                            section.add(jLine);
+                        }
+                        else{
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return section;
     }
 }

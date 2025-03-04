@@ -15,7 +15,7 @@ public interface SkillRepository extends JpaRepository<Skill,Long> {
     @Query(value = "SELECT s.* " +
             "FROM skill s " +
             "WHERE lower(s.name) ILIKE CONCAT('%', :name, '%') " +  // Partial match with ILIKE
-            "   OR similarity(lower(REPLACE(s.name, ' ', '')), :name) > 0.1 " + // Similarity threshold
+            "   OR similarity(lower(REPLACE(s.name, ' ', '')), :name) > 0.6 " + // Similarity threshold
             "ORDER BY similarity(lower(REPLACE(s.name, ' ', '')), :name) DESC " +  // Best match first
             "LIMIT 1",  // Get the best match only
             nativeQuery = true)

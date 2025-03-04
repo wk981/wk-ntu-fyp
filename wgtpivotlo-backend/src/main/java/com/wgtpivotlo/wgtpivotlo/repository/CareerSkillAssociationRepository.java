@@ -2,7 +2,6 @@ package com.wgtpivotlo.wgtpivotlo.repository;
 
 import com.wgtpivotlo.wgtpivotlo.model.Career;
 import com.wgtpivotlo.wgtpivotlo.model.CareerSkills;
-import com.wgtpivotlo.wgtpivotlo.repository.criteria.RecommendationCriteria;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,7 +12,7 @@ import java.util.Optional;
 
 // Inherit jparepo and customRepository(that contains criteria API for complex queries)
 @Repository
-public interface CareerSkillAssociationRepository extends JpaRepository<CareerSkills, Long>, RecommendationCriteria {
+public interface CareerSkillAssociationRepository extends JpaRepository<CareerSkills, Long> {
     Optional<List<CareerSkills>> findByCareer(Optional<Career> career);
 
     @Query(value = "SELECT * FROM career_skill cs WHERE cs.career_id IN :careerIds",nativeQuery = true)

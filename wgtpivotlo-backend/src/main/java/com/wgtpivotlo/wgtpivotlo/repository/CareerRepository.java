@@ -2,6 +2,9 @@ package com.wgtpivotlo.wgtpivotlo.repository;
 
 import com.wgtpivotlo.wgtpivotlo.model.Career;
 import com.wgtpivotlo.wgtpivotlo.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -27,4 +30,8 @@ public interface CareerRepository extends JpaRepository<Career,Long> {
 
     @Query(value = "SELECT DISTINCT c.* FROM career_skill cs INNER JOIN career c ON c.career_id = cs.career_id WHERE cs.skill_id in (:skillIds)", nativeQuery = true)
     List<Career> findCareerSkillsBySkillIds(@Param("skillIds") List<Long> skillIds);
+
+    List<Career> findAll(Specification<Career> specification);
+
+    Page<Career> findAll(Specification<Career> specification, Pageable pageable);
 }

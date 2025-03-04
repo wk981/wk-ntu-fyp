@@ -4,13 +4,17 @@ import com.wgtpivotlo.wgtpivotlo.dto.PageDTO;
 import com.wgtpivotlo.wgtpivotlo.dto.SkillDTO;
 import com.wgtpivotlo.wgtpivotlo.errors.exceptions.PageItemsOutOfBoundException;
 import com.wgtpivotlo.wgtpivotlo.errors.exceptions.ResourceNotFoundException;
+import com.wgtpivotlo.wgtpivotlo.model.Career;
 import com.wgtpivotlo.wgtpivotlo.model.Skill;
 import com.wgtpivotlo.wgtpivotlo.repository.SkillRepository;
+import com.wgtpivotlo.wgtpivotlo.repository.criterias.CareerSpecification;
+import com.wgtpivotlo.wgtpivotlo.repository.criterias.SkillSpecification;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,23 +42,27 @@ public class SkillService {
         return skillsList;
     }
 
-    public PageDTO<SkillDTO> findAllPagination(int pageNumber, int pageSize){
+    public PageDTO<SkillDTO> findAllPagination(int pageNumber, int pageSize, Optional<String> name){
         int correctedPageNumber = (pageNumber > 0) ? pageNumber - 1 : 0;
-        Pageable skillPageWithElements = PageRequest.of(correctedPageNumber, pageSize);
+        Pageable pageable = PageRequest.of(correctedPageNumber, pageSize);
+
 
         log.info("Step1a: Making a query to get skills");
-        Page<Skill> paginatedSkills = skillRepository.findAll(skillPageWithElements);
+        Specification<Skill> specification = SkillSpecification.getSpecification(name);
+        Page<Skill> skills = skillRepository.findAll(specification, pageable);
 
-        if (correctedPageNumber >= paginatedSkills.getTotalPages()) {
+
+        if (correctedPageNumber >= skills.getTotalPages()) {
             log.warn("Page number out of bounds");
             throw new PageItemsOutOfBoundException("Page number out of bounds");
         }
 
+
         log.info("Step1b: Creating skillDTO");
-        List<SkillDTO> skillDTOList= paginatedSkills.getContent().stream().map(SkillDTO::new).collect(Collectors.toList());;
+        List<SkillDTO> skillDTOList= skills.getContent().stream().map(SkillDTO::new).collect(Collectors.toList());;
 
         log.info("Step2: Tidying up body and pagination");
-        return new PageDTO<>(paginatedSkills.getTotalPages(), pageNumber, skillDTOList);
+        return new PageDTO<>(skills.getTotalPages(), pageNumber, skillDTOList);
     }
 
     public Optional<Skill> findId(long id) {

@@ -1,6 +1,9 @@
 package com.wgtpivotlo.wgtpivotlo.repository;
 
 import com.wgtpivotlo.wgtpivotlo.model.Skill;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,4 +23,6 @@ public interface SkillRepository extends JpaRepository<Skill,Long> {
             "LIMIT 1",  // Get the best match only
             nativeQuery = true)
     Skill findNameUsingTriageAndIgnoreCase(@Param("name") String name);
+
+    Page<Skill> findAll(Specification<Skill> specification, Pageable pageable);
 }

@@ -26,9 +26,9 @@ public class SkillController {
     @GetMapping("/")
     public ResponseEntity<PageDTO<SkillDTO>> getPaginatedSkills(
             @RequestParam(defaultValue = "1") @Min(1) int pageNumber,
-            @RequestParam(defaultValue = "10") @Min(1) int pageSize){
-        PageDTO<SkillDTO> responseBody = skillService.findAllPagination(pageNumber,pageSize);
-        return ResponseEntity.ok(responseBody);
+            @RequestParam(defaultValue = "10") @Min(1) int pageSize,
+            @RequestParam(required = false) String name){
+        return ResponseEntity.ok(skillService.findAllPagination(pageNumber,pageSize, Optional.ofNullable(name)));
     }
 
     @GetMapping("/{id}")

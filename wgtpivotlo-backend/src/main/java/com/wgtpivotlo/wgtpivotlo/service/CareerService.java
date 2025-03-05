@@ -22,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @Slf4j
 @Service
@@ -79,7 +78,7 @@ public class CareerService {
         // Update the modification date only if any field was updated.
         career.setUpdated_on(LocalDateTime.now());
 
-        log.info("Career Updated");
+        log.info("Career updated");
         careerRepository.save(career);
     }
 
@@ -99,7 +98,7 @@ public class CareerService {
 
         career.setUpdated_on(LocalDateTime.now());
         career.setCreated_on(LocalDateTime.now());
-        log.info("Career Added");
+        log.info("Career added");
         careerRepository.save(career);
     }
 
@@ -107,7 +106,7 @@ public class CareerService {
     public void deleteCareerId(long id){
         Career career = getCareerById(id);
 
-        log.info("Career Deleted");
+        log.info("Career deleted");
         careerRepository.delete(career);
     }
 

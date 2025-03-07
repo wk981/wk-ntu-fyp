@@ -67,12 +67,12 @@ export interface PreviewItemProps {
   heartBadgeCheckedId?: string | null;
 }
 
-export interface CareerPaginationProps extends PageRequest{
-  title?: string
-  sector?: string
-  careerLevel?: string
+export interface CareerPaginationProps extends PageRequest {
+  title?: string;
+  sector?: string;
+  careerLevel?: string;
 }
 
-export interface CareerPaginationResponse extends PageResponse{
-  data: Career[]
+export interface CareerPaginationResponse extends PageResponse {
+  data: Career[];
 }

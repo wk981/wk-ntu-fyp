@@ -133,40 +133,22 @@ export const exploreCareer = async (pageNumber: number) => {
   return json;
 };
 
-export const careerPagination = async (
-  {
-    pageNumber,
-    title,
-    sector,
-    careerLevel,
-    pageSize=10
+export const careerPagination = async ({
+  pageNumber,
+  title,
+  sector,
+  careerLevel,
+  pageSize = 10,
 }: CareerPaginationProps) => {
   // console.log(pageNumber);
-  let url =
-    backendURL +
-    `/v1/career?pageNumber=${pageNumber}&pageSize=${pageSize}`;
-  if (
-    title !== '' &&
-    title !== 'show all' &&
-    title !== undefined &&
-    title !== null
-  ) {
+  let url = backendURL + `/v1/career?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+  if (title !== '' && title !== 'show all' && title !== undefined && title !== null) {
     url += `&title=${title}`;
   }
-  if (
-    sector !== '' &&
-    sector !== 'show all' &&
-    sector !== undefined &&
-    sector !== null
-  ) {
+  if (sector !== '' && sector !== 'show all' && sector !== undefined && sector !== null) {
     url += `&sector=${sector}`;
   }
-  if (
-    careerLevel !== '' &&
-    careerLevel !== 'show all' &&
-    careerLevel !== undefined &&
-    careerLevel !== null
-  ) {
+  if (careerLevel !== '' && careerLevel !== 'show all' && careerLevel !== undefined && careerLevel !== null) {
     url += `&careerLevel=${careerLevel}`;
   }
   // console.log(`skillId: ${skillId}, pageNumber: ${pageNumber}`)

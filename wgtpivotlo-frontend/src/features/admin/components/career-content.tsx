@@ -68,15 +68,15 @@ export const CareerContent = () => {
       </div>
       {showFilters && <CareerFilter />}
       {careersData && <CareerTable data={careersData} />}
-      {totalPages && currentPage &&
-      <PaginationImpl
-        fetchNextPage={fetchNextCareerPage}
-        hasNextPage={hasMoreCareerPage}
-        isFetching={isFetchingCareerPage}
-        totalPages={totalPages}
-        currentPage={currentPage}
-      />
-    }
+      {totalPages && currentPage && (
+        <PaginationImpl
+          fetchNextPage={fetchNextCareerPage}
+          hasNextPage={hasMoreCareerPage}
+          isFetching={isFetchingCareerPage}
+          totalPages={totalPages}
+          currentPage={currentPage}
+        />
+      )}
       {/* View Dialog */}
       <CareerTableDialog isViewDialogOpen={isViewDialogOpen} />
 

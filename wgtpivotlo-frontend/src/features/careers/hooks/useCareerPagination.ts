@@ -1,6 +1,6 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { CareerPaginationResponse } from "../types";
-import { careerPagination } from "../api";
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { CareerPaginationResponse } from '../types';
+import { careerPagination } from '../api';
 
 interface CareerPaginationProps {
   title?: string;
@@ -9,21 +9,12 @@ interface CareerPaginationProps {
   page: number;
 }
 
-export const useCareerPagination = ({
-  title,
-  sector,
-  careerLevel,
-  page = 1
-}: CareerPaginationProps) => {
-  const {
-    data,
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-    isError,
-  } = useInfiniteQuery<CareerPaginationResponse, Error>({
-    queryKey: ["career-pagination", title, sector, careerLevel, page], // ✅ Include page number in queryKey
+export const useCareerPagination = ({ title, sector, careerLevel, page = 1 }: CareerPaginationProps) => {
+  const { data, error, fetchNextPage, hasNextPage, isFetching, isError } = useInfiniteQuery<
+    CareerPaginationResponse,
+    Error
+  >({
+    queryKey: ['career-pagination', title, sector, careerLevel, page], // ✅ Include page number in queryKey
     queryFn: async () => {
       // console.log("Fetching API with Page Number:", page); // ✅ Log when calling API
       return careerPagination({
@@ -36,8 +27,7 @@ export const useCareerPagination = ({
     },
     initialPageParam: page,
     retry: 1,
-    getNextPageParam: (lastPage) =>
-      lastPage?.pageNumber < lastPage?.totalPage ? lastPage.pageNumber + 1 : undefined,
+    getNextPageParam: (lastPage) => (lastPage?.pageNumber < lastPage?.totalPage ? lastPage.pageNumber + 1 : undefined),
   });
 
   return {

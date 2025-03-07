@@ -9,11 +9,11 @@ import { capitalizeEveryFirstChar, capitalizeFirstChar } from '@/utils';
 import { useAdminCareer } from '../../hook/useAdminCareer';
 import { Career } from '@/features/questionaire/types';
 
-interface CareerTableProps{
-  data: Career[]
+interface CareerTableProps {
+  data: Career[];
 }
 
-export const CareerTable = ({data}: CareerTableProps) => {
+export const CareerTable = ({ data }: CareerTableProps) => {
   const { handleRowClick, setEditForm, setSelectedCareer, setIsEditDialogOpen, getLevelColor } = useAdminCareer();
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
 

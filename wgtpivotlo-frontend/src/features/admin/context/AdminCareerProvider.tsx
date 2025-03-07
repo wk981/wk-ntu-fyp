@@ -12,7 +12,7 @@ interface AdminCareerContext {
   editForm: Career | null;
   selectedCareer: Career | null;
   careersData: Career[];
-  handleEditClick: () => void
+  handleEditClick: () => void;
   getLevelColor: (level: string) => string;
   handleRowClick: (career: Career) => void;
   setEditForm: React.Dispatch<React.SetStateAction<Career | null>>;
@@ -28,12 +28,12 @@ interface AdminCareerContext {
   searchQuery: string;
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
   clearFilter: () => void;
-  handleApplyFilters: () => void
-  fetchNextCareerPage: () => void
-   hasMoreCareerPage: boolean
-    isFetchingCareerPage: boolean
-    totalPages:number | undefined
-    currentPage: number | undefined
+  handleApplyFilters: () => void;
+  fetchNextCareerPage: () => void;
+  hasMoreCareerPage: boolean;
+  isFetchingCareerPage: boolean;
+  totalPages: number | undefined;
+  currentPage: number | undefined;
 }
 
 const AdminCareerContext = createContext<AdminCareerContext | undefined>(undefined);
@@ -44,57 +44,50 @@ const AdminCareerProvider = ({ children }: ProviderProps) => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [editForm, setEditForm] = useState<Career | null>(null);
   const [selectedCareer, setSelectedCareer] = useState<Career | null>(null);
-  
+
   // Allow user to filter using url
   const [searchParams, setSearchParams] = useSearchParams();
 
   // Filter states
-  const [sectorFilter, setSectorFilter] = useState<string>(searchParams.get('sector') ?? '' );
+  const [sectorFilter, setSectorFilter] = useState<string>(searchParams.get('sector') ?? '');
   const [levelFilter, setLevelFilter] = useState<string>(searchParams.get('careerLevel') ?? '');
-  const [searchQuery, setSearchQuery] = useState<string>(searchParams.get('q') ?? '' );
-  const page = Number(searchParams.get("pageNumber")); // Default to page 1
+  const [searchQuery, setSearchQuery] = useState<string>(searchParams.get('q') ?? '');
+  const page = Number(searchParams.get('pageNumber')); // Default to page 1
 
-  const { 
-    careersData, 
-    fetchNextCareerPage, 
-    hasMoreCareerPage, 
-    isFetchingCareerPage, 
-    totalPages,
-    currentPage
-  } = useCareerPagination({
-    title: searchParams.get("q") ?? "",
-    sector: searchParams.get("sector") ?? "",
-    careerLevel: searchParams.get("careerLevel") ?? "",
-    page: page
-  });
+  const { careersData, fetchNextCareerPage, hasMoreCareerPage, isFetchingCareerPage, totalPages, currentPage } =
+    useCareerPagination({
+      title: searchParams.get('q') ?? '',
+      sector: searchParams.get('sector') ?? '',
+      careerLevel: searchParams.get('careerLevel') ?? '',
+      page: page,
+    });
 
   const handleApplyFilters = () => {
     setSearchParams((prev) => {
       const newParams = new URLSearchParams(prev);
-  
-      if (sectorFilter === "" || sectorFilter === "show all") {
-        newParams.delete("sector");
+
+      if (sectorFilter === '' || sectorFilter === 'show all') {
+        newParams.delete('sector');
       } else {
-        newParams.set("sector", sectorFilter);
-      }
-  
-      if (levelFilter === "" || levelFilter === "show all") {
-        newParams.delete("careerLevel");
-      } else {
-        newParams.set("careerLevel", levelFilter);
+        newParams.set('sector', sectorFilter);
       }
 
-      if (searchQuery === ""){
-        newParams.delete("q")
+      if (levelFilter === '' || levelFilter === 'show all') {
+        newParams.delete('careerLevel');
+      } else {
+        newParams.set('careerLevel', levelFilter);
       }
-      else{
-        newParams.set("q", searchQuery);
+
+      if (searchQuery === '') {
+        newParams.delete('q');
+      } else {
+        newParams.set('q', searchQuery);
       }
-      newParams.set("pageNumber", "1");
+      newParams.set('pageNumber', '1');
       return newParams;
     });
   };
-  
+
   const handleEditClick = () => {
     setIsViewDialogOpen(false);
     setEditForm(selectedCareer);
@@ -116,7 +109,7 @@ const AdminCareerProvider = ({ children }: ProviderProps) => {
 
   const handleSave = async () => {
     if (editForm && careersData) {
-      await queryClient.invalidateQueries({ queryKey: ["career-pagination"] });
+      await queryClient.invalidateQueries({ queryKey: ['career-pagination'] });
       setSelectedCareer(editForm);
       setIsEditDialogOpen(false);
     }
@@ -167,7 +160,11 @@ const AdminCareerProvider = ({ children }: ProviderProps) => {
     setSearchQuery,
     clearFilter,
     handleApplyFilters,
-    fetchNextCareerPage, hasMoreCareerPage, isFetchingCareerPage, totalPages, currentPage
+    fetchNextCareerPage,
+    hasMoreCareerPage,
+    isFetchingCareerPage,
+    totalPages,
+    currentPage,
   };
 
   return <AdminCareerContext.Provider value={value}>{children}</AdminCareerContext.Provider>;

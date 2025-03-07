@@ -21,6 +21,8 @@ import { Security } from './routes/Settings/Security';
 import { AccountSettings } from './routes/Settings';
 import { ExploreCareerCategory } from './routes/Explore-Career-Category';
 import { ResultCategory } from './routes/questionaire/Result-Category';
+import { CMSCareer } from './routes/admin/CMSCareer';
+import { AdminProvidersWrapper } from '@/features/admin/components/routes/admin-providers-wrapper';
 
 const QuestionaireLayout = () => (
   <QuestionaireProvider>
@@ -50,6 +52,9 @@ export const AppRouter = () => {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route element={<AdminProvidersWrapper />}>
+            <Route path="/admin" element={<CMSCareer />} />
+          </Route>
           <Route path="auth">
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />

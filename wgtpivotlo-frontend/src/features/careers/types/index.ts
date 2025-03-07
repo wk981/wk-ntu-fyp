@@ -1,6 +1,6 @@
 import { Career } from '@/features/questionaire/types';
 import { skillsWithProfiency } from '@/features/skills/types';
-import { PageResponse } from '@/types';
+import { PageRequest, PageResponse } from '@/types';
 
 export interface CareerWithSkills extends Career {
   skillsWithProfiency: skillsWithProfiency[];
@@ -65,4 +65,14 @@ export interface PreviewItemProps {
   ref?: React.RefObject<HTMLDivElement> | null;
   heartBadgeOnClick?: (id: string) => Promise<void>;
   heartBadgeCheckedId?: string | null;
+}
+
+export interface CareerPaginationProps extends PageRequest{
+  title?: string
+  sector?: string
+  careerLevel?: string
+}
+
+export interface CareerPaginationResponse extends PageResponse{
+  data: Career[]
 }

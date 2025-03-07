@@ -1,6 +1,8 @@
 import { ErrorResponse, Response } from '@/types';
 import { backendURL } from '@/utils';
 import {
+  CareerPaginationProps,
+  CareerPaginationResponse,
   CareerWithSkills,
   ChoiceCareerRecommendationParams,
   ChoiceCareerRecommendationResponse,
@@ -8,6 +10,7 @@ import {
 } from '../types';
 import { Career } from '@/features/questionaire/types';
 import { SkillDTO } from '@/features/skills/types';
+import { toast } from 'react-toastify';
 
 interface GetCareerResponse {
   career: Career;
@@ -127,5 +130,58 @@ export const exploreCareer = async (pageNumber: number) => {
     throw Error(errorMessage); // Throw a new Error with the message
   }
   const json = response.json() as Promise<ExploreCareerResponse>;
+  return json;
+};
+
+export const careerPagination = async (
+  {
+    pageNumber,
+    title,
+    sector,
+    careerLevel,
+    pageSize=10
+}: CareerPaginationProps) => {
+  // console.log(pageNumber);
+  let url =
+    backendURL +
+    `/v1/career?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+  if (
+    title !== '' &&
+    title !== 'show all' &&
+    title !== undefined &&
+    title !== null
+  ) {
+    url += `&title=${title}`;
+  }
+  if (
+    sector !== '' &&
+    sector !== 'show all' &&
+    sector !== undefined &&
+    sector !== null
+  ) {
+    url += `&sector=${sector}`;
+  }
+  if (
+    careerLevel !== '' &&
+    careerLevel !== 'show all' &&
+    careerLevel !== undefined &&
+    careerLevel !== null
+  ) {
+    url += `&careerLevel=${careerLevel}`;
+  }
+  // console.log(`skillId: ${skillId}, pageNumber: ${pageNumber}`)
+  const response = await fetch(url, {
+    method: 'GET',
+    credentials: 'include',
+  });
+  if (!response.ok) {
+    const errorBody: ErrorResponse = (await response.json()) as ErrorResponse; // Parse the error response
+    const errorMessage: string = errorBody.message || 'Something went wrong'; // Extract the error message
+    if (pageNumber == 1) {
+      toast.error('No career found');
+    }
+    throw Error(errorMessage); // Throw a new Error with the message
+  }
+  const json = response.json() as Promise<CareerPaginationResponse>;
   return json;
 };

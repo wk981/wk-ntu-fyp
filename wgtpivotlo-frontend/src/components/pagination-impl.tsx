@@ -12,7 +12,6 @@ import {
 import { useSearchParams } from 'react-router-dom';
 
 interface PaginationImplProps {
-  fetchNextPage: () => void;
   hasNextPage?: boolean;
   isFetching: boolean;
   totalPages: number;
@@ -21,7 +20,6 @@ interface PaginationImplProps {
 }
 
 export const PaginationImpl = ({
-  fetchNextPage,
   hasNextPage = false,
   isFetching,
   totalPages,
@@ -52,14 +50,12 @@ export const PaginationImpl = ({
 
   const handleNext = useCallback(() => {
     if (!isFetching && hasNextPage && activePageNumber) {
-      fetchNextPage();
-
       // Update URL to next page
       const nextPage = activePageNumber + 1;
       searchParams.set('pageNumber', nextPage.toString());
       setSearchParams(searchParams);
     }
-  }, [fetchNextPage, isFetching, hasNextPage, activePageNumber, searchParams, setSearchParams]);
+  }, [isFetching, hasNextPage, activePageNumber, searchParams, setSearchParams]);
 
   // Generate page numbers to display - FIXED VERSION
   const getPageNumbers = () => {
@@ -99,7 +95,7 @@ export const PaginationImpl = ({
       }
 
       // Add last page if not in range
-      if (endPage < totalPages) {
+      if (endPage <= totalPages) {
         if (endPage < totalPages - 1) pageNumbers.push('ellipsis');
         pageNumbers.push(totalPages);
       }

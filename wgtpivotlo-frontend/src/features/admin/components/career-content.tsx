@@ -3,7 +3,6 @@ import { CareerTable } from './tables/career-table';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Filter, Plus, Search, X } from 'lucide-react';
-import { useSectors } from '@/features/careers/hooks/useSectors';
 import { useAdminCareer } from '../hook/useAdminCareer';
 import { capitalizeEveryFirstChar } from '@/utils';
 import { CareerTableDialog } from './dialogs/career-table-view-dialog';
@@ -19,33 +18,39 @@ export const CareerContent = () => {
     isEditDialogOpen,
     isViewDialogOpen,
     careersData,
-    fetchNextCareerPage,
     hasMoreCareerPage,
     isFetchingCareerPage,
     totalPages,
     currentPage,
+    handleSearch,
   } = useAdminCareer();
   const [showFilters, setShowFilters] = useState<boolean>(false);
   return (
-    <div>
+    <div className="space-y-4">
       {/* Filters */}
       <div className="flex justify-between items-center">
-        <div className="relative w-full sm:w-64">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search careers..."
-            className="pl-8"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          {searchQuery && (
-            <button
-              className="absolute right-2.5 top-2.5 text-muted-foreground hover:text-foreground"
-              onClick={() => setSearchQuery('')}
-            >
-              <X className="h-4 w-4" />
-            </button>
-          )}
+        <div className="flex flex-row gap-2">
+          <div className="relative w-full sm:w-64">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search careers..."
+              className="px-8"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            {searchQuery && (
+              <button
+                className="absolute right-2.5 top-2.5 text-muted-foreground hover:text-foreground"
+                onClick={() => setSearchQuery('')}
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+          <Button type="submit" size="icon" onClick={handleSearch} className="shrink-0">
+            <Search className="h-4 w-4" />
+            <span className="sr-only">Search careers</span>
+          </Button>
         </div>
         <div className="flex flex-row gap-2">
           <Button
@@ -70,7 +75,6 @@ export const CareerContent = () => {
       {careersData && <CareerTable data={careersData} />}
       {totalPages && currentPage && (
         <PaginationImpl
-          fetchNextPage={fetchNextCareerPage}
           hasNextPage={hasMoreCareerPage}
           isFetching={isFetchingCareerPage}
           totalPages={totalPages}
@@ -87,11 +91,8 @@ export const CareerContent = () => {
 };
 
 const CareerFilter = () => {
-  const { sectorFilter, setSectorFilter, levelFilter, setLevelFilter, clearFilter, handleApplyFilters } =
+  const { sectorFilter, setSectorFilter, levelFilter, setLevelFilter, clearFilter, handleApplyFilters, sectorData } =
     useAdminCareer();
-  const { sectorsQuery } = useSectors();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { data: sectorData, isLoading: isSectorLoading } = sectorsQuery;
   return (
     <FilterLayout>
       {sectorData && (

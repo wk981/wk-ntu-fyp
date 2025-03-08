@@ -1,11 +1,13 @@
 import { ErrorResponse, Response } from '@/types';
 import { backendURL } from '@/utils';
 import {
+  AddCareerProps,
   CareerPaginationProps,
   CareerPaginationResponse,
   CareerWithSkills,
   ChoiceCareerRecommendationParams,
   ChoiceCareerRecommendationResponse,
+  EditCareerProps,
   ExploreCareerResponse,
 } from '../types';
 import { Career } from '@/features/questionaire/types';
@@ -165,5 +167,69 @@ export const careerPagination = async ({
     throw Error(errorMessage); // Throw a new Error with the message
   }
   const json = response.json() as Promise<CareerPaginationResponse>;
+  return json;
+};
+
+export const addCareer = async ({ title, sector, responsibility, careerLevel }: AddCareerProps) => {
+  const formdata = new FormData();
+  const emptyBlob = new Blob([], { type: 'application/octet-stream' });
+  formdata.append('thumbnail', emptyBlob, 'empty.png');
+  const jsonBlob = new Blob(
+    [
+      JSON.stringify({
+        title: title,
+        sector: sector,
+        responsibility: responsibility,
+        careerLevel: careerLevel,
+      }),
+    ],
+    { type: 'application/json' }
+  );
+  formdata.append('careerBody', jsonBlob); // Append as JSON Blob
+  const url = backendURL + `/v1/career/`;
+
+  const response = await fetch(url, {
+    method: 'POST',
+    credentials: 'include',
+    body: formdata,
+  });
+  if (!response.ok) {
+    const errorBody: ErrorResponse = (await response.json()) as ErrorResponse; // Parse the error response
+    const errorMessage: string = errorBody.message || 'Something went wrong'; // Extract the error message
+    throw Error(errorMessage); // Throw a new Error with the message
+  }
+  const json = response.json() as Promise<Response>;
+  return json;
+};
+
+export const editCareer = async ({ title, sector, responsibility, careerLevel, id }: EditCareerProps) => {
+  const formdata = new FormData();
+  const emptyBlob = new Blob([], { type: 'application/octet-stream' });
+  formdata.append('thumbnail', emptyBlob, 'empty.png');
+  const jsonBlob = new Blob(
+    [
+      JSON.stringify({
+        title: title,
+        sector: sector,
+        responsibility: responsibility,
+        careerLevel: careerLevel,
+      }),
+    ],
+    { type: 'application/json' }
+  );
+  formdata.append('careerBody', jsonBlob); // Append as JSON Blob
+  const url = backendURL + `/v1/career/${id}`;
+
+  const response = await fetch(url, {
+    method: 'PUT',
+    credentials: 'include',
+    body: formdata,
+  });
+  if (!response.ok) {
+    const errorBody: ErrorResponse = (await response.json()) as ErrorResponse; // Parse the error response
+    const errorMessage: string = errorBody.message || 'Something went wrong'; // Extract the error message
+    throw Error(errorMessage); // Throw a new Error with the message
+  }
+  const json = response.json() as Promise<Response>;
   return json;
 };

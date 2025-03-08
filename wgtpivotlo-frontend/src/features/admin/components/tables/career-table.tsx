@@ -14,7 +14,7 @@ interface CareerTableProps {
 }
 
 export const CareerTable = ({ data }: CareerTableProps) => {
-  const { handleRowClick, setEditForm, setSelectedCareer, setIsEditDialogOpen, getLevelColor } = useAdminCareer();
+  const { handleRowClick, setSelectedCareer, setIsEditDialogOpen, getLevelColor } = useAdminCareer();
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
 
   const toggleRow = (careerId: number) => {
@@ -85,7 +85,6 @@ export const CareerTable = ({ data }: CareerTableProps) => {
                           onClick={(e) => {
                             e.stopPropagation();
                             setSelectedCareer(career);
-                            setEditForm(career);
                             setIsEditDialogOpen(true);
                           }}
                         >

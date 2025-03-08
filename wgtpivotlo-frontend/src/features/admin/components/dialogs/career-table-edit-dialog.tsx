@@ -1,6 +1,5 @@
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import {
   Dialog,
   DialogContent,
@@ -11,80 +10,186 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useAdminCareer } from '../../hook/useAdminCareer';
+import { useForm } from 'react-hook-form';
+import { type EditCareerProps, editCareerSchema } from '@/features/careers/types';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEditCareer } from '@/features/careers/hooks/useEditCareer';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { ComboBox } from '@/components/combo-box';
+import type { z } from 'zod';
+import { useEffect, useRef } from 'react';
+import { capitalizeEveryFirstChar } from '@/utils';
 
 interface CareerTableEditDialogProps {
   isEditDialogOpen: boolean;
 }
 
 export const CareerTableEditDialog = ({ isEditDialogOpen }: CareerTableEditDialogProps) => {
-  const { setIsEditDialogOpen, editForm, handleEditChange, handleSave } = useAdminCareer();
+  const { setIsEditDialogOpen, sectorData, isSectorLoading, selectedCareer } = useAdminCareer();
+  const { mutateEditCareerAsync, isEditingCareer } = useEditCareer();
+  // Use a ref to track if we're currently interacting with a ComboBox
+  const isInteractingWithComboBox = useRef(false);
+
+  const form = useForm<z.infer<typeof editCareerSchema>>({
+    resolver: zodResolver(editCareerSchema),
+    defaultValues: {
+      title: '',
+      sector: '',
+      responsibility: '',
+      careerLevel: '',
+    },
+  });
+
+  // Initialize form with selected career data when dialog opens or selected career changes
+  useEffect(() => {
+    console.log(selectedCareer?.careerLevel);
+    if (selectedCareer && isEditDialogOpen) {
+      form.reset({
+        title: selectedCareer.title || '',
+        sector: selectedCareer.sector || '',
+        responsibility: selectedCareer.responsibility || '',
+        careerLevel: capitalizeEveryFirstChar(selectedCareer.careerLevel) || '',
+      });
+    }
+  }, [selectedCareer, isEditDialogOpen, form]);
+
+  const onSubmit = async (values: z.infer<typeof editCareerSchema>) => {
+    try {
+      if (selectedCareer) {
+        const body: EditCareerProps = {
+          id: String(selectedCareer.careerId),
+          title: values.title,
+          sector: values.sector,
+          responsibility: values.responsibility,
+          careerLevel: values.careerLevel,
+        };
+
+        await mutateEditCareerAsync(body);
+        setIsEditDialogOpen(false);
+      }
+    } catch (error) {
+      console.error('Error updating career:', error);
+    }
+  };
+
+  // Custom handler for dialog open change
+  const handleOpenChange = (open: boolean) => {
+    // Only close the dialog if we're not interacting with a ComboBox
+    if (!open && !isInteractingWithComboBox.current) {
+      setIsEditDialogOpen(false);
+    }
+  };
 
   return (
-    <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-      {editForm && (
-        <DialogContent className="sm:max-w-[600px]">
-          <DialogHeader>
-            <DialogTitle>Edit Career</DialogTitle>
-            <DialogDescription>Make changes to the career information</DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <label htmlFor="title">Title</label>
-              <Input id="title" value={editForm.title} onChange={(e) => handleEditChange('title', e.target.value)} />
-            </div>
+    <Dialog open={isEditDialogOpen} onOpenChange={handleOpenChange}>
+      <DialogContent
+        className="sm:max-w-[600px]"
+        // Prevent clicks inside from closing the dialog
+        onPointerDownOutside={(e) => {
+          // Check if the click is on a ComboBox or its children
+          const target = e.target as HTMLElement;
+          if (target.closest('[role="combobox"]') || target.closest('[cmdk-root]') || target.closest('[cmdk-item]')) {
+            e.preventDefault();
+          }
+        }}
+      >
+        <DialogHeader>
+          <DialogTitle>Edit Career</DialogTitle>
+          <DialogDescription>Make changes to the career information</DialogDescription>
+        </DialogHeader>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="grid gap-2">
-                <label htmlFor="sector">Sector</label>
-                <Select value={editForm.sector} onValueChange={(value) => handleEditChange('sector', value)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select sector" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="finance">Finance</SelectItem>
-                    <SelectItem value="education">Education</SelectItem>
-                    <SelectItem value="technology">Technology</SelectItem>
-                    <SelectItem value="administration">Administration</SelectItem>
-                    <SelectItem value="sales and marketing">Sales and Marketing</SelectItem>
-                    <SelectItem value="arts and culture">Arts and Culture</SelectItem>
-                    <SelectItem value="public relations">Public Relations</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="grid gap-2">
-                <label htmlFor="careerLevel">Career Level</label>
-                <Select value={editForm.careerLevel} onValueChange={(value) => handleEditChange('careerLevel', value)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select level" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Entry Level">Entry Level</SelectItem>
-                    <SelectItem value="Mid Level">Mid Level</SelectItem>
-                    <SelectItem value="Senior Level">Senior Level</SelectItem>
-                    <SelectItem value="Executive">Executive</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
+        <Form {...form}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              form
+                .handleSubmit(onSubmit)()
+                .catch((error) => {
+                  console.error('Form submission error:', error);
+                });
+            }}
+            className="space-y-4"
+          >
+            <div className="grid gap-4 py-4">
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem className="space-y-2">
+                    <FormLabel>Title</FormLabel>
+                    <FormControl>
+                      <Input id="title" {...field} />
+                    </FormControl>
+                    <FormMessage className="text-sm" />
+                  </FormItem>
+                )}
+              />
 
-            <div className="grid gap-2">
-              <label htmlFor="responsibility">Responsibilities</label>
-              <Textarea
-                id="responsibility"
-                rows={4}
-                value={editForm.responsibility}
-                onChange={(e) => handleEditChange('responsibility', e.target.value)}
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="sector"
+                  render={({ field }) => (
+                    <FormItem className="grid gap-2 relative">
+                      <FormLabel>Sector</FormLabel>
+                      <FormControl>
+                        <ComboBox {...field} data={sectorData} setValue={form.setValue} isLoading={isSectorLoading} />
+                      </FormControl>
+                      <FormMessage className="text-sm" />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="careerLevel"
+                  render={({ field }) => (
+                    <FormItem className="grid gap-2 relative">
+                      <FormLabel>Career Level</FormLabel>
+                      <FormControl>
+                        <ComboBox
+                          {...field}
+                          data={[
+                            { label: 'entry level', value: 'entry level' },
+                            { label: 'mid level', value: 'mid level' },
+                            { label: 'senior Level', value: 'senior level' },
+                          ]}
+                          setValue={form.setValue}
+                          isLoading={false}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-sm" />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <FormField
+                control={form.control}
+                name="responsibility"
+                render={({ field }) => (
+                  <FormItem className="grid gap-2">
+                    <FormLabel>Responsibilities</FormLabel>
+                    <FormControl>
+                      <Textarea id="responsibility" rows={4} {...field} />
+                    </FormControl>
+                    <FormMessage className="text-sm" />
+                  </FormItem>
+                )}
               />
             </div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsEditDialogOpen(false)}>
-              Cancel
-            </Button>
-            <Button onClick={handleSave}>Save Changes</Button>
-          </DialogFooter>
-        </DialogContent>
-      )}
+
+            <DialogFooter>
+              <Button variant="outline" type="button" onClick={() => setIsEditDialogOpen(false)}>
+                Cancel
+              </Button>
+              <Button type="submit" disabled={isEditingCareer}>
+                {isEditingCareer ? 'Saving...' : 'Save Changes'}
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
     </Dialog>
   );
 };

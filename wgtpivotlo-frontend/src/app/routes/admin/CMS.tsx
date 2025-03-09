@@ -4,7 +4,7 @@ import { CMSCareer } from '../../../features/admin/components/CMSCareer';
 export const CMS = () => {
   const { category } = useParams();
   console.log(category);
-  return <>{category && <CMSLayoutFactory category={category} /> }</>;
+  return <>{category && <CMSLayoutFactory category={category} />}</>;
 };
 
 type CMSLayoutFactoryProps = {
@@ -13,11 +13,11 @@ type CMSLayoutFactoryProps = {
 
 const CMSLayoutFactory = ({ category }: CMSLayoutFactoryProps) => {
   switch (category) {
-    case "careers":
+    case 'careers':
       return <CMSCareer />;
-    case "courses":
+    case 'courses':
       return <CMSCareer />;
-    case "skills":
-        return <CMSCareer />;
+    case 'skills':
+      return <CMSCareer />;
   }
 };

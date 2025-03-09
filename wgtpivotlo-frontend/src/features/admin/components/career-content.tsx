@@ -27,7 +27,7 @@ export const CareerContent = () => {
     handleSearch,
     isAddDialogOpen,
     setIsAddDialogOpen,
-    isDeleteDialogOpen
+    isDeleteDialogOpen,
   } = useAdminCareer();
   const [showFilters, setShowFilters] = useState<boolean>(false);
   return (
@@ -70,10 +70,13 @@ export const CareerContent = () => {
             )}
             Show Filters
           </Button>
-          <Button className="flex gap-2 items-center justify-center text-sm font-medium border border-black" onClick= {(e) => {
-            e.preventDefault();
-            setIsAddDialogOpen(true);
-          }}>
+          <Button
+            className="flex gap-2 items-center justify-center text-sm font-medium border border-black"
+            onClick={(e) => {
+              e.preventDefault();
+              setIsAddDialogOpen(true);
+            }}
+          >
             <Plus width={20} height={20} />
             Add New Entry
           </Button>

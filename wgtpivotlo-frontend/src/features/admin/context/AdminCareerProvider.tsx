@@ -33,9 +33,9 @@ interface AdminCareerContext {
   isSectorLoading: boolean;
   handleSearch: (e: MouseEvent<HTMLButtonElement>) => void;
   isAddDialogOpen: boolean;
-  setIsAddDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
-  isDeleteDialogOpen: boolean; 
-  setIsDeleteDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setIsAddDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isDeleteDialogOpen: boolean;
+  setIsDeleteDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const AdminCareerContext = createContext<AdminCareerContext | undefined>(undefined);
 
@@ -152,8 +152,10 @@ const AdminCareerProvider = ({ children }: ProviderProps) => {
     sectorData,
     isSectorLoading,
     handleSearch,
-    isAddDialogOpen, setIsAddDialogOpen,
-    isDeleteDialogOpen, setIsDeleteDialogOpen
+    isAddDialogOpen,
+    setIsAddDialogOpen,
+    isDeleteDialogOpen,
+    setIsDeleteDialogOpen,
   };
 
   return <AdminCareerContext.Provider value={value}>{children}</AdminCareerContext.Provider>;

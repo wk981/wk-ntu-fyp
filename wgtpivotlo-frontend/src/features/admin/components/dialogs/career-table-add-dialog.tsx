@@ -20,7 +20,7 @@ import { useRef } from 'react';
 import { useAddCareer } from '@/features/careers/hooks/useAddCareer';
 
 interface CareerTableEditDialogProps {
-    isAddDialogOpen: boolean;
+  isAddDialogOpen: boolean;
 }
 
 export const CareerTableAddDialog = ({ isAddDialogOpen }: CareerTableEditDialogProps) => {
@@ -41,16 +41,15 @@ export const CareerTableAddDialog = ({ isAddDialogOpen }: CareerTableEditDialogP
 
   const onSubmit = async (values: z.infer<typeof addCareerSchema>) => {
     try {
-        const body: AddCareerProps = {
-          title: values.title,
-          sector: values.sector,
-          responsibility: values.responsibility,
-          careerLevel: values.careerLevel,
-        };
+      const body: AddCareerProps = {
+        title: values.title,
+        sector: values.sector,
+        responsibility: values.responsibility,
+        careerLevel: values.careerLevel,
+      };
 
-        await mutateAddCareerAsync(body);
-        setIsAddDialogOpen(false);
-      
+      await mutateAddCareerAsync(body);
+      setIsAddDialogOpen(false);
     } catch (error) {
       console.error('Error updating career:', error);
     }
@@ -60,7 +59,7 @@ export const CareerTableAddDialog = ({ isAddDialogOpen }: CareerTableEditDialogP
   const handleOpenChange = (open: boolean) => {
     // Only close the dialog if we're not interacting with a ComboBox
     if (!open && !isInteractingWithComboBox.current) {
-        setIsAddDialogOpen(false);
+      setIsAddDialogOpen(false);
     }
   };
 

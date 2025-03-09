@@ -178,7 +178,7 @@ export const addCareer = async ({ title, sector, responsibility, careerLevel }: 
     [
       JSON.stringify({
         title: title,
-        sector: sector,
+        sector: sector.toLowerCase(),
         responsibility: responsibility,
         careerLevel: careerLevel,
       }),
@@ -210,7 +210,7 @@ export const editCareer = async ({ title, sector, responsibility, careerLevel, i
     [
       JSON.stringify({
         title: title,
-        sector: sector,
+        sector: sector?.toLowerCase(),
         responsibility: responsibility,
         careerLevel: careerLevel,
       }),
@@ -224,6 +224,22 @@ export const editCareer = async ({ title, sector, responsibility, careerLevel, i
     method: 'PUT',
     credentials: 'include',
     body: formdata,
+  });
+  if (!response.ok) {
+    const errorBody: ErrorResponse = (await response.json()) as ErrorResponse; // Parse the error response
+    const errorMessage: string = errorBody.message || 'Something went wrong'; // Extract the error message
+    throw Error(errorMessage); // Throw a new Error with the message
+  }
+  const json = response.json() as Promise<Response>;
+  return json;
+};
+
+export const deleteCareer = async (id: number) => {
+  const url = backendURL + `/v1/career/${id}`;
+
+  const response = await fetch(url, {
+    method: 'DELETE',
+    credentials: 'include',
   });
   if (!response.ok) {
     const errorBody: ErrorResponse = (await response.json()) as ErrorResponse; // Parse the error response

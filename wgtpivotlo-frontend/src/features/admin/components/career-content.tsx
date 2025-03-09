@@ -10,6 +10,8 @@ import { CareerTableEditDialog } from './dialogs/career-table-edit-dialog';
 import { FilterLayout } from '@/components/FilterLayout';
 import { useState } from 'react';
 import { PaginationImpl } from '@/components/pagination-impl';
+import { CareerTableAddDialog } from './dialogs/career-table-add-dialog';
+import { CareerTableDeleteDialog } from './dialogs/career-table-delete-dialog';
 
 export const CareerContent = () => {
   const {
@@ -23,6 +25,9 @@ export const CareerContent = () => {
     totalPages,
     currentPage,
     handleSearch,
+    isAddDialogOpen,
+    setIsAddDialogOpen,
+    isDeleteDialogOpen
   } = useAdminCareer();
   const [showFilters, setShowFilters] = useState<boolean>(false);
   return (
@@ -65,7 +70,10 @@ export const CareerContent = () => {
             )}
             Show Filters
           </Button>
-          <Button className="flex gap-2 items-center justify-center text-sm font-medium border border-black">
+          <Button className="flex gap-2 items-center justify-center text-sm font-medium border border-black" onClick= {(e) => {
+            e.preventDefault();
+            setIsAddDialogOpen(true);
+          }}>
             <Plus width={20} height={20} />
             Add New Entry
           </Button>
@@ -86,6 +94,12 @@ export const CareerContent = () => {
 
       {/* Edit Dialog */}
       <CareerTableEditDialog isEditDialogOpen={isEditDialogOpen} />
+
+      {/* Add Dialog  */}
+      <CareerTableAddDialog isAddDialogOpen={isAddDialogOpen} />
+
+      {/* Delete Dialog */}
+      <CareerTableDeleteDialog isDeleteDiaglogOpen={isDeleteDialogOpen} />
     </div>
   );
 };

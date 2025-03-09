@@ -42,7 +42,6 @@ export const CareerTableEditDialog = ({ isEditDialogOpen }: CareerTableEditDialo
 
   // Initialize form with selected career data when dialog opens or selected career changes
   useEffect(() => {
-    console.log(selectedCareer?.careerLevel);
     if (selectedCareer && isEditDialogOpen) {
       form.reset({
         title: selectedCareer.title || '',
@@ -110,7 +109,7 @@ export const CareerTableEditDialog = ({ isEditDialogOpen }: CareerTableEditDialo
             }}
             className="space-y-4"
           >
-            <div className="grid gap-4 py-4">
+            <div className="grid gap-4">
               <FormField
                 control={form.control}
                 name="title"

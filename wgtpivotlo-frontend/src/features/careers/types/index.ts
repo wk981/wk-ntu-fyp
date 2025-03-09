@@ -93,10 +93,10 @@ export interface EditCareerProps extends Partial<CareerBase> {
 }
 
 export const addCareerSchema = z.object({
-  title: z.string(),
-  sector: z.string(),
-  responsibility: z.string(),
-  careerLevel: z.string(),
+  title: z.string().nonempty("Title cannot be empty"),
+  sector: z.string().nonempty("Sector cannot be empty"),
+  responsibility: z.string().nonempty("Responsibility cannot be empty"),
+  careerLevel: z.string().nonempty("Career level cannot be empty"),
 });
 
 export const editCareerSchema = addCareerSchema.partial();

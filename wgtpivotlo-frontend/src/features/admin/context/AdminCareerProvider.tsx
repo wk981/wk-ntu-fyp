@@ -32,12 +32,18 @@ interface AdminCareerContext {
   sectorData: DataProps[] | undefined;
   isSectorLoading: boolean;
   handleSearch: (e: MouseEvent<HTMLButtonElement>) => void;
+  isAddDialogOpen: boolean;
+  setIsAddDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
+  isDeleteDialogOpen: boolean; 
+  setIsDeleteDialogOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 const AdminCareerContext = createContext<AdminCareerContext | undefined>(undefined);
 
 const AdminCareerProvider = ({ children }: ProviderProps) => {
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [selectedCareer, setSelectedCareer] = useState<Career | null>(null);
 
   // Allow user to filter using url
@@ -146,6 +152,8 @@ const AdminCareerProvider = ({ children }: ProviderProps) => {
     sectorData,
     isSectorLoading,
     handleSearch,
+    isAddDialogOpen, setIsAddDialogOpen,
+    isDeleteDialogOpen, setIsDeleteDialogOpen
   };
 
   return <AdminCareerContext.Provider value={value}>{children}</AdminCareerContext.Provider>;

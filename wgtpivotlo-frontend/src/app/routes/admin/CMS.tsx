@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { CMSCareer } from '../../../features/admin/components/CMSCareer';
+import { CMSCourse } from '@/features/admin/components/CMSCourse';
 
 export const CMS = () => {
   const { category } = useParams();
@@ -16,7 +17,7 @@ const CMSLayoutFactory = ({ category }: CMSLayoutFactoryProps) => {
     case 'careers':
       return <CMSCareer />;
     case 'courses':
-      return <CMSCareer />;
+      return <CMSCourse />;
     case 'skills':
       return <CMSCareer />;
   }

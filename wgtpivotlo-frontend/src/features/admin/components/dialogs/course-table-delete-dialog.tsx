@@ -7,23 +7,23 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { useAdminCareer } from '../../hook/useAdminCareer';
-import { useDeleteCareer } from '@/features/careers/hooks/useDeleteCareer';
 import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useAdminCourse } from '../../hook/useAdminCourse';
+import { useDeleteCourse } from '@/features/courses/hook/useDeleteCourse';
 
-interface CareerTableDeleteDialogProps {
+interface CourseTableDeleteDialogProps {
   isDeleteDiaglogOpen: boolean;
 }
 
-export const CareerTableDeleteDialog = ({ isDeleteDiaglogOpen }: CareerTableDeleteDialogProps) => {
-  const { setIsDeleteDialogOpen, selectedCareer } = useAdminCareer();
-  const { isDeletingCareer, mutateDeleteCareerAsync } = useDeleteCareer();
+export const CourseTableDeleteDialog = ({ isDeleteDiaglogOpen }: CourseTableDeleteDialogProps) => {
+  const { setIsDeleteDialogOpen, selectedCourse } = useAdminCourse();
+  const { isDeletingCourse, mutateDeleteCourseAsync } = useDeleteCourse();
 
   const handleDelete = async () => {
     try {
-      if (selectedCareer) {
-        await mutateDeleteCareerAsync(selectedCareer.careerId);
+      if (selectedCourse) {
+        await mutateDeleteCourseAsync(selectedCourse.course_id);
         setIsDeleteDialogOpen(false);
       }
     } catch (error) {
@@ -37,12 +37,12 @@ export const CareerTableDeleteDialog = ({ isDeleteDiaglogOpen }: CareerTableDele
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete the career
+            This action cannot be undone. This will permanently delete the course
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel
-            disabled={isDeletingCareer}
+            disabled={isDeletingCourse}
             onClick={(e) => {
               e.stopPropagation();
               setIsDeleteDialogOpen(false);
@@ -52,13 +52,13 @@ export const CareerTableDeleteDialog = ({ isDeleteDiaglogOpen }: CareerTableDele
           </AlertDialogCancel>
           <Button
             variant="destructive"
-            disabled={isDeletingCareer}
+            disabled={isDeletingCourse}
             onClick={(e) => {
               e.stopPropagation();
               void handleDelete();
             }}
           >
-            {isDeletingCareer ? (
+            {isDeletingCourse ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Deleting...

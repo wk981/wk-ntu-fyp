@@ -1,15 +1,18 @@
-import { useState } from 'react';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 import { ProviderProps } from '@/utils';
 import { useNavigate } from 'react-router-dom';
 
-export default function CmsLayout({ children }: ProviderProps) {
+interface CMSLayoutProps extends ProviderProps {
+  tab: 'careers' | 'courses';
+}
+
+export default function CmsLayout({ children, tab }: CMSLayoutProps) {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState('careers');
   const handleTabChange = (value: string) => {
-    setActiveTab(value);
-    void navigate(`/admin/${value}`);
+    if (value === 'careers' || value === 'courses') {
+      void navigate(`/admin/${value}`);
+    }
   };
 
   return (
@@ -19,11 +22,11 @@ export default function CmsLayout({ children }: ProviderProps) {
           <h1 className="text-4xl font-bold tracking-tight">Admin Dashboard</h1>
         </div>
 
-        <Tabs defaultValue={activeTab} onValueChange={handleTabChange} className="w-full">
+        <Tabs defaultValue={tab} onValueChange={handleTabChange} className="w-full">
           <TabsList className="grid w-full grid-cols-3 lg:w-[400px] border">
             <TabsTrigger value="careers">Careers</TabsTrigger>
             <TabsTrigger value="courses">Courses</TabsTrigger>
-            <TabsTrigger value="skills">Skills</TabsTrigger>
+            {/* <TabsTrigger value="skills">Skills</TabsTrigger> */}
           </TabsList>
         </Tabs>
 

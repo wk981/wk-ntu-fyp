@@ -1,9 +1,13 @@
 import { ErrorResponse } from '@/types';
 import { backendURL } from '@/utils';
 import {
+  AddCourseProps,
   CourseDTOWithStatus,
+  CoursePaginationProps,
+  CoursePaginationResponse,
   CoursePaginationSkillsRequest,
   CourseWithSkillsDTO,
+  EditCourseProps,
   EditCourseStatusRequestDTO,
   TimelineCouseDTO,
 } from '../types';
@@ -109,5 +113,143 @@ export const getCourseHistory = async (filter?: string): Promise<CourseDTOWithSt
   }
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const json: CourseDTOWithStatus[] = await response.json();
+  return json;
+};
+
+export const coursePagination = async ({
+  pageNumber,
+  name,
+  rating,
+  reviewsCounts,
+  courseSource,
+  ratingOperator,
+  reviewCountsOperator,
+  pageSize = 10,
+}: CoursePaginationProps) => {
+  let url = backendURL + `/v1/course?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+
+  // Append the course name if provided and not 'show all'
+  if (name && name !== '' && name !== 'show all') {
+    url += `&name=${encodeURIComponent(name)}`;
+  }
+
+  // Append the course source if provided and not 'show all'
+  if (courseSource && courseSource !== '' && courseSource !== 'show all') {
+    url += `&courseSource=${encodeURIComponent(courseSource)}`;
+  }
+
+  // Append rating operator and rating value if provided and not 'show all'
+  if (rating !== undefined && rating !== null && rating !== 'show all') {
+    if (ratingOperator && ratingOperator !== '' && ratingOperator !== 'show all') {
+      url += `&ratingOperator=${encodeURIComponent(ratingOperator)}`;
+    }
+    url += `&rating=${rating}`;
+  }
+
+  // Append review counts operator and reviewsCounts value if provided and not 'show all'
+  if (reviewsCounts !== undefined && reviewsCounts !== null && reviewsCounts !== 'show all') {
+    if (reviewCountsOperator && reviewCountsOperator !== '' && reviewCountsOperator !== 'show all') {
+      url += `&reviewCountsOperator=${encodeURIComponent(reviewCountsOperator)}`;
+    }
+    url += `&reviewsCounts=${reviewsCounts}`;
+  }
+
+  const response = await fetch(url, {
+    method: 'GET',
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    const errorBody: ErrorResponse = (await response.json()) as ErrorResponse;
+    const errorMessage: string = errorBody.message || 'Something went wrong';
+    if (pageNumber === 1) {
+      toast.error('No courses found');
+    }
+    throw new Error(errorMessage);
+  }
+
+  const json = (await response.json()) as CoursePaginationResponse;
+  return json;
+};
+
+export const addCourse = async ({ name, courseSource, link, rating, reviews_count }: AddCourseProps) => {
+  const formdata = new FormData();
+  const emptyBlob = new Blob([], { type: 'application/octet-stream' });
+  formdata.append('thumbnail', emptyBlob, 'empty.png');
+  const jsonBlob = new Blob(
+    [
+      JSON.stringify({
+        name: name,
+        link: link,
+        courseSource: courseSource,
+        rating: rating,
+        reviews_count: reviews_count,
+      }),
+    ],
+    { type: 'application/json' }
+  );
+  formdata.append('courseBody', jsonBlob); // Append as JSON Blob
+  const url = backendURL + `/v1/course/`;
+
+  const response = await fetch(url, {
+    method: 'POST',
+    credentials: 'include',
+    body: formdata,
+  });
+  if (!response.ok) {
+    const errorBody: ErrorResponse = (await response.json()) as ErrorResponse; // Parse the error response
+    const errorMessage: string = errorBody.message || 'Something went wrong'; // Extract the error message
+    throw Error(errorMessage); // Throw a new Error with the message
+  }
+  const json = response.json() as Promise<Response>;
+  return json;
+};
+
+export const editCourse = async ({ name, courseSource, link, rating, reviews_count, id }: EditCourseProps) => {
+  const formdata = new FormData();
+  const emptyBlob = new Blob([], { type: 'application/octet-stream' });
+  formdata.append('thumbnail', emptyBlob, 'empty.png');
+  const jsonBlob = new Blob(
+    [
+      JSON.stringify({
+        name: name,
+        link: link,
+        courseSource: courseSource,
+        rating: rating,
+        reviews_count: reviews_count,
+      }),
+    ],
+    { type: 'application/json' }
+  );
+  formdata.append('courseBody', jsonBlob); // Append as JSON Blob
+  const url = backendURL + `/v1/course/${id}`;
+
+  const response = await fetch(url, {
+    method: 'PUT',
+    credentials: 'include',
+    body: formdata,
+  });
+  if (!response.ok) {
+    const errorBody: ErrorResponse = (await response.json()) as ErrorResponse; // Parse the error response
+    const errorMessage: string = errorBody.message || 'Something went wrong'; // Extract the error message
+    throw Error(errorMessage); // Throw a new Error with the message
+  }
+  const json = response.json() as Promise<Response>;
+  return json;
+};
+
+export const deleteCourse = async (id: number) => {
+  const url = backendURL + `/v1/course/${id}`;
+
+  const response = await fetch(url, {
+    method: 'DELETE',
+    credentials: 'include',
+  });
+  if (!response.ok) {
+    const errorBody: ErrorResponse = (await response.json()) as ErrorResponse; // Parse the error response
+    const errorMessage: string = errorBody.message || 'Something went wrong'; // Extract the error message
+    throw Error(errorMessage); // Throw a new Error with the message
+  }
+  const json = response.json() as Promise<Response>;
   return json;
 };

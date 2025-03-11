@@ -32,7 +32,7 @@ public class CourseService {
         this.courseRepository = courseRepository;
     }
 
-    public PageDTO<CourseDTO> findAll(
+    public PageDTO<Course> findAll(
             int pageNumber,
             int pageSize,
             Optional<String> name,
@@ -51,9 +51,7 @@ public class CourseService {
             log.warn("Page number out of bounds");
             throw new PageItemsOutOfBoundException("Page number out of bounds");
         }
-
-        List<CourseDTO> courseDTOList = courses.getContent().stream().map(CourseDTO::new).toList();
-        return new PageDTO<>(courses.getTotalPages(), pageNumber, courseDTOList);
+        return new PageDTO<>(courses.getTotalPages(), pageNumber, courses.getContent());
 
     }
 

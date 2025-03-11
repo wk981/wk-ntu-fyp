@@ -36,19 +36,19 @@ public class CourseSpecification {
             reviewsCounts.ifPresent(
                     rc -> {
                         if(reviewCountsOperator.isPresent() && reviewCountsOperator.get().equals("ge")){
-                            predicates.add(criteriaBuilder.ge(root.get("reviewsCounts"), rc));
+                            predicates.add(criteriaBuilder.ge(root.get("reviews_counts"), rc));
                         }
                         else if(reviewCountsOperator.isPresent() && reviewCountsOperator.get().equals("le")){
-                            predicates.add(criteriaBuilder.le(root.get("reviewsCounts"), rc));
+                            predicates.add(criteriaBuilder.le(root.get("reviews_counts"), rc));
                         }
                         else if(reviewCountsOperator.isPresent() && reviewCountsOperator.get().equals("gt")){
-                            predicates.add(criteriaBuilder.gt(root.get("reviewsCounts"), rc));
+                            predicates.add(criteriaBuilder.gt(root.get("reviews_counts"), rc));
                         }
                         else if(reviewCountsOperator.isPresent() && reviewCountsOperator.get().equals("lt")){
-                            predicates.add(criteriaBuilder.lt(root.get("reviewsCounts"), rc));
+                            predicates.add(criteriaBuilder.lt(root.get("reviews_counts"), rc));
                         }
                         else{
-                            predicates.add(criteriaBuilder.equal(root.get("reviewsCounts"), rc));
+                            predicates.add(criteriaBuilder.equal(root.get("reviews_counts"), rc));
                         }
             });
             courseSource.ifPresent(cs -> predicates.add(criteriaBuilder.equal(root.get("courseSource"), cs)));

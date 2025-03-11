@@ -1,6 +1,7 @@
 package com.wgtpivotlo.wgtpivotlo.controller;
 
 import com.wgtpivotlo.wgtpivotlo.dto.*;
+import com.wgtpivotlo.wgtpivotlo.model.Course;
 import com.wgtpivotlo.wgtpivotlo.service.CourseService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
@@ -22,12 +23,12 @@ public class CourseController {
     }
 
     @GetMapping
-    public ResponseEntity<PageDTO<CourseDTO>> getAllCourses(
+    public ResponseEntity<PageDTO<Course>> getAllCourses(
             @RequestParam(defaultValue = "1") @Min(1) int pageNumber,
             @RequestParam(defaultValue = "10") @Min(1) int pageSize,
             @RequestParam(required = false) String name,
-            @RequestParam(required = false) float rating,
-            @RequestParam(required = false) float reviewsCounts,
+            @RequestParam(required = false) Float rating,
+            @RequestParam(required = false) Float reviewsCounts,
             @RequestParam(required = false) String courseSource,
             @RequestParam(required = false) String ratingOperator,
             @RequestParam(required = false) String reviewCountsOperator
@@ -37,8 +38,8 @@ public class CourseController {
                         pageNumber,
                         pageSize,
                         Optional.ofNullable(name),
-                        Optional.of(rating),
-                        Optional.of(reviewsCounts),
+                        Optional.ofNullable(rating),
+                        Optional.ofNullable(reviewsCounts),
                         Optional.ofNullable(courseSource),
                         Optional.ofNullable(ratingOperator),
                         Optional.ofNullable(reviewCountsOperator)

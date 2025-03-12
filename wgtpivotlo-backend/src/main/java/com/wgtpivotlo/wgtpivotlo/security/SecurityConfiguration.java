@@ -41,9 +41,18 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((authorize) ->
-                authorize.requestMatchers(HttpMethod.GET, "/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/login", "/api/register").permitAll()
+                authorize
+                        .requestMatchers(HttpMethod.POST, "/api/login", "/api/register", "api/v1/skill/search").permitAll()
                         .requestMatchers("/api/me").authenticated()
+                        .requestMatchers(HttpMethod.POST,"/api/v1/career/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT,"/api/v1/career/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE,"/api/v1/career/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST,"/api/v1/skill/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT,"/api/v1/skill/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE,"/api/v1/skill/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST,"/api/v1/course/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT,"/api/v1/course/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE,"/api/v1/course/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
         )
         .csrf(AbstractHttpConfigurer::disable)

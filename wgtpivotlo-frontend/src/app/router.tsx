@@ -21,6 +21,9 @@ import { Security } from './routes/Settings/Security';
 import { AccountSettings } from './routes/Settings';
 import { ExploreCareerCategory } from './routes/Explore-Career-Category';
 import { ResultCategory } from './routes/questionaire/Result-Category';
+import { CMSCareer } from '@/features/admin/components/CMSCareer';
+import { CMSCourse } from '@/features/admin/components/CMSCourse';
+import { ProtectedRoute } from '@/components/protected-route';
 
 const QuestionaireLayout = () => (
   <QuestionaireProvider>
@@ -65,6 +68,7 @@ export const AppRouter = () => {
                 <Route path="result/:category" element={<ResultCategory />} />
                 <Route path="*" element={<NotFound />} /> {/* Handle unknown nested routes */}
               </Route>
+
               <Route path="settings" element={<SettingsLayoutWrapper />}>
                 <Route index element={<AccountSettings />} />
                 <Route path="security" element={<Security />} />
@@ -75,6 +79,13 @@ export const AppRouter = () => {
               <Route path="explore/career/:category" element={<ExploreCareerCategory />} />
               <Route path="resume" element={<DownloadResume />} />
               <Route path="history" element={<CourseHistory />} />
+
+              <Route element={<ProtectedRoute allowedRoles={['ROLE_ADMIN']} />}>
+                <Route path="admin">
+                  <Route path="careers" element={<CMSCareer />} />
+                  <Route path="courses" element={<CMSCourse />} />
+                </Route>
+              </Route>
             </Route>
           </Route>
           <Route path="*" element={<NotFound />} /> {/* Catch-all route */}

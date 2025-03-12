@@ -1,6 +1,7 @@
 import { Career } from '@/features/questionaire/types';
 import { skillsWithProfiency } from '@/features/skills/types';
-import { PageResponse } from '@/types';
+import { PageRequest, PageResponse } from '@/types';
+import { z } from 'zod';
 
 export interface CareerWithSkills extends Career {
   skillsWithProfiency: skillsWithProfiency[];
@@ -66,3 +67,36 @@ export interface PreviewItemProps {
   heartBadgeOnClick?: (id: string) => Promise<void>;
   heartBadgeCheckedId?: string | null;
 }
+
+export interface CareerPaginationProps extends PageRequest {
+  title?: string;
+  sector?: string;
+  careerLevel?: string;
+}
+
+export interface CareerPaginationResponse extends PageResponse {
+  data: Career[];
+}
+
+interface CareerBase {
+  title: string;
+  sector: string;
+  responsibility: string;
+  careerLevel: string;
+}
+
+export type AddCareerProps = CareerBase;
+
+// For editing, use TypeScript's built-in Partial utility type:
+export interface EditCareerProps extends Partial<CareerBase> {
+  id: string;
+}
+
+export const addCareerSchema = z.object({
+  title: z.string().nonempty('Title cannot be empty'),
+  sector: z.string().nonempty('Sector cannot be empty'),
+  responsibility: z.string().nonempty('Responsibility cannot be empty'),
+  careerLevel: z.string().nonempty('Career level cannot be empty'),
+});
+
+export const editCareerSchema = addCareerSchema.partial();

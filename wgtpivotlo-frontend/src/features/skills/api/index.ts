@@ -4,7 +4,13 @@ import { backendURL } from '@/utils';
 
 export const getSkill = async (q: string) => {
   const url = backendURL + `/v1/skill/search?q=${q}`;
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+  });
 
   if (!response.ok) {
     const errorBody = (await response.json()) as ErrorResponse; // Parse the error response

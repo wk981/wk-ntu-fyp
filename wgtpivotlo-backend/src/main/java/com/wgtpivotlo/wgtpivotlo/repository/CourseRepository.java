@@ -3,10 +3,12 @@ package com.wgtpivotlo.wgtpivotlo.repository;
 import com.wgtpivotlo.wgtpivotlo.dto.CourseWithProfiencyDTO;
 import com.wgtpivotlo.wgtpivotlo.dto.CourseWithSkillsDTO;
 import com.wgtpivotlo.wgtpivotlo.enums.SkillLevel;
+import com.wgtpivotlo.wgtpivotlo.model.Career;
 import com.wgtpivotlo.wgtpivotlo.model.Course;
 import com.wgtpivotlo.wgtpivotlo.model.Skill;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -44,4 +46,6 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
             Pageable pageable);
 
     // removed @Param recommendedSkillLevels
+
+    Page<Course> findAll(Specification<Course> specification, Pageable pageable);
 }

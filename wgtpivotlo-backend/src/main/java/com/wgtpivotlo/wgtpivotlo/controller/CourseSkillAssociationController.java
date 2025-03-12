@@ -76,4 +76,5 @@ public class CourseSkillAssociationController {
             Authentication authentication) throws AccessDeniedException {
         return ResponseEntity.ok(userCourseHistoryService.getUserCourseHistory(authentication, skillLevel, courseStatus));
     }
+
 }

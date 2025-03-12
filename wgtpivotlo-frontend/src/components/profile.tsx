@@ -41,6 +41,11 @@ export const Profile = () => {
         <Link to={'/history'}>
           <DropdownMenuItem className="cursor-pointer">Course History</DropdownMenuItem>
         </Link>
+        {user?.role.some((role) => ['ROLE_ADMIN'].includes(role)) && (
+          <Link to={'/admin/careers'}>
+            <DropdownMenuItem className="cursor-pointer">Admin</DropdownMenuItem>
+          </Link>
+        )}
         <Link to={'/settings'}>
           <DropdownMenuItem className="cursor-pointer">Settings</DropdownMenuItem>
         </Link>

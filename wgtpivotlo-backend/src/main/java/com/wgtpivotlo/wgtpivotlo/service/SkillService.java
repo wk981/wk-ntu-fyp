@@ -1,18 +1,29 @@
 package com.wgtpivotlo.wgtpivotlo.service;
 
+import com.wgtpivotlo.wgtpivotlo.dto.AddSkillRequest;
 import com.wgtpivotlo.wgtpivotlo.dto.PageDTO;
 import com.wgtpivotlo.wgtpivotlo.dto.SkillDTO;
+import com.wgtpivotlo.wgtpivotlo.dto.UpdateSkillRequest;
 import com.wgtpivotlo.wgtpivotlo.errors.exceptions.PageItemsOutOfBoundException;
 import com.wgtpivotlo.wgtpivotlo.errors.exceptions.ResourceNotFoundException;
+import com.wgtpivotlo.wgtpivotlo.model.Career;
 import com.wgtpivotlo.wgtpivotlo.model.Skill;
 import com.wgtpivotlo.wgtpivotlo.repository.SkillRepository;
+import com.wgtpivotlo.wgtpivotlo.repository.criterias.CareerSpecification;
+import com.wgtpivotlo.wgtpivotlo.repository.criterias.SkillSpecification;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,36 +49,78 @@ public class SkillService {
         return skillsList;
     }
 
-    public PageDTO<SkillDTO> findAllPagination(int pageNumber, int pageSize){
+    public PageDTO<SkillDTO> findAllPagination(int pageNumber, int pageSize, Optional<String> name){
         int correctedPageNumber = (pageNumber > 0) ? pageNumber - 1 : 0;
-        Pageable skillPageWithElements = PageRequest.of(correctedPageNumber, pageSize);
+        Pageable pageable = PageRequest.of(correctedPageNumber, pageSize);
+
 
         log.info("Step1a: Making a query to get skills");
-        Page<Skill> paginatedSkills = skillRepository.findAll(skillPageWithElements);
+        Specification<Skill> specification = SkillSpecification.getSpecification(name);
+        Page<Skill> skills = skillRepository.findAll(specification, pageable);
 
-        if (correctedPageNumber >= paginatedSkills.getTotalPages()) {
+
+        if (correctedPageNumber >= skills.getTotalPages()) {
             log.warn("Page number out of bounds");
             throw new PageItemsOutOfBoundException("Page number out of bounds");
         }
 
+
         log.info("Step1b: Creating skillDTO");
-        List<SkillDTO> skillDTOList= paginatedSkills.getContent().stream().map(SkillDTO::new).collect(Collectors.toList());;
+        List<SkillDTO> skillDTOList= skills.getContent().stream().map(SkillDTO::new).collect(Collectors.toList());;
 
         log.info("Step2: Tidying up body and pagination");
-        return new PageDTO<>(paginatedSkills.getTotalPages(), pageNumber, skillDTOList);
+        return new PageDTO<>(skills.getTotalPages(), pageNumber, skillDTOList);
     }
 
-    public Optional<Skill> findId(long id) {
+    public Skill findId(long id) {
         Optional<Skill> skill = skillRepository.findById(id);
         if (skill.isEmpty()){
             throw new ResourceNotFoundException("skill id with " + id + " is not found in database");
         }
         else{
-            return skill;
+            return skill.get();
         }
     }
 
     public List<Skill> findSkill(String q){
         return skillRepository.findByNameContainingIgnoreCase(q.toLowerCase());
+    }
+
+    @Transactional
+    public void createSkill(@Valid AddSkillRequest request, MultipartFile thumbnail) throws BadRequestException {
+        if (request == null) {
+            throw new BadRequestException("Bad Request");
+        }
+        Skill skill = new Skill();
+        Optional.ofNullable(request.getName()).ifPresent(skill::setName);
+        Optional.ofNullable(request.getDescription()).ifPresent(skill::setDescription);
+
+        skill.setUpdated_on(LocalDateTime.now());
+        skill.setCreated_on(LocalDateTime.now());
+        log.info("Career Added");
+        skillRepository.save(skill);
+
+    }
+
+    @Transactional
+    public void updateSkill(UpdateSkillRequest request, MultipartFile thumbnail, long id) throws BadRequestException {
+        if (request == null) {
+            throw new BadRequestException("Bad Request");
+        }
+        Skill skill = findId(id);
+
+        Optional.ofNullable(request.getName()).ifPresent(skill::setName);
+        Optional.ofNullable(request.getDescription()).ifPresent(skill::setDescription);
+
+        skill.setUpdated_on(LocalDateTime.now());
+        skillRepository.save(skill);
+    }
+
+    @Transactional
+    public void deleteCareerId(long id) {
+        Skill skill = findId(id);
+
+        log.info("Skill deleted");
+        skillRepository.delete(skill);
     }
 }

@@ -9,7 +9,6 @@ import com.wgtpivotlo.wgtpivotlo.model.User;
 import com.wgtpivotlo.wgtpivotlo.repository.UserRepository;
 import com.wgtpivotlo.wgtpivotlo.security.UserDetailsImpl;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
@@ -30,7 +28,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static com.wgtpivotlo.wgtpivotlo.enums.Role.USER;
+import static com.wgtpivotlo.wgtpivotlo.enums.Role.ROLE_USER;
 
 @Service
 @Slf4j
@@ -80,7 +78,7 @@ public class AuthService {
             User newUser = User
                     .builder()
                     .email(registerRequest.getEmail())
-                    .role(USER)
+                    .role(ROLE_USER)
                     .username(registerRequest.getUsername())
                     .password(passwordEncoder.encode(registerRequest.getPassword()))
                     .build();

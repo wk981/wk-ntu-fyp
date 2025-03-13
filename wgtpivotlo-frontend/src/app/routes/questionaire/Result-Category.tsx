@@ -12,7 +12,7 @@ export const ResultCategory = () => {
         <CareerCategory
           questionaireFormResults={questionaireFormResults}
           category={category}
-          backButtonOnClick={() => void navigate('/explore/career')}
+          backButtonOnClick={() => void navigate('/questionaire/result')}
         />
       )}
     </>

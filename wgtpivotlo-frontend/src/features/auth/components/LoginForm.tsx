@@ -48,7 +48,7 @@ export const LoginForm = () => {
         className="w-full h-full flex flex-col justify-between"
       >
         <div className="flex flex-col gap-3 h-full flex-grow">
-          <h1 className="text-center pb-4">Login</h1>
+          <h1 className="text-center pb-4 text-2xl font-bold">Login</h1>
           <FormField
             control={form.control}
             name="username"

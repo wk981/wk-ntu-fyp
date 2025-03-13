@@ -49,7 +49,7 @@ export const RegisterForm = () => {
         className="w-full h-full flex flex-col gap-16 justify-between"
       >
         <div className="flex flex-col gap-3 flex-grow">
-          <h1 className="text-center pb-4">Registration</h1>
+          <h1 className="text-center pb-4 text-2xl font-bold">Registration</h1>
           <FormField
             control={form.control}
             name="username"

@@ -87,6 +87,7 @@ public class CareerRecommendationService {
         }
 
         log.info("Making a query to get careers with similarity score");
+        
         // Get all the career related to skills and profiency along with similarity score.
         Page<CareerWithSimilarityScoreDTO> result = getCareerSimilarityWithPagination(
                 parameters.getSkillMap(),
@@ -96,7 +97,6 @@ public class CareerRecommendationService {
                 Optional.ofNullable(request.getSector()),
                 pageable
         );
-
         return mapping(correctedPageNumber, request.getPageNumber(),result);
     }
 
@@ -206,7 +206,7 @@ public class CareerRecommendationService {
             double weightedScore = 0;
             for(SkillWithProfiencyDTO skillWithProfiencyDTO: skillWithProfiencyDTOList){ // go thru skill and profiency
                 if(skillIdToSkillLevelMap.containsKey(skillWithProfiencyDTO.getSkillId())){ // check if skillId exist in skillIdMap (normally user or career)
-                    weightedScore += skillIdToSkillLevelMap.get(skillWithProfiencyDTO.getSkillId()).toWeightedDouble(); // calculate weightedScore
+                    weightedScore += calculateProficiencyMatch(skillWithProfiencyDTO.getProfiency(), skillIdToSkillLevelMap.get(skillWithProfiencyDTO.getSkillId())); // calculate weightedScore, ordinal matching algorithm
                 }
             }
 
@@ -246,6 +246,7 @@ public class CareerRecommendationService {
         // Step 4: Apply Pagination
         int start = (int) pageable.getOffset();
         int end = Math.min((start + pageable.getPageSize()), careerSimilarityList.size());
+
         List<CareerWithSimilarityScoreDTO> paginatedList;
         if (start >= careerSimilarityList.size()) {
             // If start index is out of range, return an empty list
@@ -266,7 +267,6 @@ public class CareerRecommendationService {
                     if (careerLevel.toInt() >= preferedCareerLevel.toInt()) return Integer.MIN_VALUE;
                     return careerLevel.toInt();
                 }));
-                careerWithSimilarityScoreDTOList.removeIf(value -> !Objects.equals(value.getCareer().getSector(), sector));
 
             }
             case ASPIRATION -> {
@@ -282,6 +282,8 @@ public class CareerRecommendationService {
                     if (careerLevel.toInt() == preferedCareerLevel.toInt()) return Integer.MIN_VALUE;
                     return careerLevel.toInt();
                 }));
+                careerWithSimilarityScoreDTOList.removeIf(value -> !Objects.equals(value.getCareer().getSector(), sector));
+
             }
             default -> {
                 return;
@@ -326,4 +328,23 @@ public class CareerRecommendationService {
         return null;
     }
 
+    private double calculateProficiencyMatch(SkillLevel skillLevel1, SkillLevel skillLevel2) {
+
+        // Convert proficiency to a numeric scale.
+        int level1 = skillLevel1.toInt();
+        int level2 = skillLevel2.toInt();
+
+        int diff = Math.abs(level1 - level2);
+
+        if (diff == 0) {
+            return 1.0; // Exact match.
+        } else if (diff == 1) {
+            return 0.7; // One level apart.
+        } else if (diff == 2) {
+            return 0.3; // Two levels apart.
+        }
+
+        // Fallback in case of unexpected values.
+        return 0.0;
+    }
 }

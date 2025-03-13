@@ -25,10 +25,10 @@ export const CareerCategory = ({ backButtonOnClick, category, questionaireFormRe
     return (
       <div className="container overflow-hidden mx-auto w-full space-y-3">
         <Skeleton className="h-8 w-64" />
-        <div className="w-full mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 items-center justify-center flex-1 overflow-y-hidden">
-          {Array.from({ length: 9 }, (_, index) => (
+        <div className="w-full mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 items-stretch justify-center flex-1 overflow-y-hidden">
+          {Array.from({ length: 10 }, (_, index) => (
             <div key={index}>
-              <Skeleton className="w-[300px] h-[410px]" />
+              <Skeleton className="h-[410px] w-auto" />
             </div>
           ))}
         </div>

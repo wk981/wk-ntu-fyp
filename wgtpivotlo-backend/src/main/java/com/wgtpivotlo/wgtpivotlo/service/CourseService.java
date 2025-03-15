@@ -35,16 +35,25 @@ public class CourseService {
     public PageDTO<Course> findAll(
             int pageNumber,
             int pageSize,
-            Optional<String> name,
-            Optional<Float> rating,
-            Optional<Float> reviewsCounts,
-            Optional<String> courseSource,
-            Optional<String> ratingOperator,
-            Optional<String> reviewCountsOperator
+            String name,
+            Float rating,
+            Float reviewsCounts,
+            String courseSource,
+            String ratingOperator,
+            String reviewCountsOperator,
+            String skillFilters
             ) {
         int correctedPageNumber = (pageNumber > 0) ? pageNumber - 1 : 0;
         Pageable pageable = PageRequest.of(correctedPageNumber, pageSize);
-        Specification<Course> specification = CourseSpecification.getSpecification(name, rating, reviewsCounts, courseSource, ratingOperator, reviewCountsOperator);
+        Specification<Course> specification = CourseSpecification.getSpecification(
+                Optional.ofNullable(name),
+                Optional.ofNullable(rating),
+                Optional.ofNullable(reviewsCounts),
+                Optional.ofNullable(courseSource),
+                Optional.ofNullable(ratingOperator),
+                Optional.ofNullable(reviewCountsOperator),
+                Optional.ofNullable(skillFilters)
+        );
         Page<Course> courses = courseRepository.findAll(specification,pageable);
 
         if (correctedPageNumber >= courses.getTotalPages()) {

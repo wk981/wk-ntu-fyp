@@ -37,10 +37,10 @@ public class CareerService {
         return careerRepository.findAllSector();
     }
 
-    public PageDTO<Career> findAllPaginationCareer(int pageNumber, int pageSize, Optional<String> title, Optional<String> sector, Optional<String> careerLevel){
+    public PageDTO<Career> findAllPaginationCareer(int pageNumber, int pageSize, String title, String sector, String careerLevel, String skillFilters){
         int correctedPageNumber = (pageNumber > 0) ? pageNumber - 1 : 0;
         Pageable pageable = PageRequest.of(correctedPageNumber, pageSize);
-        Specification<Career> specification = CareerSpecification.getSpecification(title, sector, careerLevel);
+        Specification<Career> specification = CareerSpecification.getSpecification(title, sector, careerLevel, skillFilters);
         Page<Career> careers = careerRepository.findAll(specification,pageable);
 
         if (correctedPageNumber >= careers.getTotalPages()) {

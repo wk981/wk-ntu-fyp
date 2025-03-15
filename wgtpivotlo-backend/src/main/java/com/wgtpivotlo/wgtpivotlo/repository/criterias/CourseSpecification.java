@@ -1,7 +1,14 @@
 package com.wgtpivotlo.wgtpivotlo.repository.criterias;
 
+import com.wgtpivotlo.wgtpivotlo.dto.SkillIdWithProfiencyDTO;
+import com.wgtpivotlo.wgtpivotlo.model.CareerSkills;
 import com.wgtpivotlo.wgtpivotlo.model.Course;
+import com.wgtpivotlo.wgtpivotlo.model.CourseSkills;
+import com.wgtpivotlo.wgtpivotlo.utils.FiltersHelper;
 import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Subquery;
+import org.apache.coyote.BadRequestException;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
@@ -15,10 +22,58 @@ public class CourseSpecification {
             Optional<Float> reviewsCounts,
             Optional<String> courseSource,
             Optional<String> ratingOperator,
-            Optional<String> reviewCountsOperator
+            Optional<String> reviewCountsOperator,
+            Optional<String> skillFilters
     ) {
         return (root, query, criteriaBuilder) -> {
+            query.distinct(true);
             List<Predicate> predicates = new ArrayList<>();
+
+            if(skillFilters.isPresent() && !skillFilters.get().trim().isEmpty()){
+                List<SkillIdWithProfiencyDTO> skillFilterList;
+                try {
+                    skillFilterList = FiltersHelper.extractSkillIdWithProfiencyDTO(skillFilters.get());
+                } catch (BadRequestException e) {
+                    throw new RuntimeException(e);
+                }
+                // For each filter, add a separate exists clause
+                for (SkillIdWithProfiencyDTO filter : skillFilterList) {
+                    Subquery<CourseSkills> subQuery = query.subquery(CourseSkills.class);
+                    Root<CourseSkills> csRoot = subQuery.from(CourseSkills.class);
+
+                    List<Predicate> subQueryPredicateList = new ArrayList<>();
+
+                    // Correlate subquery with main query using the career id
+                    Predicate courseJoin = criteriaBuilder.equal(
+                            csRoot.get("course").get("course_id"), root.get("id")
+                    );
+
+                    // skillId = input skillId
+                    Predicate skillMatch = criteriaBuilder.equal(
+                            csRoot.get("skill").get("skillId"), filter.getSkillId()
+                    );
+
+                    // user may be searching without profiency
+                    if(filter.getProfiency() != null){
+                        Predicate proficiencyMatch = criteriaBuilder.equal(
+                                csRoot.get("profiency"), filter.getProfiency()
+                        );
+                        subQueryPredicateList.add(proficiencyMatch);
+                    }
+
+                    // chain predicates to put in where
+                    subQueryPredicateList.add(courseJoin);
+                    subQueryPredicateList.add(skillMatch);
+
+                    subQuery.select(csRoot)
+                            .where(criteriaBuilder.and(subQueryPredicateList.toArray(new Predicate[0])));
+
+                    // Add an exists predicate for this filter
+                    predicates.add(criteriaBuilder.exists(subQuery));
+                }
+
+            }
+
             name.ifPresent(t -> predicates.add(criteriaBuilder.like(root.get("name"), "%" + t + "%")));
             rating.ifPresent(r -> {
                 if (ratingOperator.isPresent() && ratingOperator.get().equals("ge")) {

@@ -9,6 +9,7 @@ import com.wgtpivotlo.wgtpivotlo.model.Skill;
 import com.wgtpivotlo.wgtpivotlo.service.CareerRecommendationService;
 import com.wgtpivotlo.wgtpivotlo.service.CareerSkillAssociationService;
 import com.wgtpivotlo.wgtpivotlo.service.UserService;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -35,11 +36,33 @@ public class CareerSkillAssociationController {
         this.mappingUtils = mappingUtils;
     }
 
+    @PostMapping("/")
+    public ResponseEntity<MessageDTO> addCareerSkill(@RequestBody CareerSkillsDTO careerSkillsDTO) throws BadRequestException {
+        careerSkillAssociationService.addCareerSkill(careerSkillsDTO);
+        MessageDTO messageDTO = MessageDTO.builder().message("Success").build();
+        return ResponseEntity.ok(messageDTO);
+    }
+
+    @PutMapping("/")
+    public ResponseEntity<MessageDTO> editCareerSkill(@RequestBody CareerSkillsDTO careerSkillsDTO) throws BadRequestException {
+        careerSkillAssociationService.editCareerSkill(careerSkillsDTO);
+        MessageDTO messageDTO = MessageDTO.builder().message("Success").build();
+        return ResponseEntity.ok(messageDTO);
+    }
+
+    @DeleteMapping("/")
+    public ResponseEntity<MessageDTO> deleteCareerSkill(@RequestBody CareerSkillsDTO careerSkillsDTO) throws BadRequestException {
+        careerSkillAssociationService.deleteCareerSkill(careerSkillsDTO);
+        MessageDTO messageDTO = MessageDTO.builder().message("Success").build();
+        return ResponseEntity.ok(messageDTO);
+    }
+
     @GetMapping("/career/{career_id}")
     public ResponseEntity<Optional<CareerWithSkillsDTO>> getCareerAssiocationId(@PathVariable long career_id){
         Optional<CareerWithSkillsDTO> result = careerSkillAssociationService.findByCareerId(career_id);
         return ResponseEntity.ok(result);
     }
+
 
     @PostMapping("/career/recommendations")
     public ResponseEntity<PageDTO<CareerWithSimilarityScoreDTO>> getMoreTypedResult(@RequestBody CareerRecommendationDTO request, Authentication authentication) throws AccessDeniedException {

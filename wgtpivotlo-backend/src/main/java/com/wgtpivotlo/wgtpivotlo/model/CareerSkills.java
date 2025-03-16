@@ -18,6 +18,7 @@ import lombok.*;
 @NoArgsConstructor
 public class CareerSkills {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne

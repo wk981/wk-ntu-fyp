@@ -19,7 +19,8 @@ export default function CmsLayout({ children, tab }: CMSLayoutProps) {
     <div className="container mx-auto py-6">
       <div className="flex flex-col space-y-6">
         <div className="flex items-center justify-between">
-          <h1 className="text-4xl font-bold tracking-tight">Admin Dashboard</h1>
+          <h1 className="text-4xl font-bold tracking-tight">Admin Portal</h1>
+          <p className="text-muted-foreground max-w-3xl mb-2">One way stop to edit the contents in database</p>
         </div>
 
         <Tabs defaultValue={tab} onValueChange={handleTabChange} className="w-full">

@@ -12,12 +12,16 @@ import com.wgtpivotlo.wgtpivotlo.model.Skill;
 import com.wgtpivotlo.wgtpivotlo.repository.CareerRepository;
 import com.wgtpivotlo.wgtpivotlo.repository.CareerSkillAssociationRepository;
 import com.wgtpivotlo.wgtpivotlo.repository.SkillRepository;
+import com.wgtpivotlo.wgtpivotlo.security.UserDetailsImpl;
 import jakarta.transaction.Transactional;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CareerSkillAssociationService {
@@ -35,13 +39,18 @@ public class CareerSkillAssociationService {
     }
 
     // get career along with skills and profiency
-    public Optional<CareerWithSkillsDTO> findByCareerId(Long career_id){
+    public Optional<CareerWithSkillsDTO> findByCareerId(Long career_id, Authentication authentication){
         Optional<Career> career = careerRepository.findById(career_id);
         List<CareerSkills> careerSkillsList = findCareerSkillsByCareerId(career_id);
         CareerWithSkillsDTO careerWithSkillsDTO = null;
 
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
+        List<String> roles = authorities.stream().map(Object::toString).toList();
+        boolean isAdmin = roles.contains("ROLE_ADMIN");
+
         if(career.isPresent()){
-            careerWithSkillsDTO = mappingUtils.mapSkillsIntoCareer(career.get(), careerSkillsList);
+            careerWithSkillsDTO = mappingUtils.mapSkillsIntoCareer(career.get(), careerSkillsList, isAdmin);
         }
         else{
             throw new ResourceNotFoundException("career id with " + career_id + " is not found in database");
@@ -54,7 +63,7 @@ public class CareerSkillAssociationService {
         List<Career> careerList = careerRepository.findCareerSkillsBySkillIds(skillIdList);
         List<CareerWithSkillsDTO> res = careerList.stream().map((career) ->{
             List<CareerSkills> careerSkillsList = findCareerSkillsByCareerId(career.getCareerId());
-            return mappingUtils.mapSkillsIntoCareer(career, careerSkillsList);
+            return mappingUtils.mapSkillsIntoCareer(career, careerSkillsList, false);
         }).toList();
         return res;
     }

@@ -1,5 +1,5 @@
 import { ComboBox } from '@/components/combo-box';
-import { MultiComboBox } from '@/components/multi-select-combo-box';
+import { FormFieldMultiComboBox } from '@/components/multi-select-combo-box-form-control';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -166,7 +166,7 @@ export const QuestionForm = () => {
                 <span className="text-blue-anchor">*</span>
               </FormLabel>
               <FormControl>
-                <MultiComboBox
+                <FormFieldMultiComboBox
                   {...field}
                   data={skillsData}
                   setValue={form.setValue}

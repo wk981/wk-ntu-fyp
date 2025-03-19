@@ -30,7 +30,7 @@ public class MappingUtils {
                 .build();
     }
 
-    public CareerWithSkillsDTO mapSkillsIntoCareer(Career career, List<CareerSkills> careerSkillsList){
+    public CareerWithSkillsDTO mapSkillsIntoCareer(Career career, List<CareerSkills> careerSkillsList, Boolean isAdmin){
         List<SkillWithProfiencyDTO> careerSkillWithProficiencyDTOList = new ArrayList<>();
 
         for (CareerSkills careerSkills: careerSkillsList){
@@ -45,17 +45,21 @@ public class MappingUtils {
                     .build();
             careerSkillWithProficiencyDTOList.add(skillWithProfiencyDTO);
         }
-
-        return CareerWithSkillsDTO
-            .builder()
-            .skillsWithProfiency(careerSkillWithProficiencyDTOList)
-            .career_id(career.getCareerId())
-            .title(career.getTitle())
-            .sector(career.getSector())
-            .responsibility(career.getResponsibility())
-            .careerLevel(career.getCareerLevel())
-            .pic_url(career.getPic_url())
-            .build();
+        CareerWithSkillsDTO careerWithSkillsDTO = CareerWithSkillsDTO
+                .builder()
+                .skillsWithProfiency(careerSkillWithProficiencyDTOList)
+                .career_id(career.getCareerId())
+                .title(career.getTitle())
+                .sector(career.getSector())
+                .responsibility(career.getResponsibility())
+                .careerLevel(career.getCareerLevel())
+                .pic_url(career.getPic_url())
+                .build();
+        if(isAdmin){
+            careerWithSkillsDTO.setCreated_on(career.getCreated_on());
+            careerWithSkillsDTO.setUpdated_on(career.getUpdated_on());
+        }
+        return careerWithSkillsDTO;
     }
 
     public List<SkillDTO> mapCareerSkillsIntoSkillDTO(List<CareerSkills> careerSkillsList){

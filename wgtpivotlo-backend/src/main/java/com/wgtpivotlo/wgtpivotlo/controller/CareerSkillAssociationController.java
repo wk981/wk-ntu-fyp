@@ -58,8 +58,8 @@ public class CareerSkillAssociationController {
     }
 
     @GetMapping("/career/{career_id}")
-    public ResponseEntity<Optional<CareerWithSkillsDTO>> getCareerAssiocationId(@PathVariable long career_id){
-        Optional<CareerWithSkillsDTO> result = careerSkillAssociationService.findByCareerId(career_id);
+    public ResponseEntity<Optional<CareerWithSkillsDTO>> getCareerAssiocationId(@PathVariable long career_id, Authentication authentication){
+        Optional<CareerWithSkillsDTO> result = careerSkillAssociationService.findByCareerId(career_id, authentication);
         return ResponseEntity.ok(result);
     }
 

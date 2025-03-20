@@ -9,6 +9,7 @@ interface UseCareerPaginationProps {
   courseSource?: string;
   ratingOperator?: string;
   reviewCountsOperator?: string;
+  skillFilters?: string;
   page: number;
 }
 
@@ -20,6 +21,7 @@ export const useCoursePagination = ({
   ratingOperator,
   reviewCountsOperator,
   page,
+  skillFilters,
 }: UseCareerPaginationProps) => {
   const { data, error, isFetching, isError } = useQuery<CoursePaginationResponse, Error>({
     queryKey: [
@@ -30,6 +32,7 @@ export const useCoursePagination = ({
       courseSource,
       ratingOperator,
       reviewCountsOperator,
+      skillFilters,
       page,
     ],
     queryFn: () =>
@@ -41,6 +44,7 @@ export const useCoursePagination = ({
         ratingOperator: ratingOperator,
         reviewsCounts: reviewsCounts,
         reviewCountsOperator: reviewCountsOperator,
+        skillFilters,
         pageSize: 10,
       }),
     retry: 1,

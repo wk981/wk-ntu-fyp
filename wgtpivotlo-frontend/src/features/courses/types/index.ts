@@ -56,6 +56,7 @@ export interface CoursePaginationProps extends PageRequest {
   courseSource?: string;
   ratingOperator?: string;
   reviewCountsOperator?: string;
+  skillFilters?: string;
 }
 
 export interface CoursePaginationResponse extends PageResponse {

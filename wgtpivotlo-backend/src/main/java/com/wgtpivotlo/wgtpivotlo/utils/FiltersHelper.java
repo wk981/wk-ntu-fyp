@@ -16,26 +16,26 @@ public class FiltersHelper {
         List<SkillIdWithProfiencyDTO> res = new ArrayList<>();
         if(skillFilters!= null && !skillFilters.trim().isEmpty()){
             String[] filterPairs = skillFilters.split(",");
+
             for(String pair: filterPairs){
                 String[] parts = pair.split(":");
-                System.out.println(Arrays.toString(parts));
-                if(parts.length < 2){
-                    throw new BadRequestException("Invalid filter format for: " + pair);
+                if (parts.length == 0 || parts[0].trim().isEmpty()) {
+                    System.err.println("Invalid skill filter: " + pair + " (Missing Skill ID)");
+                    continue; // Skip this entry if the Skill ID is missing
+                }
+                Long skillId = Long.parseLong(parts[0].trim()); // Validate that Skill ID is a Long
+                String profiencyString = parts.length > 1 ? parts[1].trim() : "";
+                SkillLevel profiency;
+                if(profiencyString.isEmpty()){
+                    profiency = null;
                 }
                 else{
-                    Long skillId = Long.parseLong(parts[0].trim());
-                    String profiencyString = parts[1].trim();
-                    SkillLevel profiency;
-                    if(profiencyString.isEmpty()){
-                        profiency = null;
-                    }
-                    else{
-                        profiency = SkillLevel.valueOf(profiencyString);
-                    }
-                    res.add(new SkillIdWithProfiencyDTO(skillId, profiency));
+                    profiency = SkillLevel.valueOf(profiencyString);
                 }
+                res.add(new SkillIdWithProfiencyDTO(skillId, profiency));
             }
         }
+        System.out.println(res.toString());
         return res;
     }
 }

@@ -11,6 +11,8 @@ interface NameSelectProps {
   onRedCrossClick: () => void | Promise<void>;
   selectValue: string;
   isLoading: boolean;
+  selectClassName?: string;
+  blueBorder?: boolean;
 }
 
 export const DropdownComponent = ({
@@ -20,9 +22,13 @@ export const DropdownComponent = ({
   onRedCrossClick,
   selectValue,
   isLoading,
+  selectClassName,
+  blueBorder,
 }: NameSelectProps) => {
   return (
-    <div className="flex flex-col w-full gap-1.5">
+    <div
+      className={`flex flex-col w-full gap-1.5 ${blueBorder ? 'border border-dashed border-blue-300 bg-blue-50 rounded-md p-4 max-w-[350px]' : ''}`}
+    >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-1.5 min-w-0 pr-1">
           <p className="text-sm font-medium truncate">{capitalizeEveryFirstChar(title)}</p>
@@ -45,7 +51,7 @@ export const DropdownComponent = ({
         )}
       </div>
       <Select value={selectValue} onValueChange={(e) => void onValueChange(e)} disabled={isLoading}>
-        <SelectTrigger className="h-9 text-sm w-full">
+        <SelectTrigger className={`h-9 text-sm w-full ${selectClassName}`}>
           <SelectValue placeholder="Select" />
         </SelectTrigger>
         <SelectContent>

@@ -72,6 +72,7 @@ export interface CareerPaginationProps extends PageRequest {
   title?: string;
   sector?: string;
   careerLevel?: string;
+  skillFilters?: string;
 }
 
 export interface CareerPaginationResponse extends PageResponse {

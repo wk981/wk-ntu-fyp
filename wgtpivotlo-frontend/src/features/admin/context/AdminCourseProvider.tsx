@@ -1,6 +1,6 @@
 import { ProviderProps } from '@/utils';
 import { createContext, MouseEvent, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { SetURLSearchParams, useSearchParams } from 'react-router-dom';
 import { Course } from '@/features/courses/types';
 import { useCoursePagination } from '@/features/courses/hook/useCoursePagination';
 import { DataProps } from '@/features/questionaire/types';
@@ -9,21 +9,16 @@ interface AdminCourseContext {
   isViewDialogOpen: boolean;
   setIsViewDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isEditDialogOpen: boolean;
-
   setIsEditDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-
   isAddDialogOpen: boolean;
   setIsAddDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isDeleteDialogOpen: boolean;
   setIsDeleteDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-
   selectedCourse: Course | null;
   setSelectedCourse: React.Dispatch<React.SetStateAction<Course | null>>;
-
   handleEditClick: () => void;
   getLevelColor: (level: string) => string;
   handleRowClick: (course: Course) => void;
-
   ratingFilter: string;
   setRatingFilter: React.Dispatch<React.SetStateAction<string>>;
   ratingOperatorFilter: string;
@@ -36,8 +31,6 @@ interface AdminCourseContext {
   setCourseSourceFilter: React.Dispatch<React.SetStateAction<string>>;
   searchQuery: string;
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
-  clearFilter: () => void;
-  handleApplyFilters: () => void;
   coursesData: Course[];
   hasMoreCoursePage: boolean;
   isFetchingCoursePage: boolean;
@@ -45,6 +38,9 @@ interface AdminCourseContext {
   currentPage: number | undefined;
   handleSearch: (e: MouseEvent<HTMLButtonElement>) => void;
   courseSourceOptions: DataProps[];
+  skillFilters: string;
+  setSkillFilters: React.Dispatch<React.SetStateAction<string>>;
+  setSearchParams: SetURLSearchParams;
 }
 
 const AdminCourseContext = createContext<AdminCourseContext | undefined>(undefined);
@@ -68,6 +64,7 @@ const AdminCourseProvider = ({ children }: ProviderProps) => {
     searchParams.get('reviewCountsOperatorFilter') ?? ''
   );
   const [courseSourceFilter, setCourseSourceFilter] = useState(searchParams.get('courseSource') ?? '');
+  const [skillFilters, setSkillFilters] = useState<string>(searchParams.get('skillFilters') ?? '');
   const [searchQuery, setSearchQuery] = useState<string>(searchParams.get('q') ?? '');
 
   const courseSourceOptions = [{ value: 'Coursera', label: 'Coursera' }];
@@ -78,46 +75,9 @@ const AdminCourseProvider = ({ children }: ProviderProps) => {
     courseSource: searchParams.get('courseSource') ?? undefined,
     ratingOperator: searchParams.get('ratingOperatorFilter') ?? undefined,
     reviewCountsOperator: searchParams.get('reviewCountsOperatorFilter') ?? undefined,
+    skillFilters: searchParams.get('skillFilters') ?? '',
     page: Number(searchParams.get('pageNumber') ?? 1),
   });
-
-  const handleApplyFilters = () => {
-    setSearchParams((prev) => {
-      const newParams = new URLSearchParams(prev);
-
-      if (ratingFilter === '' || ratingFilter === 'show all') {
-        newParams.delete('rating');
-      } else {
-        newParams.set('rating', ratingFilter);
-      }
-
-      if (ratingOperatorFilter === '' || ratingOperatorFilter === 'show all') {
-        newParams.delete('ratingOperatorFilter');
-      } else {
-        newParams.set('ratingOperatorFilter', ratingOperatorFilter);
-      }
-
-      if (reviewCountsFilter === '' || reviewCountsFilter === 'show all') {
-        newParams.delete('reviewCounts');
-      } else {
-        newParams.set('reviewCounts', reviewCountsFilter);
-      }
-
-      if (reviewCountsOperatorFilter === '' || reviewCountsOperatorFilter === 'show all') {
-        newParams.delete('reviewCountsOperatorFilter');
-      } else {
-        newParams.set('reviewCountsOperatorFilter', reviewCountsOperatorFilter);
-      }
-
-      if (courseSourceFilter === '' || courseSourceFilter === 'show all') {
-        newParams.delete('courseSource');
-      } else {
-        newParams.set('courseSource', courseSourceFilter);
-      }
-      newParams.set('pageNumber', '1');
-      return newParams;
-    });
-  };
 
   const handleSearch = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -149,24 +109,6 @@ const AdminCourseProvider = ({ children }: ProviderProps) => {
     setIsViewDialogOpen(true);
   };
 
-  const clearFilter = () => {
-    setRatingFilter('');
-    setRatingOperatorFilter('');
-    setReviewCountsFilter('');
-    setReviewCountsOperatorFilter('');
-    setCourseSourceFilter('');
-    setSearchQuery('');
-    setSearchParams((prev) => {
-      const newParams = new URLSearchParams(prev);
-      newParams.delete('rating');
-      newParams.delete('ratingOperatorFilter');
-      newParams.delete('reviewCounts');
-      newParams.delete('reviewCountsOperatorFilter');
-      newParams.delete('courseSource');
-      return newParams;
-    });
-  };
-
   const value = {
     isViewDialogOpen,
     isEditDialogOpen,
@@ -180,8 +122,6 @@ const AdminCourseProvider = ({ children }: ProviderProps) => {
     setSelectedCourse,
     searchQuery,
     setSearchQuery,
-    clearFilter,
-    handleApplyFilters,
     hasMoreCoursePage,
     isFetchingCoursePage,
     totalPages,
@@ -202,6 +142,9 @@ const AdminCourseProvider = ({ children }: ProviderProps) => {
     courseSourceFilter,
     setCourseSourceFilter,
     courseSourceOptions,
+    skillFilters,
+    setSkillFilters,
+    setSearchParams,
   };
 
   return <AdminCourseContext.Provider value={value}>{children}</AdminCourseContext.Provider>;

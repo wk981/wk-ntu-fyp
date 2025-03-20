@@ -6,18 +6,20 @@ interface CareerPaginationProps {
   title?: string;
   sector?: string;
   careerLevel?: string;
+  skillFilters?: string;
   page: number;
 }
 
-export const useCareerPagination = ({ title, sector, careerLevel, page = 1 }: CareerPaginationProps) => {
+export const useCareerPagination = ({ title, sector, careerLevel, skillFilters, page = 1 }: CareerPaginationProps) => {
   const { data, error, isFetching, isError } = useQuery<CareerPaginationResponse, Error>({
-    queryKey: ['career-pagination', title, sector, careerLevel, page],
+    queryKey: ['career-pagination', title, sector, careerLevel, skillFilters, page],
     queryFn: () =>
       careerPagination({
         pageNumber: page,
         title,
         sector,
         careerLevel,
+        skillFilters,
         pageSize: 10,
       }),
     retry: 1,

@@ -31,18 +31,20 @@ public class CourseController {
             @RequestParam(required = false) Float reviewsCounts,
             @RequestParam(required = false) String courseSource,
             @RequestParam(required = false) String ratingOperator,
-            @RequestParam(required = false) String reviewCountsOperator
+            @RequestParam(required = false) String reviewCountsOperator,
+            @RequestParam(required = false) String skillFilters
     ){
         return ResponseEntity.ok(
                 courseService.findAll(
                         pageNumber,
                         pageSize,
-                        Optional.ofNullable(name),
-                        Optional.ofNullable(rating),
-                        Optional.ofNullable(reviewsCounts),
-                        Optional.ofNullable(courseSource),
-                        Optional.ofNullable(ratingOperator),
-                        Optional.ofNullable(reviewCountsOperator)
+                        name,
+                        rating,
+                        reviewsCounts,
+                        courseSource,
+                        ratingOperator,
+                        reviewCountsOperator,
+                        skillFilters
                 )
         );
     }

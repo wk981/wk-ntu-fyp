@@ -11,7 +11,6 @@ import jakarta.validation.constraints.Min;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,8 +33,20 @@ public class CareerController {
             @RequestParam(defaultValue = "10") @Min(1) int pageSize,
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String sector,
-            @RequestParam(required = false) String careerLevel){
-        return ResponseEntity.ok(careerService.findAllPaginationCareer(pageNumber, pageSize, Optional.ofNullable(title), Optional.ofNullable(sector), Optional.ofNullable(careerLevel)));
+            @RequestParam(required = false) String careerLevel,
+            @RequestParam(required = false) String skillFilters){
+        // skillFilters format: skillFilters=5:Advanced,6:Intermediate or skillFilters=5: ,6:Intermediate
+        return ResponseEntity.ok(
+                careerService
+                        .findAllPaginationCareer(
+                                pageNumber,
+                                pageSize,
+                                title,
+                                sector,
+                                careerLevel,
+                                skillFilters
+                        )
+                );
     }
 
     @PostMapping("/")

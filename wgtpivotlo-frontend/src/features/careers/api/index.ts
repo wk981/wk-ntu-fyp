@@ -140,6 +140,7 @@ export const careerPagination = async ({
   title,
   sector,
   careerLevel,
+  skillFilters,
   pageSize = 10,
 }: CareerPaginationProps) => {
   // console.log(pageNumber);
@@ -152,6 +153,9 @@ export const careerPagination = async ({
   }
   if (careerLevel !== '' && careerLevel !== 'show all' && careerLevel !== undefined && careerLevel !== null) {
     url += `&careerLevel=${careerLevel}`;
+  }
+  if (skillFilters !== '' && skillFilters !== undefined && skillFilters !== null) {
+    url += `&skillFilters=${skillFilters}`;
   }
   // console.log(`skillId: ${skillId}, pageNumber: ${pageNumber}`)
   const response = await fetch(url, {

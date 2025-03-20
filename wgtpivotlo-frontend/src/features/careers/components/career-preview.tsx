@@ -32,7 +32,6 @@ export const CareerPreview = ({ category, data, onClick, checkedId, handleHeartB
             See More
           </Button>
         </div>
-
       </div>
       {category && <p className="text-muted-foreground max-w-3xl mb-2">{previewSubTitleMap[category]}</p>}
 

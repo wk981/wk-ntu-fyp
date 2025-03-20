@@ -22,7 +22,7 @@ export const Navbar = () => {
 
   useOnURLChange({ fn: closeMenu }); // Ensure menu is close everytime url is changed
 
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, user } = useAuth();
   const navigate = useNavigate();
 
   const onClick = async () => {
@@ -40,7 +40,7 @@ export const Navbar = () => {
             <Link to={'/'}>
               <img src={HomeIcon}></img>{' '}
             </Link>
-            {isLoggedIn && (
+            {isLoggedIn && user?.role.some((role) => ['ROLE_USER'].includes(role)) && (
               <>
                 <div className="hidden md:block">
                   <div className="flex items-center space-x-4">

@@ -2,7 +2,7 @@ import { ProviderProps } from '@/utils';
 import { createContext, MouseEvent, useState } from 'react';
 // import { careerPaginationMockData } from '../data';
 import { Career, DataProps } from '@/features/questionaire/types';
-import { useSearchParams } from 'react-router-dom';
+import { SetURLSearchParams, useSearchParams } from 'react-router-dom';
 import { useCareerPagination } from '@/features/careers/hooks/useCareerPagination';
 import { useSectors } from '@/features/careers/hooks/useSectors';
 
@@ -23,8 +23,9 @@ interface AdminCareerContext {
   setLevelFilter: React.Dispatch<React.SetStateAction<string>>;
   searchQuery: string;
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>;
-  clearFilter: () => void;
-  handleApplyFilters: () => void;
+  skillFilters: string;
+  setSkillFilters: React.Dispatch<React.SetStateAction<string>>;
+  setSearchParams: SetURLSearchParams;
   hasMoreCareerPage: boolean;
   isFetchingCareerPage: boolean;
   totalPages: number | undefined;
@@ -52,36 +53,19 @@ const AdminCareerProvider = ({ children }: ProviderProps) => {
   // Filter states
   const [sectorFilter, setSectorFilter] = useState<string>(searchParams.get('sector') ?? '');
   const [levelFilter, setLevelFilter] = useState<string>(searchParams.get('careerLevel') ?? '');
+  const [skillFilters, setSkillFilters] = useState<string>(searchParams.get('skillFilters') ?? '');
   const [searchQuery, setSearchQuery] = useState<string>(searchParams.get('q') ?? '');
+
   const { careersData, hasMoreCareerPage, isFetchingCareerPage, totalPages, currentPage } = useCareerPagination({
     title: searchParams.get('q') ?? '',
     sector: searchParams.get('sector') ?? '',
     careerLevel: searchParams.get('careerLevel') ?? '',
+    skillFilters: searchParams.get('skillFilters') ?? '',
     page: Number(searchParams.get('pageNumber') ?? 1),
   });
 
   const { sectorsQuery } = useSectors();
   const { data: sectorData, isLoading: isSectorLoading } = sectorsQuery;
-
-  const handleApplyFilters = () => {
-    setSearchParams((prev) => {
-      const newParams = new URLSearchParams(prev);
-
-      if (sectorFilter === '' || sectorFilter === 'show all') {
-        newParams.delete('sector');
-      } else {
-        newParams.set('sector', sectorFilter);
-      }
-
-      if (levelFilter === '' || levelFilter === 'show all') {
-        newParams.delete('careerLevel');
-      } else {
-        newParams.set('careerLevel', levelFilter);
-      }
-      newParams.set('pageNumber', '1');
-      return newParams;
-    });
-  };
 
   const handleSearch = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -114,17 +98,6 @@ const AdminCareerProvider = ({ children }: ProviderProps) => {
     setSelectedCareer(career);
     setIsViewDialogOpen(true);
   };
-  const clearFilter = () => {
-    setLevelFilter('');
-    setSectorFilter('');
-    setSearchQuery('');
-    setSearchParams((prev) => {
-      const newParams = new URLSearchParams(prev);
-      newParams.delete('sector');
-      newParams.delete('careerLevel');
-      return newParams;
-    });
-  };
 
   const value = {
     isViewDialogOpen,
@@ -143,8 +116,6 @@ const AdminCareerProvider = ({ children }: ProviderProps) => {
     setLevelFilter,
     searchQuery,
     setSearchQuery,
-    clearFilter,
-    handleApplyFilters,
     hasMoreCareerPage,
     isFetchingCareerPage,
     totalPages,
@@ -156,6 +127,9 @@ const AdminCareerProvider = ({ children }: ProviderProps) => {
     setIsAddDialogOpen,
     isDeleteDialogOpen,
     setIsDeleteDialogOpen,
+    skillFilters,
+    setSkillFilters,
+    setSearchParams,
   };
 
   return <AdminCareerContext.Provider value={value}>{children}</AdminCareerContext.Provider>;

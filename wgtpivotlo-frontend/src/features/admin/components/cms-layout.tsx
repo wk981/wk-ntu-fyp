@@ -17,13 +17,13 @@ export default function CmsLayout({ children, tab }: CMSLayoutProps) {
 
   return (
     <div className="container mx-auto py-6">
-      <div className="flex flex-col space-y-6">
-        <div className="flex items-center justify-between">
-          <h1 className="text-4xl font-bold tracking-tight">Admin Dashboard</h1>
+      <div className="flex flex-col space-y-4">
+        <div className="flex flex-col justify-between">
+          <h1 className="text-4xl font-bold tracking-tight mb-1">Admin Portal</h1>
+          <p className="text-muted-foreground max-w-3xl">One way stop to edit the contents in database</p>
         </div>
-
         <Tabs defaultValue={tab} onValueChange={handleTabChange} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 lg:w-[400px] border">
+          <TabsList className="grid w-full grid-cols-2 lg:w-[250px] border">
             <TabsTrigger value="careers">Careers</TabsTrigger>
             <TabsTrigger value="courses">Courses</TabsTrigger>
             {/* <TabsTrigger value="skills">Skills</TabsTrigger> */}

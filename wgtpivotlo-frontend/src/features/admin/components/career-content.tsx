@@ -12,6 +12,30 @@ import { useState } from 'react';
 import { PaginationImpl } from '@/components/pagination-impl';
 import { CareerTableAddDialog } from './dialogs/career-table-add-dialog';
 import { CareerTableDeleteDialog } from './dialogs/career-table-delete-dialog';
+import { useSkills } from '@/features/skills/hook/useSkills';
+import { MultiComboxBox } from '@/components/multi-select-combo-box';
+import { EditSkillsDataProps, ModifyingProps } from '../types';
+import { DropdownComponent } from '@/components/badge-with-dropdown';
+import { DataProps } from '@/features/questionaire/types';
+
+const selectOptions: DataProps[] = [
+  {
+    label: 'Beginner',
+    value: 'Beginner',
+  },
+  {
+    label: 'Intermediate',
+    value: 'Intermediate',
+  },
+  {
+    label: 'Advanced',
+    value: 'Advanced',
+  },
+  {
+    label: 'Show All',
+    value: 'Show All',
+  },
+];
 
 export const CareerContent = () => {
   const {
@@ -108,8 +132,108 @@ export const CareerContent = () => {
 };
 
 const CareerFilter = () => {
-  const { sectorFilter, setSectorFilter, levelFilter, setLevelFilter, clearFilter, handleApplyFilters, sectorData } =
-    useAdminCareer();
+  const {
+    sectorFilter,
+    setSectorFilter,
+    levelFilter,
+    setLevelFilter,
+    setSearchQuery,
+    setSkillFilters,
+    setSearchParams,
+    sectorData,
+    isFetchingCareerPage,
+  } = useAdminCareer();
+  const { skillsQuery, handleCommandOnChangeCapture, skillsData } = useSkills();
+  const [skillsProfiency, setSkillsProfiency] = useState<undefined | EditSkillsDataProps[]>();
+
+  const handleComboxBoxChangeValue = (value: string) => {
+    const matchedSkill = skillsData.find((item) => item.value === value);
+    if (!matchedSkill) {
+      console.error('Skill not found in dataMap');
+      return;
+    }
+    const newSkill: EditSkillsDataProps = {
+      skillId: Number(matchedSkill.value),
+      label: matchedSkill.label,
+      value: matchedSkill.value,
+      profiency: 'Beginner',
+    };
+    setSkillsProfiency((prev) => {
+      if (!prev) return [newSkill]; // If previous state is null or undefined, initialize with newSkill
+
+      // Check if newSkill already exists based on its label
+      const skillExists = prev.some((skill) => skill.skillId === newSkill.skillId);
+
+      return skillExists ? prev : [...prev, newSkill];
+    });
+  };
+
+  const handleDelete = (skillId: number) => {
+    setSkillsProfiency((prev) => {
+      if (!prev) return undefined; // Handle case where previous state is null or undefined
+
+      return prev.filter((skill) => skill.skillId !== Number(skillId)); // Remove skill by filtering it out
+    });
+  };
+
+  const handleSelectValue = ({ profiency, skillId }: ModifyingProps) => {
+    setSkillsProfiency((prev) => {
+      if (!prev) return undefined; // If previous state is null or undefined, initialize with newSkill
+
+      return prev.map((skill) => (skill.skillId === Number(skillId) ? { ...skill, profiency } : skill));
+    });
+  };
+
+  const clearFilter = () => {
+    setLevelFilter('');
+    setSectorFilter('');
+    setSearchQuery('');
+    setSkillFilters('');
+    setSkillsProfiency(undefined);
+    setSearchParams((prev) => {
+      const newParams = new URLSearchParams(prev);
+      newParams.delete('sector');
+      newParams.delete('careerLevel');
+      newParams.delete('skillFilters');
+      return newParams;
+    });
+  };
+
+  const handleApplyFilters = () => {
+    setSearchParams((prev) => {
+      const newParams = new URLSearchParams(prev);
+
+      if (sectorFilter === '' || sectorFilter === 'show all') {
+        newParams.delete('sector');
+      } else {
+        newParams.set('sector', sectorFilter);
+      }
+
+      if (levelFilter === '' || levelFilter === 'show all') {
+        newParams.delete('careerLevel');
+      } else {
+        newParams.set('careerLevel', levelFilter);
+      }
+
+      if (skillsProfiency && skillsProfiency?.length > 0) {
+        let queryString = '';
+        for (let i = 0; i < skillsProfiency.length; i++) {
+          const profiency =
+            skillsProfiency[i].profiency.toLowerCase() === 'show all' ? '' : skillsProfiency[i].profiency;
+          queryString += `${skillsProfiency[i].skillId}:${profiency}`;
+          if (i < skillsProfiency.length - 1) {
+            queryString += ',';
+          }
+        }
+        newParams.set('skillFilters', queryString);
+      } else {
+        newParams.delete('skillFilters');
+      }
+      newParams.set('pageNumber', '1');
+      return newParams;
+    });
+  };
+
   return (
     <FilterLayout>
       {sectorData && (
@@ -147,6 +271,39 @@ const CareerFilter = () => {
           </SelectContent>
         </Select>
       </div>
+
+      <div className="flex flex-col">
+        <label className="font-bold text-sm">Filter by skills:</label>
+        <MultiComboxBox
+          data={skillsData}
+          isLoading={skillsQuery.isLoading}
+          isSuccess={skillsQuery.isSuccess}
+          commandOnChangeCapture={handleCommandOnChangeCapture}
+          extraSetValueFn={handleComboxBoxChangeValue}
+          placeholder="Select a skill"
+        />
+      </div>
+
+      {skillsProfiency && skillsProfiency?.length > 0 && (
+        <>
+          <h3 className="text-sm font-medium text-gray-500">Selected Skills:</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {skillsProfiency.map((sp, index) => (
+              <DropdownComponent
+                key={index}
+                options={selectOptions}
+                title={sp.label}
+                onValueChange={(value: string) => handleSelectValue({ profiency: value, skillId: sp.skillId })}
+                selectValue={sp.profiency}
+                onRedCrossClick={() => handleDelete(sp.skillId)}
+                isLoading={isFetchingCareerPage}
+                selectClassName="bg-white"
+                blueBorder={true}
+              />
+            ))}
+          </div>
+        </>
+      )}
 
       <div className="w-full space-x-2">
         <Button onClick={handleApplyFilters}>Apply Filters</Button>

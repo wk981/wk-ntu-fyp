@@ -24,6 +24,7 @@ import { ResultCategory } from './routes/questionaire/Result-Category';
 import { CMSCareer } from '@/features/admin/components/CMSCareer';
 import { CMSCourse } from '@/features/admin/components/CMSCourse';
 import { ProtectedRoute } from '@/components/protected-route';
+import { RedirectRoute } from '@/components/redirect-route';
 
 const QuestionaireLayout = () => (
   <QuestionaireProvider>
@@ -60,25 +61,26 @@ export const AppRouter = () => {
           </Route>
           <Route element={<PrivateRoute />}>
             <Route element={<CommonLayout />}>
-              <Route path="questionaire" element={<QuestionaireLayout />}>
-                <Route index element={<UploadResume />} /> {/* Default route for /questionaire */}
-                <Route path="upload" element={<UploadResume />} />
-                <Route path="questions" element={<Questions />} />
-                <Route path="result" element={<Result />} />
-                <Route path="result/:category" element={<ResultCategory />} />
-                <Route path="*" element={<NotFound />} /> {/* Handle unknown nested routes */}
-              </Route>
+              <Route element={<RedirectRoute />}>
+                <Route path="questionaire" element={<QuestionaireLayout />}>
+                  <Route index element={<UploadResume />} /> {/* Default route for /questionaire */}
+                  <Route path="upload" element={<UploadResume />} />
+                  <Route path="questions" element={<Questions />} />
+                  <Route path="result" element={<Result />} />
+                  <Route path="result/:category" element={<ResultCategory />} />
+                  <Route path="*" element={<NotFound />} /> {/* Handle unknown nested routes */}
+                </Route>
 
+                <Route path="explore/timeline" element={<LearningTimeline />} />
+                <Route path="explore/career" element={<ExploreCareer />} />
+                <Route path="explore/career/:category" element={<ExploreCareerCategory />} />
+                <Route path="resume" element={<DownloadResume />} />
+                <Route path="history" element={<CourseHistory />} />
+              </Route>
               <Route path="settings" element={<SettingsLayoutWrapper />}>
                 <Route index element={<AccountSettings />} />
                 <Route path="security" element={<Security />} />
               </Route>
-
-              <Route path="explore/timeline" element={<LearningTimeline />} />
-              <Route path="explore/career" element={<ExploreCareer />} />
-              <Route path="explore/career/:category" element={<ExploreCareerCategory />} />
-              <Route path="resume" element={<DownloadResume />} />
-              <Route path="history" element={<CourseHistory />} />
 
               <Route element={<ProtectedRoute allowedRoles={['ROLE_ADMIN']} />}>
                 <Route path="admin">

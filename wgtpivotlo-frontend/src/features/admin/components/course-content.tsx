@@ -11,6 +11,11 @@ import { CourseTableDialog } from './dialogs/course-table-view-dialog';
 import { CourseTableAddDialog } from './dialogs/course-table-add-dialog';
 import { CourseTableEditDialog } from './dialogs/course-table-edit-dialog';
 import { CourseTableDeleteDialog } from './dialogs/course-table-delete-dialog';
+import { useSkills } from '@/features/skills/hook/useSkills';
+import { EditSkillsDataProps, ModifyingProps } from '../types';
+import { MultiComboxBox } from '@/components/multi-select-combo-box';
+import { DropdownComponent } from '@/components/badge-with-dropdown';
+import { DataProps } from '@/features/questionaire/types';
 
 export const CourseContent = () => {
   const {
@@ -106,9 +111,27 @@ export const CourseContent = () => {
   );
 };
 
+const selectOptions: DataProps[] = [
+  {
+    label: 'Beginner',
+    value: 'Beginner',
+  },
+  {
+    label: 'Intermediate',
+    value: 'Intermediate',
+  },
+  {
+    label: 'Advanced',
+    value: 'Advanced',
+  },
+  {
+    label: 'Show All',
+    value: 'Show All',
+  },
+];
+
 const CourseFilter = () => {
   const {
-    clearFilter,
     courseSourceFilter,
     setCourseSourceFilter,
     ratingOperatorFilter,
@@ -119,8 +142,10 @@ const CourseFilter = () => {
     setReviewCountsOperatorFilter,
     reviewCountsFilter,
     setReviewCountsFilter,
-    handleApplyFilters,
     courseSourceOptions,
+    isFetchingCoursePage,
+    setSearchQuery,
+    setSearchParams,
   } = useAdminCourse();
   const operatorOptions = [
     { value: 'ge', label: '≥ (Greater than or equal to)' },
@@ -128,6 +153,118 @@ const CourseFilter = () => {
     { value: 'gt', label: '> (Greater than)' },
     { value: 'lt', label: '< (Less than)' },
   ];
+  const { skillsQuery, handleCommandOnChangeCapture, skillsData } = useSkills();
+  const [skillsProfiency, setSkillsProfiency] = useState<undefined | EditSkillsDataProps[]>();
+
+  const handleComboxBoxChangeValue = (value: string) => {
+    const matchedSkill = skillsData.find((item) => item.value === value);
+    if (!matchedSkill) {
+      console.error('Skill not found in dataMap');
+      return;
+    }
+    const newSkill: EditSkillsDataProps = {
+      skillId: Number(matchedSkill.value),
+      label: matchedSkill.label,
+      value: matchedSkill.value,
+      profiency: 'Beginner',
+    };
+    setSkillsProfiency((prev) => {
+      if (!prev) return [newSkill]; // If previous state is null or undefined, initialize with newSkill
+
+      // Check if newSkill already exists based on its label
+      const skillExists = prev.some((skill) => skill.skillId === newSkill.skillId);
+
+      return skillExists ? prev : [...prev, newSkill];
+    });
+  };
+
+  const handleDelete = (skillId: number) => {
+    setSkillsProfiency((prev) => {
+      if (!prev) return undefined; // Handle case where previous state is null or undefined
+
+      return prev.filter((skill) => skill.skillId !== Number(skillId)); // Remove skill by filtering it out
+    });
+  };
+
+  const handleSelectValue = ({ profiency, skillId }: ModifyingProps) => {
+    setSkillsProfiency((prev) => {
+      if (!prev) return undefined; // If previous state is null or undefined, initialize with newSkill
+
+      return prev.map((skill) => (skill.skillId === Number(skillId) ? { ...skill, profiency } : skill));
+    });
+  };
+
+  const clearFilter = () => {
+    setRatingFilter('');
+    setRatingOperatorFilter('');
+    setReviewCountsFilter('');
+    setReviewCountsOperatorFilter('');
+    setCourseSourceFilter('');
+    setSearchQuery('');
+    setSkillsProfiency(undefined);
+    setSearchParams((prev) => {
+      const newParams = new URLSearchParams(prev);
+      newParams.delete('rating');
+      newParams.delete('ratingOperatorFilter');
+      newParams.delete('reviewCounts');
+      newParams.delete('reviewCountsOperatorFilter');
+      newParams.delete('courseSource');
+      newParams.delete('skillFilters');
+      return newParams;
+    });
+  };
+
+  const handleApplyFilters = () => {
+    setSearchParams((prev) => {
+      const newParams = new URLSearchParams(prev);
+
+      if (ratingFilter === '' || ratingFilter === 'show all') {
+        newParams.delete('rating');
+      } else {
+        newParams.set('rating', ratingFilter);
+      }
+
+      if (ratingOperatorFilter === '' || ratingOperatorFilter === 'show all') {
+        newParams.delete('ratingOperatorFilter');
+      } else {
+        newParams.set('ratingOperatorFilter', ratingOperatorFilter);
+      }
+
+      if (reviewCountsFilter === '' || reviewCountsFilter === 'show all') {
+        newParams.delete('reviewCounts');
+      } else {
+        newParams.set('reviewCounts', reviewCountsFilter);
+      }
+
+      if (reviewCountsOperatorFilter === '' || reviewCountsOperatorFilter === 'show all') {
+        newParams.delete('reviewCountsOperatorFilter');
+      } else {
+        newParams.set('reviewCountsOperatorFilter', reviewCountsOperatorFilter);
+      }
+
+      if (courseSourceFilter === '' || courseSourceFilter === 'show all') {
+        newParams.delete('courseSource');
+      } else {
+        newParams.set('courseSource', courseSourceFilter);
+      }
+      if (skillsProfiency && skillsProfiency?.length > 0) {
+        let queryString = '';
+        for (let i = 0; i < skillsProfiency.length; i++) {
+          const profiency =
+            skillsProfiency[i].profiency.toLowerCase() === 'show all' ? '' : skillsProfiency[i].profiency;
+          queryString += `${skillsProfiency[i].skillId}:${profiency}`;
+          if (i < skillsProfiency.length - 1) {
+            queryString += ',';
+          }
+        }
+        newParams.set('skillFilters', queryString);
+      } else {
+        newParams.delete('skillFilters');
+      }
+      newParams.set('pageNumber', '1');
+      return newParams;
+    });
+  };
 
   return (
     <FilterLayout>
@@ -213,6 +350,39 @@ const CourseFilter = () => {
           />
         </div>
       </div>
+
+      <div className="flex flex-col">
+        <label className="font-bold text-sm">Filter by skills:</label>
+        <MultiComboxBox
+          data={skillsData}
+          isLoading={skillsQuery.isLoading}
+          isSuccess={skillsQuery.isSuccess}
+          commandOnChangeCapture={handleCommandOnChangeCapture}
+          extraSetValueFn={handleComboxBoxChangeValue}
+          placeholder="Select a skill"
+        />
+      </div>
+
+      {skillsProfiency && skillsProfiency?.length > 0 && (
+        <>
+          <h3 className="text-sm font-medium text-gray-500">Selected Skills:</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {skillsProfiency.map((sp, index) => (
+              <DropdownComponent
+                key={index}
+                options={selectOptions}
+                title={sp.label}
+                onValueChange={(value: string) => handleSelectValue({ profiency: value, skillId: sp.skillId })}
+                selectValue={sp.profiency}
+                onRedCrossClick={() => handleDelete(sp.skillId)}
+                isLoading={isFetchingCoursePage}
+                selectClassName="bg-white"
+                blueBorder={true}
+              />
+            ))}
+          </div>
+        </>
+      )}
 
       <div className="w-full space-x-2">
         <Button onClick={handleApplyFilters}>Apply Filters</Button>

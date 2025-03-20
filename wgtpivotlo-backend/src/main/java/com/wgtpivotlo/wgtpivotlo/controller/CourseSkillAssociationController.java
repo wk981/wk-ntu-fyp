@@ -7,6 +7,7 @@ import com.wgtpivotlo.wgtpivotlo.service.CourseRecommendationService;
 import com.wgtpivotlo.wgtpivotlo.service.CourseSkillAssociationService;
 import com.wgtpivotlo.wgtpivotlo.service.UserCourseHistoryService;
 import jakarta.validation.constraints.Min;
+import org.apache.coyote.BadRequestException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,27 @@ public class CourseSkillAssociationController {
         this.courseSkillAssociationService = courseSkillAssociationService;
         this.courseRecommendationService = courseRecommendationService;
         this.userCourseHistoryService = userCourseHistoryService;
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<MessageDTO> addCourseSkill(@RequestBody CourseSkillsDTO courseSkillsDTO) throws BadRequestException {
+        courseSkillAssociationService.addCourseSkill(courseSkillsDTO);
+        MessageDTO messageDTO = MessageDTO.builder().message("Success").build();
+        return ResponseEntity.ok(messageDTO);
+    }
+
+    @PutMapping("/")
+    public ResponseEntity<MessageDTO> editCourseSkill(@RequestBody CourseSkillsDTO courseSkillsDTO) throws BadRequestException {
+        courseSkillAssociationService.editCourseSkill(courseSkillsDTO);
+        MessageDTO messageDTO = MessageDTO.builder().message("Success").build();
+        return ResponseEntity.ok(messageDTO);
+    }
+
+    @DeleteMapping("/")
+    public ResponseEntity<MessageDTO> deleteCourseSkill(@RequestBody CourseSkillsDTO courseSkillsDTO) throws BadRequestException {
+        courseSkillAssociationService.deleteCourseSkill(courseSkillsDTO);
+        MessageDTO messageDTO = MessageDTO.builder().message("Success").build();
+        return ResponseEntity.ok(messageDTO);
     }
 
     @GetMapping("/courses/{course_id}")

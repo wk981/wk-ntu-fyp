@@ -3,12 +3,16 @@ import { getCareer } from '../api';
 import { CareerWithSkills } from '../types';
 import { useEffect, useState } from 'react';
 
-export const useCareers = (careerId: number) => {
+export const useCareers = (careerId: number | null) => {
   const [careerWithSkills, setCareerWithSkills] = useState<CareerWithSkills | undefined>();
 
   const careerQuery = useQuery({
     queryKey: ['career', careerId],
-    queryFn: () => getCareer(careerId),
+    queryFn: () => {
+      if (careerId) {
+        return getCareer(careerId);
+      }
+    },
     enabled: false, // Disable automatic query execution
   });
 

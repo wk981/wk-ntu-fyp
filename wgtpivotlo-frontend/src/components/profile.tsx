@@ -38,9 +38,12 @@ export const Profile = () => {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <Link to={'/history'}>
-          <DropdownMenuItem className="cursor-pointer">Course History</DropdownMenuItem>
-        </Link>
+        {user?.role.some((role) => ['ROLE_USER'].includes(role)) && (
+          <Link to={'/history'}>
+            <DropdownMenuItem className="cursor-pointer">Course History</DropdownMenuItem>
+          </Link>
+        )}
+
         {user?.role.some((role) => ['ROLE_ADMIN'].includes(role)) && (
           <Link to={'/admin/careers'}>
             <DropdownMenuItem className="cursor-pointer">Admin</DropdownMenuItem>

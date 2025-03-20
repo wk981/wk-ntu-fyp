@@ -124,6 +124,7 @@ export const coursePagination = async ({
   courseSource,
   ratingOperator,
   reviewCountsOperator,
+  skillFilters,
   pageSize = 10,
 }: CoursePaginationProps) => {
   let url = backendURL + `/v1/course?pageNumber=${pageNumber}&pageSize=${pageSize}`;
@@ -152,6 +153,10 @@ export const coursePagination = async ({
       url += `&reviewCountsOperator=${encodeURIComponent(reviewCountsOperator)}`;
     }
     url += `&reviewsCounts=${reviewsCounts}`;
+  }
+
+  if (skillFilters !== '' && skillFilters !== undefined && skillFilters !== null) {
+    url += `&skillFilters=${skillFilters}`;
   }
 
   const response = await fetch(url, {

@@ -17,15 +17,10 @@ import { BadgeWithTooltip } from '@/components/BadgeWithPopUpInfo';
 import { Edit } from 'lucide-react';
 import { EditSkillsDialog } from './edit-skills-dialog';
 import { LoadingSpinnerComponent } from '@/components/loading-spinner';
-import { DataProps } from '@/features/questionaire/types';
+import { EditSkillsDataProps } from '../../types';
 
 interface CareerTableDialogProps {
   isViewDialogOpen: boolean;
-}
-
-interface EditSkillsDataProps extends DataProps {
-  profiency: string;
-  skillId: number;
 }
 
 export const CareerTableDialog = ({ isViewDialogOpen }: CareerTableDialogProps) => {
@@ -33,6 +28,7 @@ export const CareerTableDialog = ({ isViewDialogOpen }: CareerTableDialogProps) 
   const { careerQuery, careerWithSkills, refetch } = useCareers(selectedCareer?.careerId ?? null);
   const [editIsSkillsDialogOpen, setEditIsSkillsDialogOpen] = useState(false);
   const { isLoading, isError } = careerQuery;
+
   // Refetch data when the dialog opens
   useEffect(() => {
     if (isViewDialogOpen && selectedCareer) {

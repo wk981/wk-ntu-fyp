@@ -3,12 +3,16 @@ import { getCourseById } from '../api';
 import { CourseWithSkillsDTO } from '../types';
 import { useEffect, useState } from 'react';
 
-export const useCourseQuery = (id: number) => {
+export const useCourseQuery = (id: number | null) => {
   const [courseWithSkills, setCourseWithSkills] = useState<CourseWithSkillsDTO | undefined>();
 
   const courseQuery = useQuery({
     queryKey: ['course', id],
-    queryFn: () => getCourseById(id),
+    queryFn: () => {
+      if (id) {
+        return getCourseById(id);
+      }
+    },
     enabled: false, // Disable automatic query execution
   });
 

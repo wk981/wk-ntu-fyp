@@ -39,14 +39,13 @@ interface EditSkillsDataProps extends DataProps {
 export const EditSkillsDialog = ({
   editIsSkillsDialogOpen,
   setEditIsSkillsDialogOpen,
-  skillsProfiency, 
+  skillsProfiency,
   setSkillsProfiency,
   category,
   modifyingId,
 }: EditSkillsDialog) => {
   const { isModifyingSkill, mutateModifySkillAsync } = useAdminSkillModification();
   const { skillsQuery, handleCommandOnChangeCapture, skillsData } = useSkills();
-
 
   const handleModifying = async ({ skillId, profiency }: ModifyingProps) => {
     try {
@@ -57,10 +56,10 @@ export const EditSkillsDialog = ({
         requestType: 'PUT',
         skillId: skillId,
       });
-      return true
+      return true;
     } catch (error) {
       console.log(error);
-      return false
+      return false;
     }
   };
 
@@ -73,12 +72,12 @@ export const EditSkillsDialog = ({
         requestType: 'POST',
         skillId: skillId,
       });
-      return true
+      return true;
     } catch (error) {
       console.log(error);
-      return false
+      return false;
     }
-  }
+  };
 
   const handleDelete = async (skillId: number) => {
     try {
@@ -115,17 +114,16 @@ export const EditSkillsDialog = ({
       skillId: Number(value),
       profiency: 'Beginner',
     });
-    if(res){
+    if (res) {
       setSkillsProfiency((prev) => {
         if (!prev) return [newSkill]; // If previous state is null or undefined, initialize with newSkill
-  
+
         // Check if newSkill already exists based on its label
         const skillExists = prev.some((skill) => skill.skillId === newSkill.skillId);
-  
+
         return skillExists ? prev : [...prev, newSkill];
       });
     }
-
   };
 
   const handleSelectValue = async ({ profiency, skillId }: ModifyingProps) => {
@@ -133,10 +131,10 @@ export const EditSkillsDialog = ({
       skillId: Number(skillId),
       profiency: profiency,
     });
-    if(res){
+    if (res) {
       setSkillsProfiency((prev) => {
         if (!prev) return undefined; // If previous state is null or undefined, initialize with newSkill
-  
+
         return prev.map((skill) => (skill.skillId === Number(skillId) ? { ...skill, profiency } : skill));
       });
     }

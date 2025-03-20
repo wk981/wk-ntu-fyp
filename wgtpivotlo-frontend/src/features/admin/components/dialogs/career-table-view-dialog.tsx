@@ -109,16 +109,17 @@ export const CareerTableDialog = ({ isViewDialogOpen }: CareerTableDialogProps) 
                   }}
                 />
               </div>
-              {skillsProfiency && skillsProfiency.map((skill, index) => (
-                <BadgeWithTooltip
-                  key={index}
-                  badgeStyle={{
-                    className: 'h-[30px] rounded-full py-2 px-4 mx-1 my-1 text-xs cursor-pointer font-normal',
-                  }}
-                  text={capitalizeEveryFirstChar(skill.label)}
-                  tooltipContent={capitalizeFirstChar(skill.profiency)}
-                />
-              ))}
+              {skillsProfiency &&
+                skillsProfiency.map((skill, index) => (
+                  <BadgeWithTooltip
+                    key={index}
+                    badgeStyle={{
+                      className: 'h-[30px] rounded-full py-2 px-4 mx-1 my-1 text-xs cursor-pointer font-normal',
+                    }}
+                    text={capitalizeEveryFirstChar(skill.label)}
+                    tooltipContent={capitalizeFirstChar(skill.profiency)}
+                  />
+                ))}
             </div>
           </div>
           <DialogFooter>

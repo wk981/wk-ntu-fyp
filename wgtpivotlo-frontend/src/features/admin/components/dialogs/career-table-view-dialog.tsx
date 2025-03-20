@@ -12,14 +12,20 @@ import { useAdminCareer } from '../../hook/useAdminCareer';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { useCareers } from '@/features/careers/hooks/useCareers';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { BadgeWithTooltip } from '@/components/BadgeWithPopUpInfo';
 import { Edit } from 'lucide-react';
 import { EditSkillsDialog } from './edit-skills-dialog';
 import { LoadingSpinnerComponent } from '@/components/loading-spinner';
+import { DataProps } from '@/features/questionaire/types';
 
 interface CareerTableDialogProps {
   isViewDialogOpen: boolean;
+}
+
+interface EditSkillsDataProps extends DataProps {
+  profiency: string;
+  skillId: number;
 }
 
 export const CareerTableDialog = ({ isViewDialogOpen }: CareerTableDialogProps) => {
@@ -27,13 +33,29 @@ export const CareerTableDialog = ({ isViewDialogOpen }: CareerTableDialogProps) 
   const { careerQuery, careerWithSkills, refetch } = useCareers(selectedCareer?.careerId ?? null);
   const [editIsSkillsDialogOpen, setEditIsSkillsDialogOpen] = useState(false);
   const { isLoading, isError } = careerQuery;
-
   // Refetch data when the dialog opens
   useEffect(() => {
     if (isViewDialogOpen && selectedCareer) {
       void refetch();
     }
   }, [isViewDialogOpen, selectedCareer, refetch]);
+
+  const [skillsProfiency, setSkillsProfiency] = useState<undefined | EditSkillsDataProps[]>();
+
+  // Memoize the transformed data
+  const transformedSkills = useMemo(() => {
+    return careerWithSkills?.skillsWithProfiency.map((skill) => ({
+      label: skill.name,
+      value: String(skill.skillId), // Ensuring it's a string
+      profiency: skill.profiency,
+      skillId: skill.skillId,
+    }));
+  }, [careerWithSkills?.skillsWithProfiency]); // Recomputes only when `skills` changes
+
+  // Effect to update state when transformed data changes
+  useEffect(() => {
+    setSkillsProfiency(transformedSkills);
+  }, [transformedSkills]); // Updates when transformedSkills changes
 
   return (
     <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
@@ -87,14 +109,14 @@ export const CareerTableDialog = ({ isViewDialogOpen }: CareerTableDialogProps) 
                   }}
                 />
               </div>
-              {careerWithSkills.skillsWithProfiency.map((skill, index) => (
+              {skillsProfiency && skillsProfiency.map((skill, index) => (
                 <BadgeWithTooltip
                   key={index}
                   badgeStyle={{
                     className: 'h-[30px] rounded-full py-2 px-4 mx-1 my-1 text-xs cursor-pointer font-normal',
                   }}
-                  text={capitalizeEveryFirstChar(skill.name)}
-                  tooltipContent={capitalizeEveryFirstChar(skill.profiency)}
+                  text={capitalizeEveryFirstChar(skill.label)}
+                  tooltipContent={capitalizeFirstChar(skill.profiency)}
                 />
               ))}
             </div>
@@ -108,13 +130,14 @@ export const CareerTableDialog = ({ isViewDialogOpen }: CareerTableDialogProps) 
         </DialogContent>
       )}
 
-      {careerWithSkills && careerWithSkills.skillsWithProfiency && (
+      {skillsProfiency && selectedCareer && (
         <EditSkillsDialog
           editIsSkillsDialogOpen={editIsSkillsDialogOpen}
           setEditIsSkillsDialogOpen={setEditIsSkillsDialogOpen}
-          skills={careerWithSkills.skillsWithProfiency}
+          skillsProfiency={skillsProfiency}
+          setSkillsProfiency={setSkillsProfiency}
           category="career"
-          modifyingId={careerWithSkills.careerId}
+          modifyingId={selectedCareer?.careerId}
         />
       )}
     </Dialog>

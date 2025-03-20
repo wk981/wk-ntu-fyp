@@ -2,9 +2,7 @@ import { DropdownComponent } from '@/components/badge-with-dropdown';
 import { MultiComboxBox } from '@/components/multi-select-combo-box';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { DataProps } from '@/features/questionaire/types';
-import { skillsWithProfiency } from '@/features/skills/types';
 import { DialogDescription } from '@radix-ui/react-dialog';
-import { useEffect, useMemo, useState } from 'react';
 import { useAdminSkillModification } from '../../hook/useAdminSkillModificationl';
 import { useSkills } from '@/features/skills/hook/useSkills';
 import { ModifyingProps } from '../../types';
@@ -12,7 +10,8 @@ import { ModifyingProps } from '../../types';
 interface EditSkillsDialog {
   editIsSkillsDialogOpen: boolean;
   setEditIsSkillsDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  skills: skillsWithProfiency[];
+  skillsProfiency: EditSkillsDataProps[];
+  setSkillsProfiency: React.Dispatch<React.SetStateAction<EditSkillsDataProps[] | undefined>>;
   category: 'course' | 'career';
   modifyingId: number;
 }
@@ -40,32 +39,17 @@ interface EditSkillsDataProps extends DataProps {
 export const EditSkillsDialog = ({
   editIsSkillsDialogOpen,
   setEditIsSkillsDialogOpen,
-  skills,
+  skillsProfiency, 
+  setSkillsProfiency,
   category,
   modifyingId,
 }: EditSkillsDialog) => {
-  const [skillsProfiency, setSkillsProfiency] = useState<undefined | EditSkillsDataProps[]>();
   const { isModifyingSkill, mutateModifySkillAsync } = useAdminSkillModification();
   const { skillsQuery, handleCommandOnChangeCapture, skillsData } = useSkills();
 
-  // Memoize the transformed data
-  const transformedSkills = useMemo(() => {
-    return skills.map((skill) => ({
-      label: skill.name,
-      value: String(skill.skillId), // Ensuring it's a string
-      profiency: skill.profiency,
-      skillId: skill.skillId,
-    }));
-  }, [skills]); // Recomputes only when `skills` changes
-
-  // Effect to update state when transformed data changes
-  useEffect(() => {
-    setSkillsProfiency(transformedSkills);
-  }, [transformedSkills]); // Updates when transformedSkills changes
 
   const handleModifying = async ({ skillId, profiency }: ModifyingProps) => {
     try {
-      console.log(skillId, profiency);
       await mutateModifySkillAsync({
         category: category,
         modifyingId: modifyingId,
@@ -73,10 +57,28 @@ export const EditSkillsDialog = ({
         requestType: 'PUT',
         skillId: skillId,
       });
+      return true
     } catch (error) {
       console.log(error);
+      return false
     }
   };
+
+  const handleAdding = async ({ skillId, profiency }: ModifyingProps) => {
+    try {
+      await mutateModifySkillAsync({
+        category: category,
+        modifyingId: modifyingId,
+        profiency: profiency,
+        requestType: 'POST',
+        skillId: skillId,
+      });
+      return true
+    } catch (error) {
+      console.log(error);
+      return false
+    }
+  }
 
   const handleDelete = async (skillId: number) => {
     try {
@@ -109,32 +111,35 @@ export const EditSkillsDialog = ({
       value: matchedSkill.value,
       profiency: 'Beginner',
     };
-    console.log(newSkill);
-    setSkillsProfiency((prev) => {
-      if (!prev) return [newSkill]; // If previous state is null or undefined, initialize with newSkill
-
-      // Check if newSkill already exists based on its label
-      const skillExists = prev.some((skill) => skill.skillId === newSkill.skillId);
-
-      return skillExists ? prev : [...prev, newSkill];
-    });
-    await handleModifying({
+    const res = await handleAdding({
       skillId: Number(value),
       profiency: 'Beginner',
     });
+    if(res){
+      setSkillsProfiency((prev) => {
+        if (!prev) return [newSkill]; // If previous state is null or undefined, initialize with newSkill
+  
+        // Check if newSkill already exists based on its label
+        const skillExists = prev.some((skill) => skill.skillId === newSkill.skillId);
+  
+        return skillExists ? prev : [...prev, newSkill];
+      });
+    }
+
   };
 
   const handleSelectValue = async ({ profiency, skillId }: ModifyingProps) => {
-    setSkillsProfiency((prev) => {
-      if (!prev) return undefined; // If previous state is null or undefined, initialize with newSkill
-
-      return prev.map((skill) => (skill.skillId === Number(skillId) ? { ...skill, profiency } : skill));
-    });
-
-    await handleModifying({
+    const res = await handleModifying({
       skillId: Number(skillId),
       profiency: profiency,
     });
+    if(res){
+      setSkillsProfiency((prev) => {
+        if (!prev) return undefined; // If previous state is null or undefined, initialize with newSkill
+  
+        return prev.map((skill) => (skill.skillId === Number(skillId) ? { ...skill, profiency } : skill));
+      });
+    }
   };
 
   return (

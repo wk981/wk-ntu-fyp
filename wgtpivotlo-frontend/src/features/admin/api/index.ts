@@ -4,7 +4,7 @@ import { backendURL } from '@/utils';
 interface EditSkillProps {
   skillId: number;
   profiency: string | undefined;
-  requestType: 'PUT' | 'DELETE';
+  requestType: 'PUT' | 'DELETE' | 'POST';
 }
 
 interface EditCareerSkillProps extends EditSkillProps {
@@ -24,7 +24,7 @@ export const adminModifyingCareerSkill = async ({
   const body = {
     careerId,
     skillId,
-    ...(requestType === 'PUT' ? { profiency } : {}), // Include only if requestType is "PUT"
+    ...(requestType === 'PUT' || requestType === 'POST' ? { profiency } : {}), // Include only if requestType is "PUT"
   };
 
   const url = backendURL + `/v1/career-skill-association/`;

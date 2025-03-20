@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import { adminModifyingCareerSkill, adminModifyingCourseSkill } from '../api';
 
@@ -7,10 +7,12 @@ interface AdminSkillModificationProps {
   modifyingId: number;
   skillId: number;
   profiency: string | undefined;
-  requestType: 'PUT' | 'DELETE';
+  requestType: 'POST' | 'PUT' | 'DELETE';
 }
 
 export const useAdminSkillModification = () => {
+  const queryClient = useQueryClient();
+
   const { isPending, mutateAsync } = useMutation({
     mutationFn: ({ category, modifyingId, skillId, profiency, requestType }: AdminSkillModificationProps) => {
       switch (category) {
@@ -31,7 +33,7 @@ export const useAdminSkillModification = () => {
       }
     },
     onSuccess: () => {
-      // void queryClient.invalidateQueries({ queryKey: ['course-pagination'] });
+      void queryClient.invalidateQueries({ queryKey: ['career'] });
       toast.success('Skill successfully added');
     },
     onError: (error) => {

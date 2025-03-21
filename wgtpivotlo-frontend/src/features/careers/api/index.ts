@@ -62,6 +62,9 @@ export const choiceCareerRecommendation = async ({ data, pageNumber = 0 }: Choic
   if (!response.ok) {
     const errorBody: ErrorResponse = (await response.json()) as ErrorResponse; // Parse the error response
     const errorMessage: string = errorBody.message || 'Something went wrong'; // Extract the error message
+    if (response.status === 500) {
+      toast.error('Please select a preference career first. Press back and then click on a heart button');
+    }
     throw new Error(errorMessage); // Throw a new Error with the message
   }
   const json = (await response.json()) as ChoiceCareerRecommendationResponse;

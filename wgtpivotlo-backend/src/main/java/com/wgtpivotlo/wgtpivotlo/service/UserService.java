@@ -77,7 +77,7 @@ public class UserService {
 
     public Career getUserPreferenceCareer(Authentication authentication) throws AccessDeniedException {
         Optional<Long> existingCareerId = Optional.ofNullable(getUserByAuthentication(authentication).getCareerId());
-        existingCareerId.orElseThrow(() -> new ResourceNotFoundException("User has set a preference career"));
+        existingCareerId.orElseThrow(() -> new ResourceNotFoundException("User has not set a preference career"));
 
         Optional<Career> existingCareer = careerRepository.findById(existingCareerId.get());
         existingCareer.orElseThrow(() -> new ResourceNotFoundException("Career is not found"));

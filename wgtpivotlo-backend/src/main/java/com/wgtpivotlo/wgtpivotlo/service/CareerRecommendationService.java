@@ -80,8 +80,8 @@ public class CareerRecommendationService {
 
         // Since questionaire result updated userSkills, we can just extract the userSkills from there
         else{
-            Optional<Long> existingCareerId = user.getCareerId().describeConstable();
-            existingCareerId.orElseThrow(() -> new ResourceNotFoundException("User has not specify career"));
+//            Optional<Long> existingCareerId = user.getCareerId().describeConstable();
+//            existingCareerId.orElseThrow(() -> new ResourceNotFoundException("User has not specify career"));
             List<UserSkills> userSkills = userService.getUserSkills(userId);
             parameters = getCareerSimilarityWithPaginationHelper(userSkills);
         }

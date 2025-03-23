@@ -111,14 +111,3 @@ CREATE TABLE user_history (
     FOREIGN KEY (user_id) REFERENCES _user(user_id) ON DELETE CASCADE,
     FOREIGN KEY (course_id) REFERENCES course(course_id) ON DELETE CASCADE
 );
-
--- Table to track recommended careers for users
-CREATE TABLE user_recommended_history (
-    id SERIAL PRIMARY KEY,
-    user_id INT,
-    career_id INT,
-    created_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_on TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES _user(user_id) ON DELETE CASCADE,
-    FOREIGN KEY (career_id) REFERENCES career(career_id) ON DELETE CASCADE
-);

@@ -23,7 +23,7 @@ Users can follow a structured timeline to acquire the recommended skills by comp
 A dedicated dashboard allows users to track their progress toward their desired career and identify skill gaps they need to close.
 
 ## Software required
-1. Any Java ide, mvn and java installed 
+1. Any Java ide, maven(mvn) and java installed 
 
 2. NPM
 
@@ -82,33 +82,10 @@ SHOW_SQL =
 
 2. At root folder, create .env file and run ```docker-compose up postgres-db```
 
-3. cd script folder and run ```python main.py```. This will insert the datas into the database
+3. cd script folder and run ```python main.py```. This will insert the datas into the database. Ensure that you have installed the dependencies before you run it
 
-## Running the Images with Docker
-
-To run the services using local builds instead of prebuilt images, follow these steps:
-
-1. **Switch from image to build for backend and frontend service**  
-   Comment out the `image` line and uncomment the `build` line in your `docker-compose.yml`.  
-   **Example:**
-   ```yaml
-   backend:
-     # image: ghcr.io/wk981/wk-fyp-backend:latest
-     build: ./wgtpivotlo-backend
-
-2. Set up environmental variables. Example: /.env
-
-3. Start the container
-   ``` docker-compose up```
-
-4. Verify the containers are running by checking the docker desktop app or using ``` docker ps ``` command
-
-5. Test the API using postman or curl and make a get request to localhost:7000/api/ping
-
-6. Access the frontend by going to localhost:7000/ will serve the frontend static files. [See why it's port 7000 in Docker](#why-is-the-frontend-served-on-port-7000-in-docker)
-
-#### Why is the frontend served on port 7000 in Docker?
-1. A reverse proxy is set up between HTTP webserver and the application where "/" will be routed to the frontend container while "/api" is routed to the backend
+## Instruction for developing the application
+1. As the repo is using husky to run some pre-commit checks. Run ```npm install``` on the root folder and ensure mvn is installed in your terminal. The pre-commit checks will ensure the typescript's eslint is happy and the backend app is able to start
 
 ## How to run the apps locally
 
@@ -132,6 +109,44 @@ To run the services using local builds instead of prebuilt images, follow these 
 
 5. Access the backend by making api call to localhost:8080
 
+
+## Running the Images with Docker
+
+To run the services using local builds instead of prebuilt images, follow these steps:
+
+1. **Switch from image to build for backend and frontend service if the images are not in any docker image registry**  
+   Comment out the `image` line and uncomment the `build` line in your `docker-compose.yml`.  
+   **Example:**
+   ```yaml
+   backend:
+     # Image is stored in registry, uncomment this is you have upload docker image into any registry
+     # image: ghcr.io/wk981/wk-fyp-backend:latest
+     build: ./wgtpivotlo-backend
+
+2. Set up environmental variables. Example: /.env
+
+3. If you do not have maven command installed, please uncomment ```line 1 to line 18``` from ```wgtpivotlo-backend/Dockerfile``` and comment ```line 20 to line 22```
+
+4. Start the container
+   ``` docker-compose up```
+
+5. Verify the containers are running by checking the docker desktop app or using ``` docker ps ``` command
+
+6. Test the API using postman or curl and make a get request to localhost:7000/api/ping
+
+7. Access the frontend by going to localhost:7000/ will serve the frontend static files. [See why it's port 7000 in Docker](#why-is-the-frontend-served-on-port-7000-in-docker)
+
+## Uploading Docker images into any registry
+
+1. Follow the registry instruction on how to build docker image and push the image to the registry. The current registry I am using is Github Image Registry and it is private. The images can only be accessed by my Personal Access Token.
+
+2. As for building the images, backend image can vary from user's terminals. If you do not have maven command installed, please uncomment ```line 1 to line 18``` from ```wgtpivotlo-backend/Dockerfile``` and comment ```line 20 to line 22```. Frontend image do not need any external dependencies
+
+## Why is the frontend served on port 7000 in Docker?
+1. A reverse proxy is set up between HTTP webserver and the application where "/" will be routed to the frontend container while "/api" is routed to the backend
+
+
+
 ## Archieteture
 1. **3 Tier web app**
 
@@ -140,9 +155,6 @@ To run the services using local builds instead of prebuilt images, follow these 
 2. **Deployment**
 
 ![alt text](./docs/vps.png)
-
-
-
 
 ## Deployment
 
@@ -157,7 +169,7 @@ To run the services using local builds instead of prebuilt images, follow these 
 
 4. Generate SSL certificate using certbots and copy the certs into the nginx folder
 
-4. Ensure docker is installed and run ```docker-compose up```
+4. Ensure docker is installed on vps.If the docker images are not in any docker image registry, follow [Running the Images with Docker](#running-the-images-with-docker) and run ```docker-compose up```. If not, just run ```docker-compose up```
 
 5. The application should be up and running along with HTTPS
 

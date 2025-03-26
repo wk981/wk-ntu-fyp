@@ -9,6 +9,7 @@ import com.wgtpivotlo.wgtpivotlo.security.UserDetailsImpl;
 import com.wgtpivotlo.wgtpivotlo.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -30,14 +31,14 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<MessageDTO> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request) {
+    public ResponseEntity<MessageDTO> login(@RequestBody @Valid LoginRequest loginRequest, HttpServletRequest request) {
         authService.loginUser(request, loginRequest);
         MessageDTO message = MessageDTO.builder().message("Login success!").build();
         return ResponseEntity.ok(message);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<MessageDTO> register(@RequestBody RegisterRequest registerRequest){
+    public ResponseEntity<MessageDTO> register(@RequestBody @Valid RegisterRequest registerRequest){
         authService.registerUser(registerRequest);
         MessageDTO message = MessageDTO.builder().message("Registered success!").build();
         return ResponseEntity.ok(message);

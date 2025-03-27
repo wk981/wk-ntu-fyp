@@ -1,6 +1,6 @@
 import { ProviderProps } from '@/utils';
 import { createContext, useEffect, useState } from 'react';
-import { UseMutateAsyncFunction } from '@tanstack/react-query';
+import { QueryObserverResult, RefetchOptions, UseMutateAsyncFunction } from '@tanstack/react-query';
 import { UpdatePasswordRequest, UpdateProfileRequest, User } from '../types';
 import { useAuth } from '../hook/useAuth';
 import { useUpdateProfile } from '../hook/useUpdateProfile';
@@ -11,7 +11,7 @@ export interface AccountContextType {
   mutateUpdateProfileAsync: UseMutateAsyncFunction<string, Error, UpdateProfileRequest, unknown>;
   user: User | undefined;
   mutateUpdatePasswordAsync: UseMutateAsyncFunction<string, Error, UpdatePasswordRequest, unknown>;
-  getMeAsync: UseMutateAsyncFunction<User, Error, void, unknown>;
+  getMeAsync: (options?: RefetchOptions) => Promise<QueryObserverResult<User, Error>>;
 }
 
 export const EditAccountContext = createContext<AccountContextType | undefined>(undefined);

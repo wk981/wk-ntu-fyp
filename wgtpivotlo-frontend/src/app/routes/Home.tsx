@@ -7,21 +7,21 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export const Home = () => {
-  const { isLoggedIn, meMutation, user } = useAuth();
-  const { isPending } = meMutation;
+  const { isMeLoading, user } = useAuth();
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isLoggedIn && user?.role.some((role) => role === 'ROLE_ADMIN')) {
+    if (user && user?.role.some((role) => role === 'ROLE_ADMIN')) {
       void navigate('/admin/careers', { replace: true });
     }
-  }, [isLoggedIn, user, navigate]);
+  }, [user, navigate]);
 
-  if (isPending) {
+  if (isMeLoading) {
     return <LoadingSpinner />;
   }
 
-  if (!isLoggedIn) {
+  if (!user) {
     return <Landing />;
   }
 

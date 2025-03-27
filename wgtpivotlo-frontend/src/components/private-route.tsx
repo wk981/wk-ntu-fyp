@@ -2,30 +2,21 @@ import { useAuth } from '@/features/auth/hook/useAuth';
 import { Navigate, Outlet } from 'react-router-dom';
 import { LoadingSpinnerWrapper } from './loading-spinner';
 
-const PrivateRoute = () => {
-  const { meMutation, user } = useAuth();
-  const { isPending: isLoading, error } = meMutation;
+export const PrivateRoute = () => {
+  const { user, isMeDone } = useAuth();
 
-  // Show loading spinner while authentication is in progress
-  if (isLoading) {
+  // While checking auth, show loading spinner
+  if (!isMeDone) {
     return (
-      <div className="min-h-[calc(100vh-65px)] flex items-center justify-center">
-        <LoadingSpinnerWrapper width={50} height={50} />
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinnerWrapper />
       </div>
     );
   }
 
-  // Redirect to login if authentication fails
-  if (error || !user) {
+  if (!user) {
     return <Navigate to="/auth/login" replace />;
   }
 
-  if (user) {
-    return <Outlet />;
-  }
-
-  // Handle cases where user has an unknown role
-  return <Navigate to="/auth/login" replace />;
+  return <Outlet />;
 };
-
-export default PrivateRoute;

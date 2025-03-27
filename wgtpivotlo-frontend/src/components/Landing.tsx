@@ -25,10 +25,10 @@ const landingCardObj: HomeCardInterface[] = [
 
 export const Landing = () => {
   // const { sectionsRef } = useScrollToNextDiv();
-  const { isLoggedIn } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const handleCLick = () => {
-    if (isLoggedIn) {
+    if (user) {
       void navigate('/questionaire/upload');
     } else {
       void navigate('/auth/login');

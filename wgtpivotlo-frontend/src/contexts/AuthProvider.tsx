@@ -2,51 +2,57 @@ import { loginBody, loginPost, logoutPost, meGet, registerBody, registerPost } f
 import { User } from '@/features/auth/types';
 import { Response } from '@/types';
 import { ProviderProps } from '@/utils';
-import { UseMutateAsyncFunction, useMutation, UseMutationResult } from '@tanstack/react-query';
+import { QueryObserverResult, RefetchOptions, useMutation, UseMutationResult, useQuery } from '@tanstack/react-query';
 import { createContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 export interface AuthContextInterface {
   user: User | undefined;
-  isLoggedIn: boolean;
   loginUser: (body: loginBody) => Promise<boolean>;
   registerUser: (body: registerBody) => Promise<boolean>;
   logoutUser: () => Promise<void>;
   logoutMutation: UseMutationResult<void, Error, void, unknown>;
-  meMutation: UseMutationResult<User, Error, void, unknown>;
   setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
   isLoginLoading: boolean;
   isRegisteringLoading: boolean;
-  getMeAsync: UseMutateAsyncFunction<User, Error, void, unknown>;
+  getMeAsync: (options?: RefetchOptions) => Promise<QueryObserverResult<User, Error>>;
+  isMeLoading: boolean;
+  isMeError: boolean;
+  isMeSuccess: boolean;
+  isMeDone: boolean;
 }
 
 const AuthContext = createContext<AuthContextInterface | undefined>(undefined);
 
 const AuthProvider = ({ children }: ProviderProps) => {
   const [user, setUser] = useState<User | undefined>(undefined);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isMeDone, setIsMeDone] = useState(false);
 
-  const meMutation = useMutation({
-    mutationFn: meGet, // Directly reference `meGet`
-    onError: (error: Error) => {
-      console.error('Mutation error:', error.message);
-    },
-    onSuccess: (data) => {
-      // Create the logged-in user object
-      const loggedInUser: User = {
-        id: data?.id,
-        email: data?.email,
-        username: data?.username,
-        pic: data?.pic,
-        role: data?.role,
-        isCareerPreferenceSet: data?.isCareerPreferenceSet,
-      };
-
-      // Update state with user data
-      setUser(loggedInUser);
-      setIsLoggedIn(true);
-    },
+  const {
+    data,
+    isLoading: isMeLoading,
+    isError: isMeError,
+    isSuccess: isMeSuccess,
+    refetch: meRefetch,
+  } = useQuery({
+    queryKey: ['me'],
+    queryFn: meGet,
+    enabled: true,
+    retry: false,
+    refetchOnWindowFocus: false,
   });
+
+  // Set user in state when query succeeds
+  useEffect(() => {
+    if (isMeSuccess && data) {
+      setUser(data);
+      setIsMeDone(true); // Mark auth as done
+    }
+
+    if (isMeError) {
+      setIsMeDone(true); // Also mark as done in error case
+    }
+  }, [isMeSuccess, isMeError, data]);
 
   const loginMutation = useMutation({
     mutationFn: (data: loginBody) => {
@@ -72,7 +78,7 @@ const AuthProvider = ({ children }: ProviderProps) => {
       await loginMutation.mutateAsync(body);
 
       // Attempt to fetch user data
-      await meMutation.mutateAsync();
+      await meRefetch();
       // Return true on success
       return true;
     } catch (error) {
@@ -101,28 +107,26 @@ const AuthProvider = ({ children }: ProviderProps) => {
     try {
       await logoutMutation.mutateAsync();
       setUser(undefined);
-      setIsLoggedIn(false);
+      setIsMeDone(false);
     } catch (error) {
       console.log(error);
     }
   };
 
-  useEffect(() => {
-    void meMutation.mutateAsync();
-  }, []);
-
   const value = {
     user,
-    isLoggedIn,
     loginUser,
     registerUser,
     logoutUser,
     logoutMutation,
-    meMutation,
     setUser,
     isLoginLoading: loginMutation.isPending,
     isRegisteringLoading: registerMutation.isPending,
-    getMeAsync: meMutation.mutateAsync,
+    getMeAsync: meRefetch,
+    isMeLoading,
+    isMeError,
+    isMeSuccess,
+    isMeDone,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

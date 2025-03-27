@@ -4,8 +4,8 @@ import { useAuth } from '@/features/auth/hook/useAuth';
 import { Navigate } from 'react-router-dom';
 
 export const Register = () => {
-  const { isLoggedIn, isRegisteringLoading } = useAuth();
-  if (isLoggedIn) {
+  const { user, isRegisteringLoading } = useAuth();
+  if (user) {
     return <Navigate to={'/'} replace />;
   }
   return (

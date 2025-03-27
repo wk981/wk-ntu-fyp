@@ -7,14 +7,14 @@ import { useAuth } from '@/features/auth/hook/useAuth';
 export const FirstTimeUserDialog = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>(false);
-  const { user, isLoggedIn } = useAuth();
+  const { user } = useAuth();
   const location = useLocation();
 
   useEffect(() => {
-    if (user && isLoggedIn && !user.isCareerPreferenceSet && !location.pathname.startsWith('/questionaire')) {
+    if (user && !user.isCareerPreferenceSet && !location.pathname.startsWith('/questionaire')) {
       setOpen(true);
     }
-  }, [user, isLoggedIn, location.pathname]);
+  }, [user, location.pathname]);
 
   return (
     <Dialog open={open}>

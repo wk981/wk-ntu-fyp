@@ -6,7 +6,7 @@ import { QuestionaireProvider } from '@/features/questionaire/contexts/Questiona
 import { Questions } from './routes/questionaire/Questions';
 import { Result } from './routes/questionaire/Result';
 import { Logout } from './routes/auth/logout';
-import PrivateRoute from '@/components/private-route';
+import { PrivateRoute } from '@/components/private-route';
 import { LearningTimeline } from './routes/Learning-Timeline';
 import { UploadResume } from './routes/questionaire/UploadResume';
 import { FirstTimeUserDialog } from '@/components/first-time-user-dialog';

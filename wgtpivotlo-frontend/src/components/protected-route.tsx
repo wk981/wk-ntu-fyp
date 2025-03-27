@@ -7,32 +7,25 @@ interface ProtectedRouteProps {
 }
 
 export const ProtectedRoute = ({ allowedRoles }: ProtectedRouteProps) => {
-  const { meMutation, user } = useAuth();
-  const { isPending: isLoading, error } = meMutation;
+  const { user, isMeDone } = useAuth();
 
-  // While checking authentication status, show a global spinner.
-  if (isLoading) {
+  if (!isMeDone) {
     return (
-      <div className="min-h-[calc(100vh-65px)] flex items-center justify-center">
-        <LoadingSpinnerWrapper width={50} height={50} />
+      <div className="min-h-screen flex items-center justify-center">
+        <LoadingSpinnerWrapper />
       </div>
     );
   }
 
-  // If authentication fails, redirect to login.
-  if (error) {
-    return <Navigate to="/auth/login" replace />;
-  }
+  const isAuthorized = user?.role?.some((role) => allowedRoles.includes(role));
 
-  // Once authenticated, render the child routes.
-  if (user && user.role.some((role) => allowedRoles.includes(role))) {
+  if (user && isAuthorized) {
     return <Outlet />;
   }
 
-  if (user && !user.role.some((role) => allowedRoles.includes(role))) {
+  if (user && !isAuthorized) {
     return <Navigate to="/" replace />;
   }
 
-  // Optionally, handle the unexpected case where auth state isn't loading, no error, and no user.
-  return null;
+  return <Navigate to="/auth/login" replace />;
 };

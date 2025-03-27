@@ -4,9 +4,9 @@ import { useAuth } from '@/features/auth/hook/useAuth';
 import { Navigate } from 'react-router-dom';
 
 export const Login = () => {
-  const { isLoggedIn, isLoginLoading } = useAuth();
-  if (isLoggedIn) {
-    return <Navigate to={'/'} replace />;
+  const { user, isLoginLoading } = useAuth();
+  if (user) {
+    return <Navigate to={'/'} />;
   }
   return (
     <div className="relative min-h-[calc(100vh-65px)] overflow-auto px-4 py-12 flex justify-center">

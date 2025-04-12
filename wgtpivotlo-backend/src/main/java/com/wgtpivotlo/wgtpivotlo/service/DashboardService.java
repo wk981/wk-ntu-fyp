@@ -79,7 +79,7 @@ public class DashboardService {
     }
 
     private double calculateProgression(int userInt, int careerInt){
-        long diff = careerInt - userInt;
+        long diff = Math.abs(careerInt - userInt);
 
         if (diff <= 0){
             return 1;

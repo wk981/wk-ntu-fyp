@@ -59,9 +59,9 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST,"/api/v1/career-skill-association/").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT,"/api/v1/career-skill-association/").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE,"/api/v1/career-skill-association/").hasRole("ADMIN")
-                        .anyRequest().authenticated()
+                        .anyRequest().authenticated() // AuthorizationFilter
         )
-        .csrf(AbstractHttpConfigurer::disable)
+        .csrf(AbstractHttpConfigurer::disable) // CSRFFilter, disabled
         .logout((logout) -> logout
                 .logoutSuccessHandler((httpServletRequest, httpServletResponse, authentication) -> {
                     httpServletResponse.setStatus(HttpServletResponse.SC_OK);
@@ -70,10 +70,10 @@ public class SecurityConfiguration {
                 .invalidateHttpSession(true) // Invalidate session
                 .deleteCookies("JSESSIONID") // Delete session cookie
                 .permitAll()
-        )
+        ) // LogoutFilter
         .cors((cors) -> cors
                 .configurationSource(corsConfigurationSource())
-        );
+        ); //CorsFilter
         return http.build();
     }
 

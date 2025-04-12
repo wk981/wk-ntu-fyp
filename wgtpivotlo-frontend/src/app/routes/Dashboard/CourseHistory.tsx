@@ -4,6 +4,7 @@ import { useCourseHistory } from '@/features/courses/hook/useCourseHistory';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 export const CourseHistory = () => {
   const [showFilters, setShowFilters] = useState(false);
@@ -17,7 +18,7 @@ export const CourseHistory = () => {
     setCourseStatus(value);
   };
   return (
-    <div>
+    <div className="w-full mx-auto h-full">
       <>
         <div>
           <Button className="mb-2" variant={'outline'} onClick={handleShowFiltersClick}>
@@ -45,13 +46,15 @@ export const CourseHistory = () => {
             </div>
           )}
         </div>
-        {isCourseHistorySuccess && courseHistoryData && (
-          <div className="flex-1 overflow-y-auto w-full">
-            {courseHistoryData.map((course, index) => (
-              <CourseItem key={index} course={course.courseWithProfiencyDTO} status={course.courseStatus} />
-            ))}
+        <ScrollArea className="h-[calc(100vh-200px)] w-full pr-4">
+          <div className="space-y-2 px-12 py-2">
+            {isCourseHistorySuccess &&
+              courseHistoryData &&
+              courseHistoryData.map((course, index) => (
+                <CourseItem key={index} course={course.courseWithProfiencyDTO} status={course.courseStatus} />
+              ))}
           </div>
-        )}
+        </ScrollArea>
         {isCourseHistoryLoading && (
           <div className="flex flex-col items-center justify-center my-12">
             <LoadingSpinnerComponent width={40} height={40} />

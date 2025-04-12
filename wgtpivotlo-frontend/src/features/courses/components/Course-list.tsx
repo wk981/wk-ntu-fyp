@@ -32,7 +32,7 @@ export const CourseList = ({ skill, careerId, skillLevelFilter }: CourseListInte
 
   return (
     <ScrollArea className="h-[calc(100vh-350px)] w-full pr-4">
-      <div className=" space-y-2 px-12 py-2">
+      <div className="space-y-2 px-12 py-2">
         {courses &&
           courses.map((course, index) => (
             <CourseItem key={index} ref={courses.length === index + 1 ? elementRef : null} course={course} />

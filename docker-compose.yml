@@ -15,8 +15,8 @@ services:
       - dev
       
   backend:
-    image: ghcr.io/wk981/wk-fyp-backend:latest
-    # build: ./wgtpivotlo-backend
+    # image: ghcr.io/wk981/wk-fyp-backend:latest
+    build: ./wgtpivotlo-backend
     tty: true
     # ports:
     # - 8080:8080
@@ -37,8 +37,8 @@ services:
       - dev
 
   frontend:
-    image: ghcr.io/wk981/wk-fyp-frontend:latest
-    # build: ./wgtpivotlo-frontend
+    # image: ghcr.io/wk981/wk-fyp-frontend:latest
+    build: ./wgtpivotlo-frontend
     tty: true
     ports:
       - 127.0.0.1:7000:7000

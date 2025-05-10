@@ -11,8 +11,13 @@ export const FirstTimeUserDialog = () => {
   const location = useLocation();
 
   useEffect(() => {
-    if (user && !user.isCareerPreferenceSet && !location.pathname.startsWith('/questionaire')) {
-      setOpen(true);
+    if (
+      user &&
+      !user.isCareerPreferenceSet && // User hasn't set career preference
+      !location.pathname.startsWith('/questionaire') && // Not already on the questionnaire page
+      !user.role.some((role) => ['ROLE_ADMIN'].includes(role)) // User is NOT an admin
+    ) {
+      setOpen(true); // THEN open the modal/dialog/etc.
     }
   }, [user, location.pathname]);
 
